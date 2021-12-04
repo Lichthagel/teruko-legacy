@@ -58,7 +58,7 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
             }
         }).then(result => {
             if (result.data) {
-                navigate(`/tag/${result.data.updateTag.slug}`, { replace: true });
+                navigate(`/tag/${encodeURIComponent(result.data.updateTag.slug)}`, { replace: true });
             }
             setEdit(false);
         });
