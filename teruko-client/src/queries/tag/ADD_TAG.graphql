@@ -1,0 +1,8 @@
+mutation AddTag($imageId: Int!, $tag: String!) {
+    addTag(imageId: $imageId, tag: $tag) {
+        id
+        tags {
+            slug
+        }
+    }
+}

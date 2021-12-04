@@ -1,0 +1,11 @@
+.terukoButton {
+    font-size: 3rem;
+    line-height: 3rem;
+    color: #fff;
+    background-color: #000;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    cursor: pointer;
+}

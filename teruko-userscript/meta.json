@@ -1,0 +1,11 @@
+{
+    "name": "teruko-userscript",
+    "namespace": "Lichthagel",
+    "version": "1.0",
+    "author": "Lichthagel",
+    "description": "",
+    "homepageURL": "https://github.com/Lichthagel/teruko",
+    "supportURL": "https://github.com/Lichthagel/teruko/issues",
+    "match": "https://www.pixiv.net/*",
+    "grant": "GM_xmlhttpRequest"
+}

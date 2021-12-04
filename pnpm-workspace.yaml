@@ -1,0 +1,4 @@
+packages:
+- 'teruko-client'
+- 'teruko-server'
+- 'teruko-userscript'

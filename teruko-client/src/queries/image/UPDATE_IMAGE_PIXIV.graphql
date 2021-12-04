@@ -1,0 +1,12 @@
+mutation UpdateImagePixiv($id: Int!, $source: String) {
+    updateImagePixiv(id: $id, source: $source) {
+        id
+        title
+        tags {
+            slug
+            category {
+                color
+            }
+        }
+    }
+}

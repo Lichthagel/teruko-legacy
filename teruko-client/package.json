@@ -1,0 +1,43 @@
+{
+  "name": "teruko-client",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "author": "Lichthagel",
+  "license": "MIT",
+  "type": "module",
+  "source": "index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint ./src"
+  },
+  "devDependencies": {
+    "@parcel/transformer-graphql": "^2.0.1",
+    "@rollup/plugin-graphql": "^1.1.0",
+    "@types/apollo-upload-client": "^14.1.0",
+    "@types/node": "^16.11.11",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "@vitejs/plugin-react": "^1.1.0",
+    "autoprefixer": "^10.4.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "parcel": "^2.0.1",
+    "postcss": "^8.4.4",
+    "postcss-import": "^14.0.2",
+    "tailwindcss": "^2.2.19",
+    "vite": "^2.6.14"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.5",
+    "@heroicons/react": "^1.0.5",
+    "apollo-upload-client": "^16.0.0",
+    "classnames": "^2.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.0.2"
+  }
+}

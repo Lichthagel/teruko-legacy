@@ -1,0 +1,6 @@
+query TagCategories {
+    tagCategories {
+        slug
+        color
+    }
+}

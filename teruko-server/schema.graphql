@@ -1,0 +1,57 @@
+type Query {
+    image(id: Int!): Image
+    images(skip: Int, take: Int, tags: [String!], sort: ImageSort): [Image!]!
+    imageCount: Int!
+    tag(slug: String!): Tag
+    tagSuggestions(filter: String!): [Tag!]!
+    tagCategories: [TagCategory!]!
+}
+
+type Mutation {
+    #createImage(fileExt: String!, title: String, source: String): Image!
+    createImage(files: [Upload!]!): [Image!]!
+    createImageFromPixiv(url: String!): [Image!]!
+    updateImage(id: Int!, title: String, source: String): Image!
+    updateImagePixiv(id: Int!, source: String): Image!
+    deleteImage(id: Int!): Image!
+    addTag(imageId: Int!, tag: String!): Image!
+    removeTag(imageId: Int!, tag: String!): Image!
+    updateTag(slug: String!, newSlug: String, category: String): Tag!
+    deleteTag(slug: String!): Tag!
+    updateTagCategory(slug: String!, color: String): TagCategory!
+}
+
+type Image {
+    id: Int!
+    filename: String!
+    title: String
+    source: String
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    width: Int!
+    height: Int!
+    tags: [Tag!]!
+}
+
+type Tag {
+    slug: String!
+    category: TagCategory
+    images: [Image!]!
+    count: Int!
+}
+
+type TagCategory {
+    slug: String!
+    color: String
+    tags: [Tag!]!
+}
+
+scalar DateTime
+scalar Upload
+
+enum ImageSort {
+    random,
+    newest,
+    oldest,
+    last_updated
+}

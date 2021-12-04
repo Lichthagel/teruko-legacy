@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "es2020",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "target": "es6",
+        "rootDir": "src",
+        "outDir": "build",
+        "strict": true
+    },
+    "include": ["./src/**/*"],
+    "ts-node": {
+        "files": true
+    }
+}

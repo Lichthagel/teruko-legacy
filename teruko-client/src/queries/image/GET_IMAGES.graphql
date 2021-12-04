@@ -1,0 +1,7 @@
+query Images($skip: Int, $take: Int, $tags: [String!], $sort: ImageSort) {
+    images(skip: $skip, take: $take, tags: $tags, sort: $sort) {
+        id
+        filename
+        title
+    }
+}

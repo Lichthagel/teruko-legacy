@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  //provider = "sqlite"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  filename  String   @unique
+  width     Int
+  height    Int
+  title     String?
+  source    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  tags      Tag[]
+}
+
+model Tag {
+  slug         String       @id
+  category     TagCategory? @relation(fields: [categorySlug], references: [slug])
+  categorySlug String?
+  images       Image[]
+}
+
+model TagCategory {
+  slug  String  @id
+  color String?
+  tags  Tag[]
+}

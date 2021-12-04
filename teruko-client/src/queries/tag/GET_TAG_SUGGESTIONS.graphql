@@ -1,0 +1,5 @@
+query TagSuggestions($filter: String!) {
+    tagSuggestions(filter: $filter) {
+        slug
+    }
+}

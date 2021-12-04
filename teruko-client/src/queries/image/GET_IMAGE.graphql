@@ -1,0 +1,14 @@
+query Image($id: Int!) {
+    image(id: $id) {
+        id
+        filename
+        title
+        source
+        tags {
+            slug
+            category {
+                color
+            }
+        }
+    }
+}

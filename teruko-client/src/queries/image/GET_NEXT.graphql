@@ -1,0 +1,14 @@
+query Next($skip: Int, $tags: [String!], $sort: ImageSort) {
+    images(skip: $skip, take: 1, tags: $tags, sort: $sort) {
+        id
+        filename
+        title
+        source
+        tags {
+            slug
+            category {
+                color
+            }
+        }
+    }
+}

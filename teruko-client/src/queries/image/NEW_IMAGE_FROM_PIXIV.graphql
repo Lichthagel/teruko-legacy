@@ -1,0 +1,13 @@
+mutation ($url: String!) {
+    createImageFromPixiv(url: $url) {
+        id
+        filename
+        title
+        source
+        createdAt
+        updatedAt
+        tags {
+            slug
+        }
+    }
+}

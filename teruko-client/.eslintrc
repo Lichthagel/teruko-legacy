@@ -1,0 +1,12 @@
+{
+    "extends": ["lichthagel/react", "lichthagel/typescript"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "tsconfigRootDir": ".",
+        "project": ["./tsconfig.json"]
+    },
+    "ignorePatterns": ["dist/*", "*.config.*"],
+    "rules": {
+        "linebreak-style": ["warn", "windows"]
+    }
+}

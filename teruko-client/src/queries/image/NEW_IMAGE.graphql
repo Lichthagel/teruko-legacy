@@ -1,0 +1,13 @@
+mutation ($files: [Upload!]!) {
+    createImage(files: $files) {
+        id
+        filename
+        title
+        source
+        createdAt
+        updatedAt
+        tags {
+            slug
+        }
+    }
+}

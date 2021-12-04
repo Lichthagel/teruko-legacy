@@ -1,0 +1,5 @@
+mutation DeleteTag($slug: String!) {
+    deleteTag(slug: $slug) {
+        slug
+    }
+}
