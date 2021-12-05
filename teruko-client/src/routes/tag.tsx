@@ -1,13 +1,13 @@
 import { CheckIcon, PencilIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
-import { DELETE_TAG, GET_TAG, UPDATE_TAG } from "../../queries/tag";
+import { DELETE_TAG, GET_TAG, UPDATE_TAG } from "../queries/tag";
 import React, { FormEvent, Fragment, FunctionComponent, useCallback, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import Button from "../../components/Button";
-import Gallery from "../../components/Gallery";
-import SortToggle from "../../components/SortToggle";
-import LoadingIcon from "../../components/LoadingIcon";
+import Button from "../components/Button";
+import Gallery from "../components/Gallery";
+import SortToggle from "../components/SortToggle";
+import LoadingIcon from "../components/LoadingIcon";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { GET_TAG_CATEGORIES } from "../../queries/category";
+import { GET_TAG_CATEGORIES } from "../queries/category";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: boolean) => void }> = ({ slug, data, setEdit }) => {

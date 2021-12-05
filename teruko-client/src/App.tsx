@@ -1,13 +1,14 @@
 import { ChevronUpIcon, HomeIcon, PlusIcon } from "@heroicons/react/outline";
 import { Route, Routes, Link } from "react-router-dom";
 import Home from "./routes/index";
-import React, { Fragment } from "react";
-import Image from "./routes/image";
-import EditImage from "./routes/image/edit";
-import Tag from "./routes/tag";
-import New from "./routes/new";
+import React, { Fragment, lazy, Suspense } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_IMAGE_COUNT } from "./queries/image";
+
+const Image = lazy(() => import("./routes/image"));
+const EditImage = lazy(() => import("./routes/image/edit"));
+const Tag = lazy(() => import("./routes/tag"));
+const New = lazy(() => import("./routes/new"));
 
 const App = () => {
     const { data: imageCountData } = useQuery(GET_IMAGE_COUNT, { pollInterval: 60000 });
@@ -27,10 +28,10 @@ const App = () => {
 
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path=":id" element={<Image />} />
-                <Route path=":id/edit" element={<EditImage />} />
-                <Route path="tag/:slug" element={<Tag />} />
-                <Route path="new" element={<New />} />
+                <Route path=":id" element={<Suspense fallback={null}><Image /></Suspense>} />
+                <Route path=":id/edit" element={<Suspense fallback={null}><EditImage /></Suspense>} />
+                <Route path="tag/:slug" element={<Suspense fallback={null}><Tag /></Suspense>} />
+                <Route path="new" element={<Suspense fallback={null}><New /></Suspense>} />
             </Routes>
         </div>
         <div
