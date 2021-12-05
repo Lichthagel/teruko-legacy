@@ -62,6 +62,7 @@ const EditImage = () => {
     });
 
     const [removeTag] = useMutation(REMOVE_TAG, {
+        refetchQueries: ["TagSuggestions"],
         update(cache, _, context) {
             if (!context.variables) return;
             cache.modify({
