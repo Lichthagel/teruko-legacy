@@ -77,21 +77,20 @@ const Gallery: FunctionComponent<{
 
     return (
         <Stack>
-            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "repeat(1,minmax(0,1fr))", md: "repeat(2,minmax(0,1fr))", xl: "repeat(3,minmax(0,1fr))" }, gap: ".25rem", gridTemplateRows: "masonry" }}>
+            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: ".25rem", gridTemplateRows: "masonry" }}>
                 {data.images.map((image: { id: number; title: string; filename: string; tags: { slug: string; category?: { color?: string } }[] }, index: number) =>
                     <ImageCard
                         onClick={() => handleImageClick(image.id, index)}
                         // eslint-disable-next-line react/no-array-index-key
                         key={`${image.id}_${index}`}
                         image={image} />)}
-                <Box sx={{ display: "flex", height: "8rem", alignItems: "center", justifyContent: "center", marginBottom: "3rem" }}>
-                    <Button
-                        size="large"
-                        onClick={loadMore}
-                        disabled={loading}>Load more</Button>
-                </Box>
             </Box>
-
+            <Box sx={{ display: "flex", height: "8rem", alignItems: "center", justifyContent: "center", marginBottom: "3rem" }}>
+                <Button
+                    size="large"
+                    onClick={loadMore}
+                    disabled={loading}>Load more</Button>
+            </Box>
         </Stack>
     );
 };
