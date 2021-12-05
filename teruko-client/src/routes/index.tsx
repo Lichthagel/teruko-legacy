@@ -1,6 +1,8 @@
 import Gallery from "../components/Gallery";
 import Nav from "../components/Nav";
 import { useSearchParams } from "react-router-dom";
+import React from "react";
+import Box from "@mui/material/Box";
 
 const Home = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -9,7 +11,7 @@ const Home = () => {
     const sort = searchParams.get("sort") || "newest";
 
     return (
-        <div>
+        <Box>
             <Nav
                 tags={tags}
                 setTags={(tags: string[]) => {
@@ -20,7 +22,7 @@ const Home = () => {
                 }} />
 
             <Gallery tags={tags} sort={sort as string} />
-        </div>
+        </Box>
     );
 };
 

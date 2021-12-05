@@ -1,8 +1,10 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useMutation } from "@apollo/client";
-import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
 import { NEW_IMAGE, NEW_IMAGE_FROM_PIXIV } from "../queries/image";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
 
 const New = () => {
     const navigate = useNavigate();
@@ -69,30 +71,33 @@ const New = () => {
     ]);
 
     return (
-        <div className="flex flex-col items-center">
-            <div
+        <Box display="flex" flexDirection="column" alignItems="center">
+            <Box
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
-                className={classNames(
-                    "w-96 text-center border-4 border-dashed border-indigo-800 dark:border-indigo-400 py-12 text-3xl md:text-4xl",
-                    {
-                        "border-indigo-800 dark:border-indigo-400": !error,
-                        "border-red-800 dark:border-red-400": error
-                    }
-                )}>
-                {!loading ? "drop image here" : "..."}
-            </div>
+                sx={{
+                    width: "100%",
+                    height: 300,
+                    borderWidth: 4,
+                    borderStyle: "dashed",
+                    borderColor: "primary.main",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                }}>
+                <Typography variant="h2" component="div">{!loading ? "drop image here" : "..."}</Typography>
+            </Box>
 
-            <form onSubmit={handlePixiv} className="my-3">
-                <input
-                    type="text"
-                    className={classNames("w-96 max-w-full", { "animate-pulse": loadingPixiv })}
-                    value={pixivUrl}
-                    placeholder="or enter a pixiv URL"
+            <form onSubmit={handlePixiv} style={{ width: "100%" }}>
+                <TextField
+                    label="or enter a pixiv URL"
                     disabled={loadingPixiv}
-                    onChange={(event) => setPixivUrl(event.target.value)} />
+                    value={pixivUrl}
+                    onChange={(event) => setPixivUrl(event.target.value)}
+                    margin="normal"
+                    fullWidth />
             </form>
-        </div>
+        </Box>
     );
 };
 

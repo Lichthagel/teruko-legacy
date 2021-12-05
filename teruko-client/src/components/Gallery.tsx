@@ -1,29 +1,26 @@
 import { ApolloQueryResult, useQuery } from "@apollo/client";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
-import LoaderImage from "./LoaderImage";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import React, { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GET_IMAGES } from "../queries/image";
+import ImageCard from "./ImageCard";
+import ImageCardSkeleton from "./ImageCardSkeleton";
 
 const DEFAULT_TAKE = 12;
 
 export const GallerySkeletonLoader: FunctionComponent = () =>
-    <div>
-        <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 animate-pulse"
-            style={{
-                gridTemplateRows: "masonry"
-            }}>
-            <div className="w-full h-72 block bg-gray-700" />
-            <div className="w-full h-96 block bg-gray-700" />
-            <div className="w-full h-80 block bg-gray-700" />
-            <div className="w-full h-96 block bg-gray-700" />
-            <div className="w-full h-96 block bg-gray-700" />
-            <div className="w-full h-80 block bg-gray-700" />
-            <div className="w-full h-96 block bg-gray-700" />
-            <div className="w-full h-40 block bg-gray-700" />
-        </div>
-    </div>;
-
+    <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: ".25rem", gridTemplateRows: "masonry" }}>
+        <ImageCardSkeleton />
+        <ImageCardSkeleton />
+        <ImageCardSkeleton />
+        <ImageCardSkeleton />
+        <ImageCardSkeleton />
+        <ImageCardSkeleton />
+    </Box>;
 
 const Gallery: FunctionComponent<{
     tags: string[];
@@ -39,7 +36,8 @@ const Gallery: FunctionComponent<{
             take,
             sort,
             tags
-        }
+        },
+        notifyOnNetworkStatusChange: true
     });
 
     const loadMore = useCallback(() => {
@@ -61,56 +59,39 @@ const Gallery: FunctionComponent<{
         setTake(12);
     }, [tags]);
 
-    /* useEffect(() => {
-        const onScroll = () => {
-            const {
-                scrollTop,
-                scrollHeight,
-                clientHeight
-            } = document.documentElement;
-
-            if (scrollTop + clientHeight >= scrollHeight - 100) {
-                loadMore();
-            }
-        };
-
-        window.addEventListener("scroll", onScroll);
-
-        return () => window.removeEventListener("scroll", onScroll);
-    }, [loadMore]);*/
-
-    if (loading) {
+    if (loading && !data) {
         return <GallerySkeletonLoader />;
     }
 
     if (error) {
-        return <h1>{`Error: ${error}`}</h1>;
+        return <Alert severity="error">
+            <AlertTitle>{error.name}</AlertTitle>
+            {error.message}
+        </Alert>;
     }
 
     if (!data) {
-        return <h1>unknown error</h1>;
+        return <Alert severity="error">Could not receive data.</Alert>;
     }
 
 
     return (
-        <div>
-            <div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1"
-                style={{
-                    gridTemplateRows: "masonry"
-                }}>
-                {data.images.map((image: { id: number; title: string; filename: string }, index: number) => <LoaderImage
-                    onClick={() => handleImageClick(image.id, index)}
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${image.id}_${index}`}
-                    src={`http://${window.location.hostname}:3030/img/${image.filename}`}
-                    alt={image.title || image.id.toString()}
-                    className="w-full h-auto block cursor-pointer bg-gray-700" />)}
-            </div>
-            <div className="flex h-32 items-center justify-center mb-12">
-                <button className="text-indigo-800 dark:text-indigo-400 border-2 rounded-md border-indigo-800 dark:border-indigo-400 px-6 text-xl inline-flex items-center h-10 leading-10 cursor-pointer transition-all hover:text-darkpurple hover:bg-indigo-400" onClick={loadMore}>Load more</button>
-            </div>
-        </div>
+        <Stack>
+            <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: ".25rem", gridTemplateRows: "masonry" }}>
+                {data.images.map((image: { id: number; title: string; filename: string; tags: { slug: string; category?: { color?: string } }[] }, index: number) =>
+                    <ImageCard
+                        onClick={() => handleImageClick(image.id, index)}
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={`${image.id}_${index}`}
+                        image={image} />)}
+            </Box>
+            <Box sx={{ display: "flex", height: "8rem", alignItems: "center", justifyContent: "center", marginBottom: "3rem" }}>
+                <Button
+                    size="large"
+                    onClick={loadMore}
+                    disabled={loading}>Load more</Button>
+            </Box>
+        </Stack>
     );
 };
 
