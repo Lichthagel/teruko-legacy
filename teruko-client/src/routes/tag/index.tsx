@@ -19,6 +19,7 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
     const { data: dataCategories } = useQuery(GET_TAG_CATEGORIES);
 
     const [updateTag, { loading: loadingUpdate }] = useMutation(UPDATE_TAG, {
+        refetchQueries: ["TagSuggestions"],
         update(cache, result) {
             if (!result.data) return;
             cache.modify({
