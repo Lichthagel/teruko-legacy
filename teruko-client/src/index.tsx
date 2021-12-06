@@ -3,7 +3,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
-import "./styles.css";
+import "virtual:windi.css";
 
 const client = new ApolloClient({
     link: createUploadLink({

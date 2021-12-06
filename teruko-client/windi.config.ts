@@ -1,6 +1,7 @@
-module.exports = {
-    mode: "jit",
-    purge: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+import { defineConfig } from "windicss/helpers";
+
+export default defineConfig({
+    
     darkMode: "media", // or 'media' or 'class'
     theme: {
         extend: {
@@ -12,8 +13,5 @@ module.exports = {
             }
         },
     },
-    variants: {
-        extend: {},
-    },
     plugins: [],
-};
+})
