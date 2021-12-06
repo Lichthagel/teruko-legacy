@@ -11,3 +11,12 @@
         @apply bg-gray-200 dark:bg-gray-800 border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400;
     }
 }
+
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}

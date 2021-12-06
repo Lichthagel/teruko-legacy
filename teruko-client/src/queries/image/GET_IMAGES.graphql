@@ -3,5 +3,11 @@ query Images($skip: Int, $take: Int, $tags: [String!], $sort: ImageSort) {
         id
         filename
         title
+        tags {
+            slug
+            category {
+                color
+            }
+        }
     }
 }

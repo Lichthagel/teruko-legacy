@@ -1,8 +1,9 @@
 import { ApolloQueryResult, useQuery } from "@apollo/client";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
-import LoaderImage from "./LoaderImage";
 import { useNavigate } from "react-router-dom";
 import { GET_IMAGES } from "../queries/image";
+import ImageCard from "./ImageCard";
+import { Image } from "../models";
 
 const DEFAULT_TAKE = 12;
 
@@ -99,13 +100,12 @@ const Gallery: FunctionComponent<{
                 style={{
                     gridTemplateRows: "masonry"
                 }}>
-                {data.images.map((image: { id: number; title: string; filename: string }, index: number) => <LoaderImage
+                {data.images.map((image: Image, index: number) => <ImageCard
                     onClick={() => handleImageClick(image.id, index)}
+                    filterTags={tag => tags.indexOf(tag.slug) === -1}
                     // eslint-disable-next-line react/no-array-index-key
                     key={`${image.id}_${index}`}
-                    src={`http://${window.location.hostname}:3030/img/${image.filename}`}
-                    alt={image.title || image.id.toString()}
-                    className="w-full h-auto block cursor-pointer bg-gray-700 rounded" />)}
+                    image={image} />)}
             </div>
             <div className="flex h-32 items-center justify-center mb-12">
                 <button className="text-indigo-800 dark:text-indigo-400 border-2 rounded-md border-indigo-800 dark:border-indigo-400 px-6 text-xl inline-flex items-center h-10 leading-10 cursor-pointer transition-all hover:text-darkpurple hover:bg-indigo-400" onClick={loadMore}>Load more</button>
