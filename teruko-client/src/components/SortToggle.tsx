@@ -22,7 +22,7 @@ const SortToggle: FunctionComponent = () => {
 
     return (
         <select
-            className="rounded h-8 md:mr-1"
+            className="md:mr-1 bg-darkpurple"
             value={sort}
             onChange={(event) => {
                 setSort(event.target.value);

@@ -1,22 +1,22 @@
 @layer base {
-    body {
-        @apply dark:bg-darkpurple text-indigo-800 dark:text-indigo-400;
-    }
+  body {
+    @apply dark:bg-darkpurple text-indigo-800 dark:text-indigo-400;
+  }
 
-    input {
-        @apply rounded p-2 bg-gray-200 dark:bg-gray-800 placeholder-indigo-400 dark:placeholder-indigo-800 border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400 outline-none;
-    }
+  input {
+    @apply transition h-12 rounded p-2 bg-transparent placeholder-indigo-400 dark:placeholder-indigo-800 border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400 outline-none;
+  }
 
-    select {
-        @apply bg-gray-200 dark:bg-gray-800 border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400;
-    }
+  select {
+    @apply bg-transparent h-12 rounded border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400;
+  }
 }
 
 .scrollbar-none {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .scrollbar-none::-webkit-scrollbar {
-    display: none;
+  display: none;
 }

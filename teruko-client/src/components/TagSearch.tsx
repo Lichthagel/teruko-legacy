@@ -44,7 +44,7 @@ const TagSearch: FunctionComponent<{
             <input
                 type="text"
                 placeholder="Search..."
-                className="h-8 w-full outline-none"
+                className="w-full outline-none"
                 value={tagsInput}
                 onChange={(event) => {
                     setTagsInput(event.target.value);
@@ -52,7 +52,7 @@ const TagSearch: FunctionComponent<{
                 }}
                 onKeyDown={handleKeyDown} />
             {data &&
-                <ul className="block absolute z-20 bg-gray-700 left-0 right-0">
+                <ul className="block absolute z-20 bg-darkpurple left-0 right-0">
                     {data.tagSuggestions.map(({ slug: suggestion }: { slug: string }, index: number) =>
                         <li
                             key={suggestion}

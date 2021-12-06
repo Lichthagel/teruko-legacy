@@ -27,11 +27,11 @@ const Nav: FunctionComponent<{
 
     return (
         <div className="w-full md:w-2/3 lg:w-1/2 px-3 mx-auto mt-3 mb-5">
-            <div className="flex flex-col md:flex-row w-full mb-1">
+            <div className="flex flex-col md:flex-row w-full mb-1 items-center">
                 <TagSearch tags={tags} setTags={setTags} />
                 <SortToggle />
                 <RefreshIcon
-                    className="w-8 h-8 cursor-pointer"
+                    className="w-10 h-10 cursor-pointer"
                     onClick={() => {
                         apolloClient.refetchQueries({
                             include: ["Images"]
