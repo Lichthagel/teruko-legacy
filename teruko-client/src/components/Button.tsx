@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { FunctionComponent } from "react";
 
 const Button: FunctionComponent<{
@@ -8,7 +8,7 @@ const Button: FunctionComponent<{
     onClick?: () => void;
 }> = ({ text, color, onClick, className }) =>
     <div
-        className={classNames("inline-block bg-indigo-700 text-white leading-9 px-4 m-1 rounded select-none", { "cursor-pointer": onClick }, className)}
+        className={clsx("inline-block bg-indigo-700 text-white leading-9 px-4 m-1 rounded select-none", { "cursor-pointer": onClick }, className)}
         style={{ backgroundColor: color }}
         onClick={() => onClick && onClick()}>
         {text}

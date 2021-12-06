@@ -1,11 +1,11 @@
 import { RefreshIcon } from "@heroicons/react/outline";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Fragment, FunctionComponent } from "react";
 
 const LoadingIcon: FunctionComponent<{ loading: boolean; className: string }> = ({ children, loading, className }) => {
 
     if (loading) {
-        return <RefreshIcon className={classNames(className, "animate-spin")} />;
+        return <RefreshIcon className={clsx(className, "animate-spin")} />;
     }
 
     return (

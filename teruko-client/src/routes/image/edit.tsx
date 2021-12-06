@@ -4,10 +4,10 @@ import React, { FormEvent, Fragment, useCallback, useEffect, useState } from "re
 import { useMutation, useQuery } from "@apollo/client";
 import Tag from "../../components/Tag";
 import TagInput from "../../components/TagInput";
-import classNames from "classnames";
 import LoadingIcon from "../../components/LoadingIcon";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { DELETE_IMAGE, GET_IMAGE, UPDATE_IMAGE, UPDATE_IMAGE_PIXIV } from "../../queries/image";
+import clsx from "clsx";
 
 const EditImage = () => {
     const navigate = useNavigate();
@@ -97,7 +97,7 @@ const EditImage = () => {
                 <div className="flex-grow"></div>
                 <LoadingIcon loading={loadingFetchPixiv} className={"w-8 h-8"}>
                     <DownloadIcon
-                        className={classNames("w-8 h-8 cursor-pointer", { "animate-pulse": loadingFetchPixiv })}
+                        className={clsx("w-8 h-8 cursor-pointer", { "animate-pulse": loadingFetchPixiv })}
                         onClick={() => {
                             updateImagePixiv({
                                 variables: {

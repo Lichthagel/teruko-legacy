@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback, useState } from "react";
 import { GET_TAG_SUGGESTIONS } from "../queries/tag";
 import { useQuery } from "@apollo/client";
-import classNames from "classnames";
+import clsx from "clsx";
 
 const TagInput: FunctionComponent<{
     handleSubmit: (slug: string) => void;
@@ -55,7 +55,7 @@ const TagInput: FunctionComponent<{
                 <ul className="block absolute z-20 bg-gray-700 left-0 right-0">
                     <li
                         key={"new_tag"}
-                        className={classNames("p-1 cursor-pointer", { "bg-indigo-700 text-white": activeSuggestion === 0 })}
+                        className={clsx("p-1 cursor-pointer", { "bg-indigo-700 text-white": activeSuggestion === 0 })}
                         onClick={() => handleSubmit(tagInput)}
                         onMouseEnter={() => setActiveSuggestion(0)}>
                         {tagInput}
@@ -63,7 +63,7 @@ const TagInput: FunctionComponent<{
                     {data && data.tagSuggestions.map(({ slug: suggestion }: { slug: string }, index: number) =>
                         <li
                             key={suggestion}
-                            className={classNames("p-1 cursor-pointer", { "bg-indigo-700 text-white": index + 1 === activeSuggestion })}
+                            className={clsx("p-1 cursor-pointer", { "bg-indigo-700 text-white": index + 1 === activeSuggestion })}
                             onClick={() => handleSubmit(suggestion)}
                             onMouseEnter={() => setActiveSuggestion(index + 1)}>
                             {suggestion}

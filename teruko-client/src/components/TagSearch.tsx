@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback, useState } from "react";
 import { GET_TAG_SUGGESTIONS } from "../queries/tag";
 import { useQuery } from "@apollo/client";
-import classNames from "classnames";
+import clsx from "clsx";
 
 const TagSearch: FunctionComponent<{
     tags: string[];
@@ -56,7 +56,7 @@ const TagSearch: FunctionComponent<{
                     {data.tagSuggestions.map(({ slug: suggestion }: { slug: string }, index: number) =>
                         <li
                             key={suggestion}
-                            className={classNames("p-1 cursor-pointer", { "bg-indigo-700 text-white": index === activeSuggestion })}
+                            className={clsx("p-1 cursor-pointer", { "bg-indigo-700 text-white": index === activeSuggestion })}
                             onClick={() => handleSubmit(suggestion)}
                             onMouseEnter={() => setActiveSuggestion(index)}>
                             {suggestion}
