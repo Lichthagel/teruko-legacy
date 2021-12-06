@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 import "virtual:windi.css";
+import "./styles.css";
 
 const client = new ApolloClient({
     link: createUploadLink({

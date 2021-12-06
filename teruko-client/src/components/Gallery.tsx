@@ -105,7 +105,7 @@ const Gallery: FunctionComponent<{
                     key={`${image.id}_${index}`}
                     src={`http://${window.location.hostname}:3030/img/${image.filename}`}
                     alt={image.title || image.id.toString()}
-                    className="w-full h-auto block cursor-pointer bg-gray-700" />)}
+                    className="w-full h-auto block cursor-pointer bg-gray-700 rounded" />)}
             </div>
             <div className="flex h-32 items-center justify-center mb-12">
                 <button className="text-indigo-800 dark:text-indigo-400 border-2 rounded-md border-indigo-800 dark:border-indigo-400 px-6 text-xl inline-flex items-center h-10 leading-10 cursor-pointer transition-all hover:text-darkpurple hover:bg-indigo-400" onClick={loadMore}>Load more</button>

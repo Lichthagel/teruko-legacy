@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@parcel/transformer-graphql": "^2.0.1",
-    "@rollup/plugin-graphql": "^1.1.0",
     "@types/apollo-upload-client": "^14.1.0",
     "@types/node": "^16.11.11",
     "@types/react": "^17.0.37",

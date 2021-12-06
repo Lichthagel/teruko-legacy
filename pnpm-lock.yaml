@@ -21,7 +21,6 @@ importers:
       '@apollo/client': ^3.5.5
       '@heroicons/react': ^1.0.5
       '@parcel/transformer-graphql': ^2.0.1
-      '@rollup/plugin-graphql': ^1.1.0
       '@types/apollo-upload-client': ^14.1.0
       '@types/node': ^16.11.11
       '@types/react': ^17.0.37
@@ -49,14 +48,13 @@ importers:
       react-router-dom: 6.0.2_react-dom@17.0.2+react@17.0.2
     devDependencies:
       '@parcel/transformer-graphql': 2.0.1
-      '@rollup/plugin-graphql': 1.1.0
       '@types/apollo-upload-client': 14.1.0_react@17.0.2
       '@types/node': 16.11.11
       '@types/react': 17.0.37
       '@types/react-dom': 17.0.11
       '@vitejs/plugin-react': 1.1.0
-      eslint-plugin-react: 7.27.1_eslint@8.4.0
-      eslint-plugin-react-hooks: 4.3.0_eslint@8.4.0
+      eslint-plugin-react: 7.27.1
+      eslint-plugin-react-hooks: 4.3.0
       parcel: 2.0.1
       postcss-import: 14.0.2
       vite: 2.6.14
@@ -1702,16 +1700,6 @@ packages:
   /@protobufjs/utf8/1.1.0:
     resolution: {integrity: sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=}
     dev: false
-
-  /@rollup/plugin-graphql/1.1.0:
-    resolution: {integrity: sha512-X+H6oFlprDlnO3D0UiEytdW97AMphPXO0C7KunS7i/rBXIGQRQVDU5WKTXnBu2tfyYbjCTtfhXMSGI0i885PNg==}
-    peerDependencies:
-      graphql: '>=0.9.0'
-      rollup: ^1.20.0 || ^2.0.0
-    dependencies:
-      '@rollup/pluginutils': 4.1.1
-      graphql-tag: 2.12.6
-    dev: true
 
   /@rollup/pluginutils/4.1.1:
     resolution: {integrity: sha512-clDjivHqWGXi7u+0d2r2sBi4Ie6VLEAzWMIkvJLnDmxoOhBYOTfzGbOQBA32THHm11/LiJbd01tJUpJsbshSWQ==}
@@ -4230,16 +4218,14 @@ packages:
       tsconfig-paths: 3.12.0
     dev: true
 
-  /eslint-plugin-react-hooks/4.3.0_eslint@8.4.0:
+  /eslint-plugin-react-hooks/4.3.0:
     resolution: {integrity: sha512-XslZy0LnMn+84NEG9jSGR6eGqaZB3133L8xewQo3fQagbQuGt7a63gf+P1NGKZavEYEC3UXaWEAA/AqDkuN6xA==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
-    dependencies:
-      eslint: 8.4.0
     dev: true
 
-  /eslint-plugin-react/7.27.1_eslint@8.4.0:
+  /eslint-plugin-react/7.27.1:
     resolution: {integrity: sha512-meyunDjMMYeWr/4EBLTV1op3iSG3mjT/pz5gti38UzfM4OPpNc2m0t2xvKCOMU5D6FSdd34BIMFOvQbW+i8GAA==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -4248,7 +4234,6 @@ packages:
       array-includes: 3.1.4
       array.prototype.flatmap: 1.2.5
       doctrine: 2.1.0
-      eslint: 8.4.0
       estraverse: 5.3.0
       jsx-ast-utils: 3.2.1
       minimatch: 3.0.4
@@ -4866,6 +4851,7 @@ packages:
       graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       tslib: 2.3.1
+    dev: false
 
   /graphql-tag/2.12.6_graphql@15.7.2:
     resolution: {integrity: sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==}
