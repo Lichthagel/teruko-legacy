@@ -27,11 +27,11 @@ const EditImage = () => {
     });
 
     useEffect(() => {
-        if (data.image) {
+        if (data && data.image) {
             setTitle(data.image.title || "");
             setSource(data.image.source || "");
         }
-    }, [data.image]);
+    }, [data]);
 
     const [updateImage, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_IMAGE);
 
