@@ -69,7 +69,7 @@ const Image = () => {
             navigate({
                 pathname: `/${next.id}`,
                 search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
-            });
+            }, { replace: true });
         }
     }, [navigate, next, sort, tags]);
 
