@@ -61,12 +61,12 @@ const Gallery: FunctionComponent<{
         return () => window.removeEventListener("scroll", onScroll);
     }, [loadMore]);*/
 
-    useEffect(() => {
+    useEffect(() => { // TODO probably needs fix when sorting by random
         if (data && data.images.length < DEFAULT_TAKE) {
             fetchMore({
                 variables: {
-                    skip: 0,
-                    take: DEFAULT_TAKE,
+                    skip: data.images.length,
+                    take: DEFAULT_TAKE - data.images.length,
                     sort,
                     tags
                 }
