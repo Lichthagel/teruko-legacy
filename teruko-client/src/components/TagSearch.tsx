@@ -14,6 +14,7 @@ const TagSearch: FunctionComponent<{
     const suggestions = useSuggestions(tagsInput);
 
     const handleSubmit = useCallback((tagSlug: string) => {
+        if (tags.find((el) => el === tagSlug)) return;
         setTags((tags || []).concat([tagSlug]));
         setTagsInput("");
         setActiveSuggestion(0);

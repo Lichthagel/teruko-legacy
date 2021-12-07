@@ -1,13 +1,14 @@
-import Button from "./Button";
-import { FunctionComponent } from "react";
+import React, { FunctionComponent } from "react";
+import { Tag as TagModel } from "../models";
+import Chip from "./Chip";
 
 const Tag: FunctionComponent<{
-    tag: { slug: string; category?: { slug: string; color?: string } };
-    onClick?: (tag:{ slug: string; category?: { slug: string; color?: string } }) => void;
+    tag: TagModel;
+    onClick?: (tag: TagModel) => void;
 }> = ({ tag, onClick }) =>
-    <Button
-        text={tag.slug}
+    <Chip
         color={tag.category && tag.category.color}
         onClick={() => onClick && onClick(tag)}
-        className="break-all" />;
+        className="break-all">{tag.slug}</Chip>;
+
 export default Tag;

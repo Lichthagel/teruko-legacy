@@ -4,6 +4,7 @@ import SortToggle from "./SortToggle";
 import TagSearch from "./TagSearch";
 import { useApolloClient } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
+import TagQuery from "./TagQuery";
 
 const Nav: FunctionComponent<{
     tags: string[];
@@ -39,13 +40,7 @@ const Nav: FunctionComponent<{
                     }} />
             </div>
             <div>
-                {tags?.map(slug =>
-                    <div
-                        key={slug}
-                        className="inline-block bg-indigo-700 text-white h-8 leading-8 px-2 rounded cursor-pointer mr-1"
-                        onClick={() => removeTag(slug)}>
-                        {slug}
-                    </div>)}
+                {tags?.map(slug => <TagQuery key={slug} slug={slug} onClick={() => removeTag(slug)} />)}
                 {tags && tags.length > 0 &&
                 <div
                     key="resetButton"
