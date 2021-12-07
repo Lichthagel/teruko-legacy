@@ -14,10 +14,10 @@ const App = () =>
         <div className="container mx-auto">
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path=":id" element={<Suspense fallback={null}><Image /></Suspense>} />
-                <Route path=":id/edit" element={<Suspense fallback={null}><EditImage /></Suspense>} />
-                <Route path="tag/:slug" element={<Suspense fallback={null}><Tag /></Suspense>} />
-                <Route path="new" element={<Suspense fallback={null}><New /></Suspense>} />
+                <Route path=":id" element={<Suspense fallback={"..."}><Image /></Suspense>} />
+                <Route path=":id/edit" element={<Suspense fallback={"..."}><EditImage /></Suspense>} />
+                <Route path="tag/:slug" element={<Suspense fallback={"..."}><Tag /></Suspense>} />
+                <Route path="new" element={<Suspense fallback={"..."}><New /></Suspense>} />
             </Routes>
         </div>
         <div className="fixed bottom-3 right-0 left-0 z-30">
