@@ -1,6 +1,6 @@
-import { Fragment, useCallback, useMemo } from "react";
+import React, { Fragment, useCallback, useMemo } from "react";
 import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
-import { PencilIcon } from "@heroicons/react/outline";
+import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from "@heroicons/react/outline";
 import Tag from "../../components/Tag";
 import { useQuery } from "@apollo/client";
 import LoaderImage from "../../components/LoaderImage";
@@ -31,6 +31,25 @@ const Image = () => {
             tags
         }
     });
+
+    const previous: ImageModel | undefined = useMemo(() => {
+        if (data && dataImages) {
+            const images: ImageModel[] = dataImages.images;
+            if (images.length > 0) {
+                const index = images.findIndex((el) => el.id === data.image.id);
+                console.log(index);
+                if (index !== -1) {
+                    if (index - 1 < 0) {
+                        return;
+                    } else {
+                        return images[index + 1];
+                    }
+                } else {
+                    return images[0];
+                }
+            }
+        }
+    }, [data, dataImages]);
 
     const next: ImageModel | undefined = useMemo(() => {
         if (data && dataImages) {
@@ -64,6 +83,15 @@ const Image = () => {
         tags
     ]);
 
+    const goPrevious = useCallback(async () => {
+        if (previous) {
+            navigate({
+                pathname: `/${previous.id}`,
+                search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
+            }, { replace: true });
+        }
+    }, [navigate, previous, sort, tags]);
+
     const goNext = useCallback(async () => {
         if (next) {
             navigate({
@@ -77,11 +105,20 @@ const Image = () => {
         <div className="flex flex-col items-center">
             {!loading && data &&
                 <Fragment>
-                    <LoaderImage
-                        src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
-                        alt={data.image.title || data.image.id}
-                        className="max-w-full h-auto max-h-[100vh] cursor-pointer"
-                        onClick={goNext} />
+                    <div className="w-full relative">
+                        <LoaderImage
+                            src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
+                            alt={data.image.title || data.image.id}
+                            className="max-w-full h-auto max-h-[100vh] mx-auto" />
+
+                        <ChevronLeftIcon
+                            onClick={goPrevious}
+                            className="absolute w-20 h-20 z-20 left-0 bottom-[50%] transition hover:text-indigo-800 cursor-pointer" />
+
+                        <ChevronRightIcon
+                            onClick={goNext}
+                            className="absolute w-20 h-20 z-20 right-0 bottom-[50%] transition hover:text-indigo-800 cursor-pointer" />
+                    </div>
 
                     <div className="w-full my-3 p-1">
                         <div className="flex items-center">
