@@ -28,7 +28,7 @@ async function updateImagePixiv(parent: void, { id, source }: { id: number; sour
             id: id
         },
         data: {
-            ...toModel(await fetchPixiv(pixivId)),
+            ...toModel(await fetchPixiv(pixivId), pixivId),
             updatedAt: new Date()
         }
     });

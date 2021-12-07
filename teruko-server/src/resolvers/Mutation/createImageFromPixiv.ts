@@ -48,7 +48,7 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
 
         resultPromises.push(context.prisma.image.create({
             data: {
-                ...toModel(pixivResult),
+                ...toModel(pixivResult, matchesUrl[2]),
                 filename,
                 height: dims.height,
                 width: dims.width

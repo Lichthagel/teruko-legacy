@@ -37,7 +37,7 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
 
             const newImage = await context.prisma.image.create({
                 data: {
-                    ...toModel(await fetchPixiv(pixivId)),
+                    ...toModel(await fetchPixiv(pixivId), pixivId),
                     filename,
                     width: dims.width,
                     height: dims.height

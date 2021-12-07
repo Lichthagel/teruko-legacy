@@ -33,7 +33,7 @@ export async function fetchPixiv(pixivId: string): Promise<PixivIllustResult> {
     });
 }
 
-export function toModel(pixivResult: PixivIllustResult): Partial<Prisma.ImageCreateInput> {
+export function toModel(pixivResult: PixivIllustResult, pixivIdFallback?: string): Partial<Prisma.ImageCreateInput> {
     const tags: Prisma.TagCreateOrConnectWithoutImagesInput[] = [
         {
             where: {
@@ -139,7 +139,7 @@ export function toModel(pixivResult: PixivIllustResult): Partial<Prisma.ImageCre
         }
 
         title = pixivResult.body.illustTitle;
-        source = `https://www.pixiv.net/en/artworks/${pixivResult.body.illustId}`;
+        source = `https://www.pixiv.net/en/artworks/${pixivResult.body.illustId || pixivIdFallback}`;
     }
 
     return {
