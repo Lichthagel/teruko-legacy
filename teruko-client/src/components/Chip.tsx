@@ -10,10 +10,11 @@ const Chip: FunctionComponent<ChipProps> = ({ children, color, size = "normal", 
     <div
         {...props}
         className={clsx(
-            "inline-block rounded m-0.5 whitespace-nowrap text-white px-1 bg-gray-500 filter hover:brightness-70 transition",
+            "inline-block rounded m-0.5 whitespace-nowrap text-white bg-gray-500 filter hover:brightness-70 transition",
             {
-                "text-sm": size === "small",
-                "p-1": size === "normal"
+                "text-sm px-1": size === "small",
+                "py-1 px-2": size === "normal",
+                "cursor-pointer": props.onClick
             },
             className
         )}
