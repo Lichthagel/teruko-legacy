@@ -35,7 +35,8 @@ const Gallery: FunctionComponent<{
             take: DEFAULT_TAKE,
             sort,
             tags
-        }
+        },
+        pollInterval: sort === "random" ? 0 : 60000
     });
 
     const loadMore = useCallback(() => {

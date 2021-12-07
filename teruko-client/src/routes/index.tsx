@@ -10,7 +10,9 @@ const Home = () => {
     const tags = searchParams.getAll("tag");
     const sort = searchParams.get("sort") || "newest";
 
-    const { data: dataCount } = useQuery(GET_IMAGE_COUNT);
+    const { data: dataCount } = useQuery(GET_IMAGE_COUNT, {
+        pollInterval: 300000 // 5 mins
+    });
 
     return (
         <div className="relative">
