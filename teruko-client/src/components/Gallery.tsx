@@ -46,10 +46,10 @@ const Gallery: FunctionComponent<{
         fetchMore({ variables: { skip: currentLength, take: DEFAULT_TAKE } });
     }, [data, fetchMore]);
 
-    const handleImageClick = useCallback((imageId, imageIndex) => {
+    const handleImageClick = useCallback((imageId) => {
         navigate({
             pathname: `/${imageId}`,
-            search: `?skip=${imageIndex}&sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
+            search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
         });
     }, [navigate, sort, tags]);
 
@@ -92,7 +92,7 @@ const Gallery: FunctionComponent<{
                     gridTemplateRows: "masonry"
                 }}>
                 {data.images.map((image: Image, index: number) => <ImageCard
-                    onClick={() => handleImageClick(image.id, index)}
+                    onClick={() => handleImageClick(image.id)}
                     filterTags={tag => tags.indexOf(tag.slug) === -1}
                     // eslint-disable-next-line react/no-array-index-key
                     key={`${image.id}_${index}`}
