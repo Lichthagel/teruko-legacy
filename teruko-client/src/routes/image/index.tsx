@@ -1,10 +1,11 @@
-import { Fragment, useCallback } from "react";
-import { GET_IMAGE, GET_NEXT } from "../../queries/image";
+import { Fragment, useCallback, useMemo } from "react";
+import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
 import { PencilIcon } from "@heroicons/react/outline";
 import Tag from "../../components/Tag";
 import { useQuery } from "@apollo/client";
 import LoaderImage from "../../components/LoaderImage";
 import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
+import { Image as ImageModel } from "../../models";
 
 const Image = () => {
     const navigate = useNavigate();
@@ -12,7 +13,6 @@ const Image = () => {
     const [searchParams] = useSearchParams();
 
     const id = parseInt(params.id as string);
-    const skip = parseInt(searchParams.get("skip") || "-1");
     const tags = searchParams.getAll("tag");
     const sort = searchParams.get("sort") || "newest";
 
@@ -23,28 +23,55 @@ const Image = () => {
         skip: isNaN(id)
     });
 
-    const { data: nextData } = useQuery(GET_NEXT, {
+    const { data: dataImages, fetchMore } = useQuery(GET_IMAGES, {
         variables: {
-            skip: skip + 1, // TODO
+            skip: 0,
+            take: 1,
             sort,
             tags
         }
     });
 
-    const goNext = useCallback(async () => {
-        if (nextData && nextData.images.length > 0) {
-            navigate({
-                pathname: `/${nextData.images[0].id}`,
-                search: `?sort=${sort}&skip=${skip + 1}${tags.map(tag => `&tag=${tag}`).join("")}`
-            });
+    const next: ImageModel | undefined = useMemo(() => {
+        if (data && dataImages) {
+            const images: ImageModel[] = dataImages.images;
+            if (images.length > 0) {
+                const index = images.findIndex((el) => el.id === data.image.id);
+                console.log(index);
+                if (index !== -1) {
+                    if (index + 1 >= images.length) {
+                        fetchMore({
+                            variables: {
+                                skip: images.length,
+                                take: 1,
+                                sort,
+                                tags
+                            }
+                        });
+                    } else {
+                        return images[index + 1];
+                    }
+                } else {
+                    return images[0];
+                }
+            }
         }
     }, [
-        navigate,
-        nextData,
-        skip,
+        data,
+        dataImages,
+        fetchMore,
         sort,
         tags
     ]);
+
+    const goNext = useCallback(async () => {
+        if (next) {
+            navigate({
+                pathname: `/${next.id}`,
+                search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
+            });
+        }
+    }, [navigate, next, sort, tags]);
 
     return (
         <div className="flex flex-col items-center">
@@ -52,8 +79,6 @@ const Image = () => {
                 <Fragment>
                     <LoaderImage
                         src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
-                        // width={data.image.width}
-                        // height={data.image.height}
                         alt={data.image.title || data.image.id}
                         className="max-w-full h-auto max-h-90vh cursor-pointer"
                         onClick={goNext} />

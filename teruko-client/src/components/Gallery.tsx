@@ -1,5 +1,5 @@
-import { ApolloQueryResult, useQuery } from "@apollo/client";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { FunctionComponent, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { GET_IMAGES } from "../queries/image";
 import ImageCard from "./ImageCard";
@@ -32,12 +32,10 @@ const Gallery: FunctionComponent<{
 }> = ({ tags, sort }) => {
     const navigate = useNavigate();
 
-    const [take, setTake] = useState(DEFAULT_TAKE);
-
     const { loading, error, data, fetchMore } = useQuery(GET_IMAGES, {
         variables: {
             skip: 0,
-            take,
+            take: DEFAULT_TAKE,
             sort,
             tags
         }
@@ -45,10 +43,7 @@ const Gallery: FunctionComponent<{
 
     const loadMore = useCallback(() => {
         const currentLength = data.images.length;
-        fetchMore({ variables: { skip: currentLength, take: DEFAULT_TAKE } })
-            .then((fetchMoreResult: ApolloQueryResult<unknown>) => {
-                setTake(currentLength + (fetchMoreResult.data as { images: unknown[] }).images.length);
-            });
+        fetchMore({ variables: { skip: currentLength, take: DEFAULT_TAKE } });
     }, [data, fetchMore]);
 
     const handleImageClick = useCallback((imageId, imageIndex) => {
@@ -57,10 +52,6 @@ const Gallery: FunctionComponent<{
             search: `?skip=${imageIndex}&sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
         });
     }, [navigate, sort, tags]);
-
-    useEffect(() => {
-        setTake(12);
-    }, [tags]);
 
     /* useEffect(() => {
         const onScroll = () => {
