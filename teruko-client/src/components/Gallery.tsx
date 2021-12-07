@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { FunctionComponent, useCallback, useEffect } from "react";
+import { FunctionComponent, useCallback } from "react";
 import { GET_IMAGES } from "../queries/image";
 import ImageCard from "./ImageCard";
 import { Image } from "../models";
@@ -61,19 +61,6 @@ const Gallery: FunctionComponent<{
 
         return () => window.removeEventListener("scroll", onScroll);
     }, [loadMore]);*/
-
-    useEffect(() => { // TODO probably needs fix when sorting by random
-        if (data && data.images.length < DEFAULT_TAKE) {
-            fetchMore({
-                variables: {
-                    skip: data.images.length,
-                    take: DEFAULT_TAKE - data.images.length,
-                    sort,
-                    tags
-                }
-            });
-        }
-    }, [data, fetchMore, sort, tags]);
 
     if (loading) {
         return <GallerySkeletonLoader />;
