@@ -107,7 +107,8 @@ const Image = () => {
                         <LoaderImage
                             src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
                             alt={data.image.title || data.image.id}
-                            className="max-w-full h-auto max-h-[100vh] mx-auto" />
+                            className="max-w-full h-auto max-h-[100vh] mx-auto cursor-pointer"
+                            onClick={goNext} />
 
                         <ChevronLeftIcon
                             onClick={goPrevious}
