@@ -6,5 +6,8 @@ export default defineConfig({
     //root: "src",
     plugins: [react(), WindiCSS({
         transformCSS: "pre"
-    })]
+    })],
+    server: {
+        host: true
+    }
 })

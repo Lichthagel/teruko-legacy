@@ -38,13 +38,9 @@ const Image = () => {
             if (images.length > 0) {
                 const index = images.findIndex((el) => el.id === data.image.id);
                 if (index !== -1) {
-                    if (index - 1 < 0) {
-                        return;
-                    } else {
-                        return images[index + 1];
+                    if (index > 0) {
+                        return images[index - 1];
                     }
-                } else {
-                    return images[0];
                 }
             }
         }
