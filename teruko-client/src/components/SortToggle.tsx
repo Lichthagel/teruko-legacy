@@ -9,16 +9,10 @@ const SortToggle: FunctionComponent = () => {
     // const sort = router.query.sort || "newest";
 
     const setSort = useCallback((sort: string) => {
-        setSearchParams({
-            sort
-        }); // TODO
-        /* router.replace({
-            query: {
-                ...router.query,
-                sort
-            }
-        });*/
-    }, [setSearchParams]);
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set("sort", sort);
+        setSearchParams(newSearchParams); // TODO
+    }, [searchParams, setSearchParams]);
 
     return (
         <select

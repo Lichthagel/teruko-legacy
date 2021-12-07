@@ -14,8 +14,8 @@ const Home = () => {
                 tags={tags}
                 setTags={(tags: string[]) => {
                     setSearchParams({
-                        ...searchParams,
-                        tag: tags
+                        tag: tags,
+                        sort
                     });
                 }} />
 
