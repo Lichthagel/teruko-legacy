@@ -1,6 +1,6 @@
 @layer base {
   body {
-    @apply dark:bg-darkpurple text-indigo-800 dark:text-indigo-400;
+    @apply dark:bg-darkpurple text-indigo-800 dark:text-indigo-400 pb-24;
   }
 
   input {
