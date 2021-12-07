@@ -27,7 +27,7 @@ const Nav: FunctionComponent<{
     }, [navigate, setTags]);
 
     return (
-        <div className="w-full md:w-2/3 lg:w-1/2 px-3 mx-auto mt-3 mb-5">
+        <div className="w-full md:w-2/3 lg:w-1/2 px-3 mx-auto mt-3 mb-5 z-10">
             <div className="flex flex-col md:flex-row w-full mb-1 items-center">
                 <TagSearch tags={tags} setTags={setTags} />
                 <SortToggle />
