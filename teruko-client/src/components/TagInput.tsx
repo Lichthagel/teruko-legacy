@@ -1,7 +1,6 @@
 import { FunctionComponent, useCallback, useState } from "react";
-import { GET_TAG_SUGGESTIONS } from "../queries/tag";
-import { useQuery } from "@apollo/client";
 import clsx from "clsx";
+import useSuggestions from "../hooks/useSuggestions";
 
 const TagInput: FunctionComponent<{
     handleSubmit: (slug: string) => void;
@@ -10,12 +9,7 @@ const TagInput: FunctionComponent<{
     const [tagInput, setTagInput] = useState("");
     const [activeSuggestion, setActiveSuggestion] = useState(0);
 
-    const { data } = useQuery(GET_TAG_SUGGESTIONS, {
-        variables: {
-            filter: tagInput
-        },
-        skip: tagInput.length < 3
-    });
+    const suggestions = useSuggestions(tagInput);
 
     const handleSubmit = useCallback((tagSlug: string) => {
         setTagInput("");
@@ -25,11 +19,11 @@ const TagInput: FunctionComponent<{
 
     const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            if (data && data.tagSuggestions.length >= activeSuggestion) {
+            if (suggestions.length >= activeSuggestion) {
                 if (activeSuggestion === 0) {
                     handleSubmit(tagInput);
                 } else {
-                    handleSubmit(data.tagSuggestions[activeSuggestion - 1].slug);
+                    handleSubmit(suggestions[activeSuggestion - 1].slug);
                 }
             }
         } else if (event.key === "ArrowUp") {
@@ -37,7 +31,7 @@ const TagInput: FunctionComponent<{
         } else if (event.key === "ArrowDown") {
             setActiveSuggestion(activeSuggestion + 1);
         }
-    }, [activeSuggestion, data, handleSubmit, tagInput]);
+    }, [activeSuggestion, handleSubmit, suggestions, tagInput]);
 
     return (
         <div className="relative inline-block z-10">
@@ -60,7 +54,7 @@ const TagInput: FunctionComponent<{
                         onMouseEnter={() => setActiveSuggestion(0)}>
                         {tagInput}
                     </li>
-                    {data && data.tagSuggestions.map(({ slug: suggestion }: { slug: string }, index: number) =>
+                    {suggestions.map(({ slug: suggestion }: { slug: string }, index: number) =>
                         <li
                             key={suggestion}
                             className={clsx("p-1 cursor-pointer", { "bg-indigo-700 text-white": index + 1 === activeSuggestion })}

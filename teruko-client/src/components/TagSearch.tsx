@@ -1,8 +1,7 @@
 import { FunctionComponent, useCallback, useState } from "react";
-import { GET_TAG_SUGGESTIONS } from "../queries/tag";
-import { useQuery } from "@apollo/client";
 import clsx from "clsx";
 import { Tag } from "../models";
+import useSuggestions from "../hooks/useSuggestions";
 
 const TagSearch: FunctionComponent<{
     tags: string[];
@@ -12,12 +11,7 @@ const TagSearch: FunctionComponent<{
     const [tagsInput, setTagsInput] = useState("");
     const [activeSuggestion, setActiveSuggestion] = useState(0);
 
-    const { data } = useQuery(GET_TAG_SUGGESTIONS, {
-        variables: {
-            filter: tagsInput
-        },
-        skip: tagsInput.length < 3
-    });
+    const suggestions = useSuggestions(tagsInput);
 
     const handleSubmit = useCallback((tagSlug: string) => {
         setTags((tags || []).concat([tagSlug]));
@@ -28,8 +22,8 @@ const TagSearch: FunctionComponent<{
 
     const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            if (data && data.tagSuggestions.length > activeSuggestion) {
-                handleSubmit(data.tagSuggestions[activeSuggestion].slug);
+            if (suggestions.length > activeSuggestion) {
+                handleSubmit(suggestions[activeSuggestion].slug);
             }
         } else if (event.key === "ArrowUp") {
             setActiveSuggestion(activeSuggestion - 1);
@@ -38,7 +32,7 @@ const TagSearch: FunctionComponent<{
         } else if (event.key === "Escape") {
             setTags([]);
         }
-    }, [activeSuggestion, data, handleSubmit, setTags]);
+    }, [activeSuggestion, handleSubmit, setTags, suggestions]);
 
     return (
         <div className="relative md:flex-grow md:mr-1">
@@ -52,21 +46,21 @@ const TagSearch: FunctionComponent<{
                     setActiveSuggestion(0);
                 }}
                 onKeyDown={handleKeyDown} />
-            {data &&
-                <ul className="block absolute z-20 bg-dark-600 left-0 right-0 p-1 rounded">
-                    {data.tagSuggestions.map(({ slug: suggestion, ...tag }: Tag, index: number) =>
-                        <li
-                            key={suggestion}
-                            className={clsx("p-1 cursor-pointer rounded-sm", { "bg-indigo-700 text-white": index === activeSuggestion })}
-                            onClick={() => handleSubmit(suggestion)}
-                            onMouseEnter={() => setActiveSuggestion(index)}
-                            style={{
-                                backgroundColor: index === activeSuggestion && tag.category && tag.category.color || undefined,
-                                color: index !== activeSuggestion && tag.category && tag.category.color || undefined
-                            }}>
-                            {suggestion}
-                        </li>)}
-                </ul>
+            {suggestions.length > 0 &&
+            <ul className="block absolute z-20 bg-dark-600 left-0 right-0 p-1 rounded">
+                {suggestions.map(({ slug: suggestion, ...tag }: Tag, index: number) =>
+                    <li
+                        key={suggestion}
+                        className={clsx("p-1 cursor-pointer rounded-sm", { "bg-indigo-700 text-white": index === activeSuggestion })}
+                        onClick={() => handleSubmit(suggestion)}
+                        onMouseEnter={() => setActiveSuggestion(index)}
+                        style={{
+                            backgroundColor: index === activeSuggestion && tag.category && tag.category.color || undefined,
+                            color: index !== activeSuggestion && tag.category && tag.category.color || undefined
+                        }}>
+                        {suggestion}
+                    </li>)}
+            </ul>
             }
         </div>
     );
