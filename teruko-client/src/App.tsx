@@ -4,6 +4,7 @@ import Home from "./routes/index";
 import React, { Fragment, lazy, Suspense, useEffect, useState } from "react";
 import IconButton from "./components/IconButton";
 import clsx from "clsx";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Image = lazy(() => import("./routes/image"));
 const EditImage = lazy(() => import("./routes/image/edit"));
@@ -57,6 +58,7 @@ const App = () => {
             </div>
         </div>
         <div className="container mx-auto">
+            <ScrollToTop />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path=":id" element={<Suspense fallback={"..."}><Image /></Suspense>} />
