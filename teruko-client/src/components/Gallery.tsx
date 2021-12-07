@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FunctionComponent, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { FunctionComponent, useCallback, useEffect } from "react";
 import { GET_IMAGES } from "../queries/image";
 import ImageCard from "./ImageCard";
 import { Image } from "../models";
@@ -30,8 +29,6 @@ const Gallery: FunctionComponent<{
     tags: string[];
     sort: string;
 }> = ({ tags, sort }) => {
-    const navigate = useNavigate();
-
     const { loading, error, data, fetchMore } = useQuery(GET_IMAGES, {
         variables: {
             skip: 0,
@@ -45,13 +42,6 @@ const Gallery: FunctionComponent<{
         const currentLength = data.images.length;
         fetchMore({ variables: { skip: currentLength, take: DEFAULT_TAKE } });
     }, [data, fetchMore]);
-
-    const handleImageClick = useCallback((imageId) => {
-        navigate({
-            pathname: `/${imageId}`,
-            search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
-        });
-    }, [navigate, sort, tags]);
 
     /* useEffect(() => {
         const onScroll = () => {
@@ -105,11 +95,14 @@ const Gallery: FunctionComponent<{
                     gridTemplateRows: "masonry"
                 }}>
                 {data.images.map((image: Image, index: number) => <ImageCard
-                    onClick={() => handleImageClick(image.id)}
-                    filterTags={tag => tags.indexOf(tag.slug) === -1}
                     // eslint-disable-next-line react/no-array-index-key
                     key={`${image.id}_${index}`}
-                    image={image} />)}
+                    filterTags={tag => tags.indexOf(tag.slug) === -1}
+                    image={image}
+                    url={{
+                        pathname: `/${image.id}`,
+                        search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
+                    }} />)}
             </div>
             <div className="flex h-32 items-center justify-center mb-12">
                 <button className="text-indigo-800 dark:text-indigo-400 border-2 rounded-md border-indigo-800 dark:border-indigo-400 px-6 text-xl inline-flex items-center h-10 leading-10 cursor-pointer transition-all hover:text-darkpurple hover:bg-indigo-400" onClick={loadMore}>Load more</button>
