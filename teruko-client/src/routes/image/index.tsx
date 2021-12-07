@@ -37,7 +37,6 @@ const Image = () => {
             const images: ImageModel[] = dataImages.images;
             if (images.length > 0) {
                 const index = images.findIndex((el) => el.id === data.image.id);
-                console.log(index);
                 if (index !== -1) {
                     if (index - 1 < 0) {
                         return;
@@ -56,7 +55,6 @@ const Image = () => {
             const images: ImageModel[] = dataImages.images;
             if (images.length > 0) {
                 const index = images.findIndex((el) => el.id === data.image.id);
-                console.log(index);
                 if (index !== -1) {
                     if (index + 1 >= images.length) {
                         fetchMore({
