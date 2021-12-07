@@ -155,7 +155,7 @@ const Tag = () => {
 
     return (
         <Fragment>
-            <div className="my-3 flex flex-row items-center">
+            <div className="my-3 flex flex-row items-center mt-20">
                 <Heading loading={loading} data={data} slug={slug} />
                 <div className="flex-grow"></div>
                 <SortToggle />

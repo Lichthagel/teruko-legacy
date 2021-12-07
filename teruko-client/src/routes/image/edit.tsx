@@ -90,7 +90,7 @@ const EditImage = () => {
 
     return (
         <Fragment>
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center mt-20">
                 <Link to={{ pathname: `/${id}`, search: `?${searchParams.toString()}` }} replace>
                     <ArrowLeftIcon className="w-8 h-8" />
                 </Link>

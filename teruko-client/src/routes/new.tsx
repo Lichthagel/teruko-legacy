@@ -69,7 +69,7 @@ const New = () => {
     ]);
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-20">
             <div
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
