@@ -2,6 +2,7 @@ import { FunctionComponent, useCallback, useState } from "react";
 import { GET_TAG_SUGGESTIONS } from "../queries/tag";
 import { useQuery } from "@apollo/client";
 import clsx from "clsx";
+import { Tag } from "../models";
 
 const TagSearch: FunctionComponent<{
     tags: string[];
@@ -44,7 +45,7 @@ const TagSearch: FunctionComponent<{
             <input
                 type="text"
                 placeholder="Search..."
-                className="w-full outline-none"
+                className="w-full"
                 value={tagsInput}
                 onChange={(event) => {
                     setTagsInput(event.target.value);
@@ -52,13 +53,17 @@ const TagSearch: FunctionComponent<{
                 }}
                 onKeyDown={handleKeyDown} />
             {data &&
-                <ul className="block absolute z-20 bg-darkpurple left-0 right-0">
-                    {data.tagSuggestions.map(({ slug: suggestion }: { slug: string }, index: number) =>
+                <ul className="block absolute z-20 bg-dark-600 left-0 right-0 p-1 rounded">
+                    {data.tagSuggestions.map(({ slug: suggestion, ...tag }: Tag, index: number) =>
                         <li
                             key={suggestion}
-                            className={clsx("p-1 cursor-pointer", { "bg-indigo-700 text-white": index === activeSuggestion })}
+                            className={clsx("p-1 cursor-pointer rounded-sm", { "bg-indigo-700 text-white": index === activeSuggestion })}
                             onClick={() => handleSubmit(suggestion)}
-                            onMouseEnter={() => setActiveSuggestion(index)}>
+                            onMouseEnter={() => setActiveSuggestion(index)}
+                            style={{
+                                backgroundColor: index === activeSuggestion && tag.category && tag.category.color || undefined,
+                                color: index !== activeSuggestion && tag.category && tag.category.color || undefined
+                            }}>
                             {suggestion}
                         </li>)}
                 </ul>
