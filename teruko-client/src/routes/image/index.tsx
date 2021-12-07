@@ -14,7 +14,7 @@ const Image = () => {
 
     const id = parseInt(params.id as string);
     const tags = searchParams.getAll("tag");
-    const sort = searchParams.get("sort") || "newest";
+    const sort = searchParams.get("sort") || "random";
 
     const { loading, data } = useQuery(GET_IMAGE, {
         variables: {
