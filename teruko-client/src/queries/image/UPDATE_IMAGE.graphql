@@ -3,5 +3,6 @@ mutation UpdateImage($id: Int!, $title: String, $source: String) {
         id
         title
         source
+        updatedAt
     }
 }

@@ -118,6 +118,10 @@ const Image = () => {
                     <div className="w-full my-3 p-1">
                         <div className="flex items-center">
                             {data.image.title ? <h1 className="text-3xl flex-grow">{data.image.title}</h1> : <h1 className="text-3xl flex-grow text-gray-500 dark:text-gray-400">No title</h1>}
+                            <div className="mx-2 text-gray-400 text-sm text-right">
+                                <div><span className="font-light">Created At: </span>{new Date(data.image.createdAt).toLocaleString()}</div>
+                                <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
+                            </div>
                             <Link to={{ pathname: `/${id}/edit`, search: `?${searchParams.toString()}` }} replace>
                                 <PencilIcon className="w-8 h-8" />
                             </Link>

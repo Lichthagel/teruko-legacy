@@ -4,6 +4,8 @@ query Image($id: Int!) {
         filename
         title
         source
+        createdAt
+        updatedAt
         tags {
             slug
             category {
