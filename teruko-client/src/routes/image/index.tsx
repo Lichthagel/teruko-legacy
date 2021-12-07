@@ -80,7 +80,7 @@ const Image = () => {
                     <LoaderImage
                         src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
                         alt={data.image.title || data.image.id}
-                        className="max-w-full h-auto max-h-90vh cursor-pointer"
+                        className="max-w-full h-auto max-h-[100vh] cursor-pointer"
                         onClick={goNext} />
 
                     <div className="w-full my-3 p-1">
