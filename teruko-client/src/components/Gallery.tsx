@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GET_IMAGES } from "../queries/image";
 import ImageCard from "./ImageCard";
@@ -70,6 +70,19 @@ const Gallery: FunctionComponent<{
 
         return () => window.removeEventListener("scroll", onScroll);
     }, [loadMore]);*/
+
+    useEffect(() => {
+        if (data && data.images.length < DEFAULT_TAKE) {
+            fetchMore({
+                variables: {
+                    skip: 0,
+                    take: DEFAULT_TAKE,
+                    sort,
+                    tags
+                }
+            });
+        }
+    }, [data, fetchMore, sort, tags]);
 
     if (loading) {
         return <GallerySkeletonLoader />;
