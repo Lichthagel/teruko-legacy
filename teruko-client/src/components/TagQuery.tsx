@@ -19,6 +19,8 @@ const TagQuery: FunctionComponent<{
         return <Chip className="break-all">...</Chip>;
     }
 
+    if (!data.tag) return <Chip className="break-all" color="red">{slug} does not exist</Chip>;
+
     return <Tag tag={data.tag} onClick={onClick} />;
 };
 
