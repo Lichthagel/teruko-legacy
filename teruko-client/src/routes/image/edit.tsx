@@ -36,6 +36,7 @@ const EditImage = () => {
     const [updateImage, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_IMAGE);
 
     const [updateImagePixiv, { loading: loadingFetchPixiv }] = useMutation(UPDATE_IMAGE_PIXIV, {
+        refetchQueries: ["TagSuggestions"],
         onError: (error) => {
             alert(error.message);
         }
@@ -49,7 +50,7 @@ const EditImage = () => {
         update(cache, result) {
             if (!result.data) return;
             cache.modify({
-                id: cache.identify(result.data),
+                id: cache.identify(result.data.deleteImage),
                 fields(fieldValue, details) {
                     return details.DELETE;
                 }
@@ -62,7 +63,6 @@ const EditImage = () => {
     });
 
     const [removeTag] = useMutation(REMOVE_TAG, {
-        refetchQueries: ["TagSuggestions"],
         update(cache, _, context) {
             if (!context.variables) return;
             cache.modify({

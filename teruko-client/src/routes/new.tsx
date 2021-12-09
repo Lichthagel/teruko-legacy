@@ -10,7 +10,16 @@ const New = () => {
     const [pixivUrl, setPixivUrl] = useState("");
 
     const [newImage, { loading, error }] = useMutation(NEW_IMAGE, {
-        refetchQueries: ["Images", "GetNext", "ImageCount"],
+        refetchQueries: ["Images", "GetNext"],
+        update(cache) {
+            cache.modify({
+                fields: {
+                    imageCount(prev = 0) {
+                        return prev + 1;
+                    }
+                }
+            });
+        },
         onError(error) {
             alert(`Error: ${error.message}`);
         }
@@ -20,7 +29,16 @@ const New = () => {
         variables: {
             url: pixivUrl
         },
-        refetchQueries: ["Images", "GetNext", "ImageCount"],
+        refetchQueries: ["Images", "GetNext"],
+        update(cache) {
+            cache.modify({
+                fields: {
+                    imageCount(prev = 0) {
+                        return prev + 1;
+                    }
+                }
+            });
+        },
         onError(error) {
             alert(`Error: ${error.message}`);
         }

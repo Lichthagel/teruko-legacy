@@ -41,7 +41,7 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
         },
         update(cache, result) {
             cache.modify({
-                id: cache.identify(result.data),
+                id: cache.identify(result.data.deleteTag),
                 fields(fieldValue, details) {
                     return details.DELETE;
                 }
