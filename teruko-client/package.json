@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-graphql": "^2.0.1",
+    "@tailwindcss/forms": "^0.4.0",
     "@types/apollo-upload-client": "^14.1.0",
     "@types/node": "^16.11.12",
     "@types/react": "^17.0.37",
