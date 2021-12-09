@@ -1,7 +1,7 @@
-import { CheckIcon, PencilIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
+import { CheckIcon, PencilIcon, RefreshIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
 import { DELETE_TAG, GET_TAG, UPDATE_TAG } from "../queries/tag";
 import React, { FormEvent, Fragment, FunctionComponent, useCallback, useState } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import Button from "../components/Button";
 import Gallery from "../components/Gallery";
 import SortToggle from "../components/SortToggle";
@@ -140,6 +140,8 @@ const Heading: FunctionComponent<{ slug: string; loading: boolean; data: any }> 
 };
 
 const Tag = () => {
+    const apolloClient = useApolloClient();
+
     const params = useParams();
     const [searchParams] = useSearchParams();
 
@@ -159,6 +161,13 @@ const Tag = () => {
                 <Heading loading={loading} data={data} slug={slug} />
                 <div className="flex-grow"></div>
                 <SortToggle />
+                <RefreshIcon
+                    className="w-10 h-10 cursor-pointer"
+                    onClick={() => {
+                        apolloClient.refetchQueries({
+                            include: ["Images"]
+                        });
+                    }} />
             </div>
 
             {slug && <Gallery tags={[slug]} sort={sort as string} />}
