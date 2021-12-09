@@ -9,7 +9,7 @@ const ImageCard: FunctionComponent<{
     url: To;
     filterTags?: (tag: Tag) => boolean;
 }> = ({ image, url, filterTags = () => true }) =>
-    <div className="rounded bg-gray-700 mb-1">
+    <div className="rounded bg-gray-700 mb-1 animated animate-fade-in-up">
         <Link to={url}>
             <div className="relative">
                 <LoaderImage
