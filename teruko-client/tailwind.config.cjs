@@ -7,6 +7,9 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("@tailwindcss/forms")
+    require("@tailwindcss/forms"),
+    require("tailwindcss-animatecss")({
+      classes: ["animate__animated", "animate__fadeInUp"]
+    })
   ],
 }
