@@ -17,7 +17,7 @@ const client = new ApolloClient({
                         keyArgs: ["tags", "sort"],
                         // eslint-disable-next-line @typescript-eslint/default-param-last
                         merge(existing = [], incoming, { args }) {
-                            if (args?.sort === "random") return [...existing, ...incoming];
+                            if (args?.sort === "random") return [...existing, ...incoming.filter((incomingImage:{ __ref: string }) => existing.findIndex((el: { __ref: string }) => el.__ref === incomingImage.__ref) === -1)];
 
                             const skip = args?.skip || 0;
                             const merged = existing.slice(0);

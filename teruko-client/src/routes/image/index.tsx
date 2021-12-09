@@ -56,7 +56,7 @@ const Image = () => {
                         fetchMore({
                             variables: {
                                 skip: images.length,
-                                take: 1,
+                                take: sort === "random" ? 3 : 1, // take 3 since although unlike one image might be one which was already fetched
                                 sort,
                                 tags
                             }
