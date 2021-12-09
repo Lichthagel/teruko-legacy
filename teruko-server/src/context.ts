@@ -6,6 +6,7 @@ config();
 
 export interface Context {
     prisma: PrismaClient;
+    imgFolder: string;
 }
 
 const context: Context = {
@@ -16,7 +17,8 @@ const context: Context = {
                 url: process.env.DATABASE_URL
             }
         }
-    })
+    }),
+    imgFolder: process.env.IMG_FOLDER || "./data"
 };
 
 export default context;

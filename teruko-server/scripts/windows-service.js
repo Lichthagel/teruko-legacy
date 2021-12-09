@@ -14,7 +14,7 @@ var svc = new Service({
     env: [
         { name: "NODE_ENV", value: "production" },
         { name: "DATABASE_URL", value: process.env.DATABASE_URL },
-        { name: "IMAGE_FOLDER", value: path.join(__dirname, "../data") }
+        { name: "IMG_FOLDER", value: process.env.IMG_FOLDER }
     ]
 });
 

@@ -5,6 +5,7 @@ import fs from "fs";
 import { fileTypeStream } from "file-type";
 import sizeOf from "image-size";
 import { fetchPixiv, toModel } from "./fetchPixiv.js";
+import path from "path";
 
 async function createImage(parent: void, { files }: { files: FileUpload[] }, context: Context) {
     return Promise.all(files.map(async (file: FileUpload) => {
@@ -20,13 +21,13 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
             throw new Error("not an image");
         }
 
-        const out = fs.createWriteStream(`./data/${filename}`);
+        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
         streamWithFileType.pipe(out);
 
         await finished(out);
 
-        const dims = sizeOf(`./data/${filename}`);
+        const dims = sizeOf(path.join(context.imgFolder, filename));
 
         if (!dims.width || !dims.height) throw new Error("cant read image dimensions");
 

@@ -1,6 +1,7 @@
 import { Context } from "../../context.js";
 import ImageModel from "../../models/Image.js";
 import fs from "fs";
+import path from "path";
 
 
 async function deleteImage(parent: void, args: ImageModel, context: Context) {
@@ -10,7 +11,7 @@ async function deleteImage(parent: void, args: ImageModel, context: Context) {
         }
     });
 
-    await fs.promises.rm(`./data/${deletedImage.filename}`);
+    await fs.promises.rm(path.join(context.imgFolder, deletedImage.filename));
 
     return deletedImage;
 }

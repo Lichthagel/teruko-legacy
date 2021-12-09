@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import fs from "fs";
 import { finished } from "stream/promises";
 import sizeOf from "image-size";
+import path from "path";
 
 async function createImageFromPixiv(parent: void, { url }: { url: string }, context: Context) {
     const matches = url.match(/https?:\/\/www.pixiv.net(?:\/en)?\/artworks\/([0-9]+)/);
@@ -36,13 +37,13 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
 
         const filename = `${matchesUrl[2]}_p${i}.${matchesUrl[3]}`;
 
-        const out = fs.createWriteStream(`./data/${filename}`);
+        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
         res.body.pipe(out);
 
         await finished(out);
 
-        const dims = sizeOf(`./data/${filename}`);
+        const dims = sizeOf(path.join(context.imgFolder, filename));
 
         if (!dims.width || !dims.height) throw new Error("cant read image dimensions");
 

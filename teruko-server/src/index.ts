@@ -16,7 +16,7 @@ const port = 3030;
 
     app.use(
         "/img",
-        express.static("data", {
+        express.static(context.imgFolder, {
             index: false
         })
     );
