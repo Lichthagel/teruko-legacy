@@ -32,7 +32,7 @@ const Image = () => {
         }
     });
 
-    const previous: ImageModel | undefined = useMemo(() => {
+    const previous: ImageModel | null = useMemo(() => {
         if (data && dataImages) {
             const images: ImageModel[] = dataImages.images;
             if (images.length > 0) {
@@ -40,10 +40,10 @@ const Image = () => {
                 if (index !== -1) {
                     if (index > 0) {
                         return images[index - 1];
-                    }
-                }
-            }
-        }
+                    } else return null;
+                } else return null;
+            } else return null;
+        } else return null;
     }, [data, dataImages]);
 
     const next: ImageModel | null = useMemo(() => {
