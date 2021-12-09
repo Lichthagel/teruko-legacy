@@ -19,9 +19,9 @@ const ImageCard: FunctionComponent<{
                 {image.title && <div className="px-1 text-sm text-white whitespace-nowrap absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-b from-transparent to-black/80 text-shadow-xl overflow-hidden">{image.title}</div>}
             </div>
         </Link>
-        <div className="overflow-x-scroll flex flex-row flex-nowrap scrollbar-none">
+        <div className="overflow-x-scroll flex flex-row flex-nowrap scrollbar-none snap snap-x">
             {image.tags.filter(tag => !tag.slug.startsWith("artist_") && filterTags(tag)).map(tag =>
-                <Link key={image.id + tag.slug} to={`/tag/${encodeURIComponent(tag.slug)}`}>
+                <Link key={image.id + tag.slug} to={`/tag/${encodeURIComponent(tag.slug)}`} className="snap-start">
                     <Chip color={tag.category && tag.category.color} size="small">
                         {tag.slug}
                     </Chip>
