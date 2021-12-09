@@ -22,16 +22,18 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
         refetchQueries: ["TagSuggestions"],
         update(cache, result) {
             if (!result.data) return;
-            cache.modify({
-                id: cache.identify({
-                    __typename: "Tag",
-                    slug: slug
-                }),
-                fields: {
-                    slug: () => result.data.slug,
-                    category: () => result.data.category
-                }
-            });
+            if (slug !== result.data.slug) {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: "Tag",
+                        slug: slug
+                    }),
+                    fields: {
+                        slug: () => result.data.slug,
+                        category: () => result.data.category
+                    }
+                });
+            }
         }
     });
 
