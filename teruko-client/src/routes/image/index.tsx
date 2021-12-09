@@ -46,7 +46,7 @@ const Image = () => {
         }
     }, [data, dataImages]);
 
-    const next: ImageModel | undefined = useMemo(() => {
+    const next: ImageModel | null = useMemo(() => {
         if (data && dataImages) {
             const images: ImageModel[] = dataImages.images;
             if (images.length > 0) {
@@ -61,14 +61,15 @@ const Image = () => {
                                 tags
                             }
                         });
+                        return null;
                     } else {
                         return images[index + 1];
                     }
                 } else {
                     return images[0];
                 }
-            }
-        }
+            } else return null;
+        } else return null;
     }, [
         data,
         dataImages,
@@ -122,7 +123,7 @@ const Image = () => {
                                 <div><span className="font-light">Created At: </span>{new Date(data.image.createdAt).toLocaleString()}</div>
                                 <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
                             </div>
-                            <Link to={{ pathname: `/${id}/edit`, search: `?${searchParams.toString()}` }} replace className="flex-shrink-0">
+                            <Link to={{ pathname: `/${id}/edit`, search: `?${searchParams.toString()}${next ? `&next=${next.id}` : ""}` }} replace className="flex-shrink-0">
                                 <PencilIcon className="w-8 h-8" />
                             </Link>
                         </div>

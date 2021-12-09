@@ -115,7 +115,17 @@ const EditImage = () => {
                             if (confirm("Delete?")) {
                                 deleteImage()
                                     .then(() => {
-                                        navigate("/");
+                                        const next = searchParams.get("next");
+
+                                        const newSearchParams = new URLSearchParams(searchParams);
+                                        newSearchParams.delete("next");
+
+                                        navigate({
+                                            pathname: next ? `/${next}` : "/",
+                                            search: `?${newSearchParams.toString()}`
+                                        }, {
+                                            replace: true
+                                        });
                                     });
                             }
                         }} />
