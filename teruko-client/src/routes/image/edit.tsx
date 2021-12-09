@@ -23,7 +23,8 @@ const EditImage = () => {
         variables: {
             id
         },
-        skip: !id
+        skip: !id,
+        nextFetchPolicy: "cache-only"
     });
 
     useEffect(() => {
@@ -144,7 +145,7 @@ const EditImage = () => {
                     <div className="flex-grow">
                         <h1>Tags</h1>
                         <div>
-                            {data.image.tags.map((tag: { slug:string }) =>
+                            {data && data.image && data.image.tags && data.image.tags.map((tag: { slug:string }) =>
                                 <Tag
                                     key={tag.slug}
                                     tag={tag}
