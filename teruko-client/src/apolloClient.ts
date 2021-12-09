@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
+import { Image } from "./models";
 
 const client = new ApolloClient({
     link: createUploadLink({
@@ -14,10 +15,13 @@ const client = new ApolloClient({
                 fields: {
                     images: {
                         keyArgs: ["tags", "sort"],
-                        merge(existing, incoming, { args }) {
+                        // eslint-disable-next-line @typescript-eslint/default-param-last
+                        merge(existing = [], incoming, { args }) {
+                            if (args?.sort === "random") return [...existing, ...incoming];
+
                             const skip = args?.skip || 0;
-                            const merged = existing ? existing.slice(0) : [];
-                            incoming.forEach((image: unknown, index: unknown) => {
+                            const merged = existing.slice(0);
+                            incoming.forEach((image: Image, index: number) => {
                                 merged[skip + index] = image;
                             });
                             return merged;

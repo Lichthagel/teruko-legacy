@@ -50,6 +50,7 @@ const EditImage = () => {
         refetchQueries: ["ImageCount"],
         update(cache, result) {
             if (!result.data) return;
+
             cache.modify({
                 id: cache.identify(result.data.deleteImage),
                 fields(fieldValue, details) {

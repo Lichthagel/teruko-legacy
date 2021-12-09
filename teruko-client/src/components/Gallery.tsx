@@ -40,8 +40,7 @@ const Gallery: FunctionComponent<{
     });
 
     const loadMore = useCallback(() => {
-        const currentLength = data.images.length;
-        fetchMore({ variables: { skip: currentLength, take: DEFAULT_TAKE } });
+        fetchMore({ variables: { skip: data.images.length } });
     }, [data, fetchMore]);
 
     /* useEffect(() => {
