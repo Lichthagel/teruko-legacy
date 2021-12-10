@@ -1,6 +1,6 @@
 import React, { Fragment, useCallback, useMemo } from "react";
 import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
-import { ChevronLeftIcon, ChevronRightIcon, PencilIcon } from "@heroicons/react/outline";
+import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon, PencilIcon } from "@heroicons/react/outline";
 import Tag from "../../components/Tag";
 import { useQuery } from "@apollo/client";
 import LoaderImage from "../../components/LoaderImage";
@@ -123,8 +123,16 @@ const Image = () => {
                                 <div><span className="font-light">Created At: </span>{new Date(data.image.createdAt).toLocaleString()}</div>
                                 <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
                             </div>
+                            <a href={`http://${window.location.hostname}:3030/original/${data.image.id}`} className="flex-shrink-0 relative">
+                                <DownloadIcon className="w-10 h-10 mx-1" />
+                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">orig</span>
+                            </a>
+                            <a href={`http://${window.location.hostname}:3030/webp/${data.image.id}`} className="flex-shrink-0 relative">
+                                <DownloadIcon className="w-10 h-10 mx-1" />
+                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">webp</span>
+                            </a>
                             <Link to={{ pathname: `/${id}/edit`, search: `?${searchParams.toString()}${next ? `&next=${next.id}` : ""}` }} replace className="flex-shrink-0">
-                                <PencilIcon className="w-8 h-8" />
+                                <PencilIcon className="w-8 h-8 mx-1" />
                             </Link>
                         </div>
 
