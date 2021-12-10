@@ -48,7 +48,7 @@ const TagSearch: FunctionComponent<{
                 }}
                 onKeyDown={handleKeyDown} />
             {suggestions.length > 0 &&
-            <ul className="block absolute z-20 bg-dark-600 left-0 right-0 p-1 rounded">
+            <ul className="block absolute z-20 bg-neutral-700 left-0 right-0 p-1 rounded">
                 {suggestions.map(({ slug: suggestion, ...tag }: Tag, index: number) =>
                     <li
                         key={suggestion}
