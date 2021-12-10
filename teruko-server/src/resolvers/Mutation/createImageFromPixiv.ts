@@ -3,8 +3,8 @@ import { fetchPixiv, toModel } from "./fetchPixiv.js";
 import fetch from "node-fetch";
 import fs from "fs";
 import { finished } from "stream/promises";
-import sizeOf from "image-size";
 import path from "path";
+import sharp from "sharp";
 
 async function createImageFromPixiv(parent: void, { url }: { url: string }, context: Context) {
     const matches = url.match(/https?:\/\/www.pixiv.net(?:\/en)?\/artworks\/([0-9]+)/);
@@ -43,16 +43,16 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
 
         await finished(out);
 
-        const dims = sizeOf(path.join(context.imgFolder, filename));
+        const metadata = await sharp(path.join(context.imgFolder, filename)).metadata();
 
-        if (!dims.width || !dims.height) throw new Error("cant read image dimensions");
+        if (!metadata.width || !metadata.height) throw new Error("cant read image dimensions");
 
         resultPromises.push(context.prisma.image.create({
             data: {
                 ...toModel(pixivResult, matchesUrl[2]),
                 filename,
-                height: dims.height,
-                width: dims.width
+                height: metadata.height,
+                width: metadata.width
             }
         }));
     }

@@ -3,9 +3,9 @@ import { FileUpload } from "graphql-upload";
 import { finished } from "stream/promises";
 import fs from "fs";
 import { fileTypeStream } from "file-type";
-import sizeOf from "image-size";
 import { fetchPixiv, toModel } from "./fetchPixiv.js";
 import path from "path";
+import sharp from "sharp";
 
 async function createImage(parent: void, { files }: { files: FileUpload[] }, context: Context) {
     return Promise.all(files.map(async (file: FileUpload) => {
@@ -17,7 +17,7 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
 
         const streamWithFileType = await fileTypeStream(stream);
 
-        if (!streamWithFileType.fileType || !streamWithFileType.fileType.mime.match(/^image\/(jpeg|gif|png)$/)) {
+        if (!streamWithFileType.fileType || !streamWithFileType.fileType.mime.match(/^image\/(jpeg|gif|png|webp|avif)$/)) {
             throw new Error("not an image");
         }
 
@@ -27,12 +27,13 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
 
         await finished(out);
 
-        const dims = sizeOf(path.join(context.imgFolder, filename));
+        const metadata = await sharp(path.join(context.imgFolder, filename))
+            .metadata();
 
-        if (!dims.width || !dims.height) throw new Error("cant read image dimensions");
+        if (!metadata.width || !metadata.height) throw new Error("cant read image dimensions");
 
         // PIXIV stuff
-        const matches = filename.match(/([0-9]+)_p[0-9]+\.(?:jpg|png)/);
+        const matches = filename.match(/([0-9]+)_p[0-9]+\.(?:jpg|png|gif|jpeg|webp|avif)/);
         if (matches) {
             const pixivId = matches[1];
 
@@ -40,8 +41,8 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
                 data: {
                     ...toModel(await fetchPixiv(pixivId), pixivId),
                     filename,
-                    width: dims.width,
-                    height: dims.height
+                    width: metadata.width,
+                    height: metadata.height
                 }
             });
 
@@ -64,8 +65,8 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
                         }
                     ]
                 },
-                width: dims.width,
-                height: dims.height
+                width: metadata.width,
+                height: metadata.height
             }
         });
 
