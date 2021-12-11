@@ -24,11 +24,11 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
 
 
         if (streamWithFileType.fileType.mime === "image/png") {
-            filename = filename.replace(".png", ".webp");
+            filename = filename.replace(".png", ".avif");
             const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
             const transform = sharp()
-                .webp({ lossless: true });
+                .avif({ lossless: true });
 
             streamWithFileType.pipe(transform).pipe(out);
 
