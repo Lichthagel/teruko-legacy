@@ -11,9 +11,10 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
     return Promise.all(files.map(async (file: FileUpload) => {
 
         // eslint-disable-next-line @typescript-eslint/await-thenable
-        const { createReadStream, filename } = await file;
+        const resolvedFile = await file;
+        let filename = resolvedFile.filename;
 
-        const stream = createReadStream();
+        const stream = resolvedFile.createReadStream();
 
         const streamWithFileType = await fileTypeStream(stream);
 
@@ -21,11 +22,27 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
             throw new Error("not an image");
         }
 
-        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
-        streamWithFileType.pipe(out);
+        if (streamWithFileType.fileType.mime === "image/png") {
+            filename = filename.replace(".png", ".webp");
+            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
-        await finished(out);
+            const transform = sharp()
+                .webp({ lossless: true });
+
+            streamWithFileType.pipe(transform).pipe(out);
+
+            await finished(out);
+            out.close();
+        } else {
+            filename = filename.replace(/[^./\\]+$/, streamWithFileType.fileType.ext);
+            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
+
+            streamWithFileType.pipe(out);
+
+            await finished(out);
+            out.close();
+        }
 
         const metadata = await sharp(path.join(context.imgFolder, filename))
             .metadata();

@@ -5,6 +5,7 @@ import fs from "fs";
 import { finished } from "stream/promises";
 import path from "path";
 import sharp from "sharp";
+import { fileTypeStream } from "file-type";
 
 async function createImageFromPixiv(parent: void, { url }: { url: string }, context: Context) {
     const matches = url.match(/https?:\/\/www.pixiv.net(?:\/en)?\/artworks\/([0-9]+)/);
@@ -35,15 +36,36 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
             compress: true
         });
 
-        const filename = `${matchesUrl[2]}_p${i}.${matchesUrl[3]}`;
+        const streamWithFileType = await fileTypeStream(res.body);
 
-        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
+        if (!streamWithFileType.fileType || !streamWithFileType.fileType.mime.match(/^image\/(jpeg|gif|png|webp|avif)$/)) {
+            throw new Error("not an image");
+        }
 
-        res.body.pipe(out);
+        let filename = `${matchesUrl[2]}_p${i}.${streamWithFileType.fileType.ext}`;;
 
-        await finished(out);
+        if (streamWithFileType.fileType.mime === "image/png") {
+            filename = filename.replace(".png", ".avif");
+            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
-        const metadata = await sharp(path.join(context.imgFolder, filename)).metadata();
+            const transform = sharp()
+                .avif({ lossless: true });
+
+            streamWithFileType.pipe(transform).pipe(out);
+
+            await finished(out);
+            out.close();
+        } else {
+            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
+
+            streamWithFileType.pipe(out);
+
+            await finished(out);
+            out.close();
+        }
+
+        const metadata = await sharp(path.join(context.imgFolder, filename))
+            .metadata();
 
         if (!metadata.width || !metadata.height) throw new Error("cant read image dimensions");
 
