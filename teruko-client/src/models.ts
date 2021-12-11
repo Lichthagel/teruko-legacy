@@ -3,6 +3,8 @@ export interface Image {
     filename: string;
     title?: string;
     source?: string;
+    createdAt: string;
+    updatedAt: string;
     tags: Tag[];
 }
 

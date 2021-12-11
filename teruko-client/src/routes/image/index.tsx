@@ -96,6 +96,8 @@ const Image = () => {
         }
     }, [navigate, next, sort, tags]);
 
+    const image: ImageModel = data && data.image || undefined;
+
     return (
         <div className="flex flex-col items-center">
             {!loading && data &&
@@ -103,7 +105,7 @@ const Image = () => {
                     <div className="w-full relative">
                         <LoaderImage
                             src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
-                            alt={data.image.title || data.image.id}
+                            alt={image.title || image.id.toString()}
                             className="max-w-full h-auto max-h-[100vh] mx-auto cursor-pointer"
                             onClick={goNext} />
 
@@ -118,16 +120,16 @@ const Image = () => {
 
                     <div className="w-full my-3 p-1">
                         <div className="flex items-center">
-                            {data.image.title ? <h1 className="text-3xl flex-grow overflow-hidden">{data.image.title}</h1> : <h1 className="text-3xl flex-grow text-gray-500 dark:text-gray-400 overflow-hidden">No title</h1>}
+                            {image.title ? <h1 className="text-3xl flex-grow overflow-hidden">{image.title}</h1> : <h1 className="text-3xl flex-grow text-gray-500 dark:text-gray-400 overflow-hidden">No title</h1>}
                             <div className="mx-2 text-gray-400 text-sm text-right flex-shrink-0">
-                                <div><span className="font-light">Created At: </span>{new Date(data.image.createdAt).toLocaleString()}</div>
+                                <div><span className="font-light">Created At: </span>{new Date(image.createdAt).toLocaleString()}</div>
                                 <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
                             </div>
-                            <a href={`http://${window.location.hostname}:3030/original/${data.image.id}`} className="flex-shrink-0 relative">
+                            <a href={`http://${window.location.hostname}:3030/original/${image.id}`} className="flex-shrink-0 relative">
                                 <DownloadIcon className="w-10 h-10 mx-1" />
-                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">orig</span>
+                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">{image.filename.slice(image.filename.lastIndexOf(".") + 1)}</span>
                             </a>
-                            <a href={`http://${window.location.hostname}:3030/webp/${data.image.id}`} className="flex-shrink-0 relative">
+                            <a href={`http://${window.location.hostname}:3030/webp/${image.id}`} className="flex-shrink-0 relative">
                                 <DownloadIcon className="w-10 h-10 mx-1" />
                                 <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">webp</span>
                             </a>
@@ -136,18 +138,18 @@ const Image = () => {
                             </Link>
                         </div>
 
-                        {data.image.source ?
+                        {image.source ?
                             <div>
                                 <span className="text-gray-500 dark:text-gray-400">Source: </span>
                                 <a
                                     target="_blank"
-                                    href={data.image.source}
+                                    href={image.source}
                                     rel="noreferrer"
-                                    className="text-blue-800 dark:text-blue-300 mb-3">{data.image.source}</a>
+                                    className="text-blue-800 dark:text-blue-300 mb-3">{image.source}</a>
                                 <ClipboardCopyIcon
                                     className="h-6 inline-block relative bottom-1 cursor-pointer transition-colors"
                                     onClick={(event) => {
-                                        navigator.clipboard.writeText(data.image.source)
+                                        navigator.clipboard.writeText(image.source ?? "")
                                             .then(() => {
                                                 (event.target as SVGElement).classList.add("text-emerald-600");
 
@@ -165,7 +167,7 @@ const Image = () => {
                     </div>
 
                     <div className="w-full">
-                        {data.image.tags.map((tag: { slug: string }) =>
+                        {image.tags.map((tag: { slug: string }) =>
                             <Link to={{ pathname: `/tag/${encodeURIComponent(tag.slug)}` }} key={tag.slug}>
                                 <Tag tag={tag} />
                             </Link>)}
