@@ -118,7 +118,7 @@ const Image = () => {
                             className="absolute w-20 h-20 z-20 right-0 bottom-[50%] transition hover:text-indigo-800 cursor-pointer" />
                     </div>
 
-                    <div className="w-full my-3 p-1">
+                    <div className="w-full my-4 p-1">
                         <div className="flex items-center">
                             {image.title ? <h1 className="text-3xl flex-grow overflow-hidden">{image.title}</h1> : <h1 className="text-3xl flex-grow text-gray-500 dark:text-gray-400 overflow-hidden">No title</h1>}
                             <div className="mx-2 text-gray-400 text-sm text-right flex-shrink-0">
