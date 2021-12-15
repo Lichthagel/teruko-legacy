@@ -1,13 +1,13 @@
 import { ADD_TAG, REMOVE_TAG } from "../../queries/tag";
 import { ArrowLeftIcon, DownloadIcon, TrashIcon } from "@heroicons/react/outline";
-import React, { FormEvent, Fragment, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import Tag from "../../components/Tag";
 import TagInput from "../../components/TagInput";
-import LoadingIcon from "../../components/LoadingIcon";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { DELETE_IMAGE, GET_IMAGE, UPDATE_IMAGE, UPDATE_IMAGE_PIXIV } from "../../queries/image";
-import clsx from "clsx";
+import IconButton from "../../components/IconButton";
+import LoadingIconButton from "../../components/LoadingIconButton";
 
 const EditImage = () => {
     const navigate = useNavigate();
@@ -91,50 +91,52 @@ const EditImage = () => {
     }, [id, source, title, updateImage]);
 
     return (
-        <Fragment>
-            <div className="flex flex-row items-center mt-20">
+        <div className="max-w-2xl mx-auto rounded-md dark:bg-neutral-800 p-2 mt-20 shadow-md dark:shadow-indigo-800">
+            <div className="flex flex-row items-center">
                 <Link to={{ pathname: `/${id}`, search: `?${searchParams.toString()}` }} replace>
-                    <ArrowLeftIcon className="w-8 h-8" />
+                    <IconButton>
+                        <ArrowLeftIcon />
+                    </IconButton>
                 </Link>
                 <div className="flex-grow"></div>
-                <LoadingIcon loading={loadingFetchPixiv} className={"w-8 h-8"}>
-                    <DownloadIcon
-                        className={clsx("w-8 h-8 cursor-pointer", { "animate-pulse": loadingFetchPixiv })}
-                        onClick={() => {
-                            updateImagePixiv({
-                                variables: {
-                                    id
-                                }
-                            });
-                        }} />
-                </LoadingIcon>
-                <LoadingIcon loading={deleteLoading} className={"w-8 h-8"}>
-                    <TrashIcon
-                        className="w-8 h-8 cursor-pointer"
-                        onClick={() => {
-                            if (confirm("Delete?")) {
-                                deleteImage()
-                                    .then(() => {
-                                        const next = searchParams.get("next");
-
-                                        const newSearchParams = new URLSearchParams(searchParams);
-                                        newSearchParams.delete("next");
-
-                                        navigate({
-                                            pathname: next ? `/${next}` : "/",
-                                            search: `?${newSearchParams.toString()}`
-                                        }, {
-                                            replace: true
-                                        });
-                                    });
+                <LoadingIconButton
+                    loading={loadingFetchPixiv}
+                    onClick={() => {
+                        updateImagePixiv({
+                            variables: {
+                                id
                             }
-                        }} />
-                </LoadingIcon>
+                        });
+                    }}>
+                    <DownloadIcon />
+                </LoadingIconButton>
+                <LoadingIconButton
+                    loading={deleteLoading}
+                    onClick={() => {
+                        if (confirm("Delete?")) {
+                            deleteImage()
+                                .then(() => {
+                                    const next = searchParams.get("next");
+
+                                    const newSearchParams = new URLSearchParams(searchParams);
+                                    newSearchParams.delete("next");
+
+                                    navigate({
+                                        pathname: next ? `/${next}` : "/",
+                                        search: `?${newSearchParams.toString()}`
+                                    }, {
+                                        replace: true
+                                    });
+                                });
+                        }
+                    }}>
+                    <TrashIcon />
+                </LoadingIconButton>
             </div>
 
             {!loading && data &&
-                <div className="flex flex-col md:flex-row">
-                    <form className="m-3 flex flex-col" onSubmit={handleSubmit}>
+                <div>
+                    <form className="mx-auto my-3 flex flex-col w-max" onSubmit={handleSubmit}>
                         <div>
                             <h3>Title</h3>
                             <input
@@ -180,7 +182,7 @@ const EditImage = () => {
                     </div>
                 </div>
             }
-        </Fragment>
+        </div>
     );
 };
 

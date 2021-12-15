@@ -5,9 +5,9 @@ import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import Button from "../components/Button";
 import Gallery from "../components/Gallery";
 import SortToggle from "../components/SortToggle";
-import LoadingIcon from "../components/LoadingIcon";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { GET_TAG_CATEGORIES } from "../queries/category";
+import LoadingIconButton from "../components/LoadingIconButton";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: boolean) => void }> = ({ slug, data, setEdit }) => {
@@ -92,23 +92,24 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
                 {dataCategories && dataCategories.tagCategories.map((category: { slug:string }) =>
                     <option key={category.slug} value={category.slug}>{category.slug}</option>)}
             </select>
-            <LoadingIcon loading={loadingUpdate} className="w-8 h-8">
+            <LoadingIconButton loading={loadingUpdate} className="w-8 h-8">
                 <button type="submit">
                     <CheckIcon className="w-8 h-8" />
                 </button>
-            </LoadingIcon>
-            <LoadingIcon loading={loadingDelete} className="w-8 h-8">
-                <TrashIcon
-                    className="w-8 h-8 cursor-pointer"
-                    onClick={() => {
-                        if (confirm("Delete?")) {
-                            deleteTag()
-                                .then(() => {
-                                    navigate("/");
-                                });
-                        }
-                    }} />
-            </LoadingIcon>
+            </LoadingIconButton>
+            <LoadingIconButton
+                loading={loadingDelete}
+                className="w-8 h-8"
+                onClick={() => {
+                    if (confirm("Delete?")) {
+                        deleteTag()
+                            .then(() => {
+                                navigate("/");
+                            });
+                    }
+                }}>
+                <TrashIcon />
+            </LoadingIconButton>
             <XIcon className="w-8 h-8 cursor-pointer" onClick={() => setEdit(false)} />
         </form>
     );

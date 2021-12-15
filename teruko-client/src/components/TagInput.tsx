@@ -34,11 +34,11 @@ const TagInput: FunctionComponent<{
     }, [activeSuggestion, handleSubmit, suggestions, tagInput]);
 
     return (
-        <div className="relative inline-block z-10">
+        <div className="relative inline-block z-10 p-1">
             <input
                 type="text"
                 placeholder="Add tag..."
-                className="bg-transparent outline-none border-none dark:placeholder-indigo-600"
+                className="!pt-1 !pb-[calc(0.20rem)] !px-2 !h-auto !border-b-[0.05rem] !border-t-0 !border-l-0 !border-r-0 !border-indigo-500 dark:!placeholder-indigo-500"
                 value={tagInput}
                 onChange={(event) => {
                     setTagInput(event.target.value);
