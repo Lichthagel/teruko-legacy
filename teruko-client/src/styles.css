@@ -3,29 +3,29 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply dark:bg-neutral-900 text-indigo-800 dark:text-indigo-400 pb-24;
-  }
+    body {
+        @apply text-indigo-800 dark:text-indigo-400 pb-24 bg-fixed bg-conic-gradient-45 from-indigo-200 dark:from-slate-900 via-neutral-200 dark:via-neutral-900 to-indigo-200 dark:to-slate-900;
+    }
 
-  input[type="text"] {
-    @apply transition h-10 rounded p-2 bg-transparent placeholder-indigo-400 dark:placeholder-indigo-800 border border-gray-400 
+    input[type="text"] {
+        @apply transition h-10 rounded p-2 bg-transparent placeholder-indigo-400 dark:placeholder-indigo-800 border border-gray-400 
     dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400 outline-none;
-  }
+    }
 
-  select {
-    @apply bg-neutral-900 h-10 rounded border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400 p-1;
-  }
+    select {
+        @apply bg-transparent h-10 rounded border border-gray-400 dark:border-gray-600 focus:border-indigo-800 dark:focus:border-indigo-400 p-1;
+    }
 
-  option {
-    @apply bg-neutral-900;
-  }
+    option {
+        @apply dark:bg-neutral-900;
+    }
 }
 
 .scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .scrollbar-none::-webkit-scrollbar {
-  display: none;
+    display: none;
 }

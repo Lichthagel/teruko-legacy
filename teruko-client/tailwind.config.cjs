@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'conic-gradient-45': "conic-gradient(from 45deg, var(--tw-gradient-stops))"
+      }
+    },
   },
   plugins: [
     require("@tailwindcss/forms"),
