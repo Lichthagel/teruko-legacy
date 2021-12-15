@@ -106,7 +106,7 @@ const Image = () => {
                         <LoaderImage
                             src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
                             alt={image.title || image.id.toString()}
-                            className="max-w-full h-auto max-h-[100vh] mx-auto cursor-pointer"
+                            className="max-w-full h-auto max-h-[100vh] mx-auto cursor-pointer shadow-xl shadow-indigo-400 dark:shadow-indigo-800"
                             onClick={goNext} />
 
                         <ChevronLeftIcon
