@@ -42,27 +42,16 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
             throw new Error("not an image");
         }
 
-        let filename = `${matchesUrl[2]}_p${i}.${streamWithFileType.fileType.ext}`;;
+        let filename = `${matchesUrl[2]}_p${i}.avif`;
 
-        if (streamWithFileType.fileType.mime === "image/png") {
-            filename = filename.replace(".png", ".avif");
-            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
+        const transform = sharp().avif({quality: 90});
 
-            const transform = sharp()
-                .avif({ lossless: true });
+        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
-            streamWithFileType.pipe(transform).pipe(out);
+        streamWithFileType.pipe(transform).pipe(out);
 
-            await finished(out);
-            out.close();
-        } else {
-            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
-
-            streamWithFileType.pipe(out);
-
-            await finished(out);
-            out.close();
-        }
+        await finished(out);
+        out.close();
 
         const metadata = await sharp(path.join(context.imgFolder, filename))
             .metadata();

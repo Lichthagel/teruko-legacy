@@ -12,7 +12,7 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
 
         // eslint-disable-next-line @typescript-eslint/await-thenable
         const resolvedFile = await file;
-        let filename = resolvedFile.filename;
+        const filename = resolvedFile.filename.replace(/[^./\\]+$/, "avif");
 
         const stream = resolvedFile.createReadStream();
 
@@ -22,27 +22,14 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
             throw new Error("not an image");
         }
 
+        const transform = sharp().avif({ quality: 90 });
 
-        if (streamWithFileType.fileType.mime === "image/png") {
-            filename = filename.replace(".png", ".avif");
-            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
+        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 
-            const transform = sharp()
-                .avif({ lossless: true });
+        streamWithFileType.pipe(transform).pipe(out);
 
-            streamWithFileType.pipe(transform).pipe(out);
-
-            await finished(out);
-            out.close();
-        } else {
-            filename = filename.replace(/[^./\\]+$/, streamWithFileType.fileType.ext);
-            const out = fs.createWriteStream(path.join(context.imgFolder, filename));
-
-            streamWithFileType.pipe(out);
-
-            await finished(out);
-            out.close();
-        }
+        await finished(out);
+        out.close();
 
         const metadata = await sharp(path.join(context.imgFolder, filename))
             .metadata();

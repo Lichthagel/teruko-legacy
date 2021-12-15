@@ -12,7 +12,7 @@ process.setMaxListeners(0);
 
 const port = 3030;
 
-(async function () {
+(async function() {
     const app = express();
 
     app.use(
@@ -68,7 +68,7 @@ const port = 3030;
                 return;
             }
 
-            res.attachment(image.filename.replace(/\..+$/, ".webp"));
+            res.attachment(image.filename.replace(/[^./\\]+$/, "webp"));
 
             sharp(path.join(context.imgFolder, image.filename))
                 .webp({ quality: 100 })
