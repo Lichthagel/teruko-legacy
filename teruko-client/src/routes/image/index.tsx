@@ -121,7 +121,7 @@ const Image = () => {
                     <div className="w-full my-4 p-1">
                         <div className="flex items-center">
                             {image.title ? <h1 className="text-3xl flex-grow overflow-hidden">{image.title}</h1> : <h1 className="text-3xl flex-grow text-gray-500 dark:text-gray-400 overflow-hidden">No title</h1>}
-                            <div className="mx-2 text-gray-400 text-sm text-right flex-shrink-0">
+                            <div className="mx-2 text-indigo-500/80 dark:text-gray-400 text-sm text-right flex-shrink-0">
                                 <div><span className="font-light">Created At: </span>{new Date(image.createdAt).toLocaleString()}</div>
                                 <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
                             </div>
