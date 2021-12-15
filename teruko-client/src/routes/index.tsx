@@ -25,7 +25,7 @@ const Home = () => {
                     });
                 }} />
 
-            {dataCount && <div className="absolute right-3 top-3 text-gray-600">{dataCount.imageCount} images</div>}
+            {dataCount && <div className="absolute right-3 top-3 text-gray-600 hidden md:block">{dataCount.imageCount} images</div>}
 
             <Gallery tags={tags} sort={sort as string} />
         </div>
