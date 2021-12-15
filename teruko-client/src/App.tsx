@@ -45,7 +45,7 @@ const App = () => {
     return <Fragment>
         <div className="fixed top-2 right-0 left-0 z-20 pointer-events-none">
             <div className="container mx-auto px-3">
-                <div className={clsx("pointer-events-auto flex flex-row items-center w-min bg-zinc-800 rounded-xl p-1 transition hover:opacity-100", { "opacity-20": isImageView })}>
+                <div className={clsx("pointer-events-auto flex flex-row items-center w-min bg-neutral-100 shadow-lg dark:bg-zinc-800 rounded-xl p-1 transition hover:opacity-100", { "opacity-20": isImageView })}>
                     <Link to={{ pathname: "/", search: `?${searchParams.toString()}` }}> {/* TODO only tags and sort */}
                         <IconButton>
                             <HomeIcon className="w-10 h-10" />
@@ -71,7 +71,7 @@ const App = () => {
         </div>
         <div className="fixed bottom-3 right-0 left-0 z-10 pointer-events-none">
             <div className="container mx-auto px-3">
-                <div className={clsx("pointer-events-auto flex flex-row ml-auto mr-0 w-min bg-zinc-800 rounded-xl p-1 transition hover:opacity-100", { "opacity-20": isImageView })}>
+                <div className={clsx("pointer-events-auto flex flex-row ml-auto mr-0 w-min bg-neutral-100 shadow-lg dark:bg-zinc-800 rounded-xl p-1 transition hover:opacity-100", { "opacity-20": isImageView })}>
                     <IconButton
                         hidden={!showToTop}
                         onClick={() => {

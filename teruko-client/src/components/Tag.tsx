@@ -9,6 +9,6 @@ const Tag: FunctionComponent<{
     <Chip
         color={tag.category && tag.category.color}
         onClick={() => onClick && onClick(tag)}
-        className="break-all">{tag.slug}</Chip>;
+        className="break-all shadow">{tag.slug}</Chip>;
 
 export default Tag;
