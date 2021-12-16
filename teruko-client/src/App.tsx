@@ -1,10 +1,12 @@
 import { ChevronDownIcon, ChevronUpIcon, HomeIcon, PlusIcon } from "@heroicons/react/outline";
 import { Route, Routes, Link, useMatch, useSearchParams } from "react-router-dom";
 import Home from "./routes/index";
-import React, { Fragment, lazy, Suspense, useEffect, useState } from "react";
 import IconButton from "./components/IconButton";
 import clsx from "clsx";
 import ScrollToTop from "./components/ScrollToTop";
+import { lazy, Suspense } from "preact/compat";
+import { useEffect, useState } from "preact/hooks";
+import { Fragment } from "preact";
 
 const Image = lazy(() => import("./routes/image"));
 const EditImage = lazy(() => import("./routes/image/edit"));

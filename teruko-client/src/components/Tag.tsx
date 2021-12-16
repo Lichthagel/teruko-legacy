@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "preact";
 import { Tag as TagModel } from "../models";
 import Chip from "./Chip";
 

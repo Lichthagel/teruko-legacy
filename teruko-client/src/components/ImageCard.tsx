@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react";
 import LoaderImage from "./LoaderImage";
 import { Image, Tag } from "../models";
 import Chip from "./Chip";
 import { Link, To } from "react-router-dom";
+import { FunctionComponent } from "preact";
 
 const ImageCard: FunctionComponent<{
     image: Image;

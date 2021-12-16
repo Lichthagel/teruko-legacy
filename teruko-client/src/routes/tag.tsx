@@ -1,6 +1,6 @@
+/* eslint-disable react/prop-types */
 import { CheckIcon, PencilIcon, RefreshIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
 import { DELETE_TAG, GET_TAG, UPDATE_TAG } from "../queries/tag";
-import React, { FormEvent, Fragment, FunctionComponent, useCallback, useState } from "react";
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import Button from "../components/Button";
 import Gallery from "../components/Gallery";
@@ -8,6 +8,8 @@ import SortToggle from "../components/SortToggle";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { GET_TAG_CATEGORIES } from "../queries/category";
 import LoadingIconButton from "../components/LoadingIconButton";
+import { Fragment, FunctionComponent, JSX } from "preact";
+import { useCallback, useState } from "preact/hooks";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: boolean) => void }> = ({ slug, data, setEdit }) => {
@@ -51,7 +53,7 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
         }
     });
 
-    const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
         event.preventDefault();
         updateTag({
             variables: {
@@ -82,11 +84,11 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
                 type="text"
                 placeholder="slug"
                 value={newSlug}
-                onChange={(event) => setNewSlug(event.target.value)}
+                onInput={(event) => setNewSlug((event.target as HTMLInputElement).value)}
                 className="text-3xl mr-3 break-all outline-none bg-transparent border-none focus:bg-gray-700 p-1" />
             <select
                 value={category}
-                onChange={(event) => setCategory(event.target.value)}
+                onChange={(event) => setCategory((event.target as HTMLSelectElement).value)}
                 className="w-96 h-8 rounded">
                 <option value={""}>-</option>
                 {dataCategories && dataCategories.tagCategories.map((category: { slug:string }) =>

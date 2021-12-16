@@ -1,11 +1,12 @@
 import clsx from "clsx";
-import React, { FunctionComponent, HTMLAttributes } from "react";
+import { FunctionComponent, JSX } from "preact";
 
-interface ChipProps extends HTMLAttributes<HTMLDivElement> {
+interface ChipProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "size"> {
     color?: string;
     size?: "small" | "normal";
 }
 
+// eslint-disable-next-line react/prop-types
 const Chip: FunctionComponent<ChipProps> = ({ children, color, size = "normal", className, style, ...props }) =>
     <div
         {...props}
@@ -18,7 +19,7 @@ const Chip: FunctionComponent<ChipProps> = ({ children, color, size = "normal", 
             },
             className
         )}
-        style={{ ...style, backgroundColor: color }}>
+        style={{ ...(style as JSX.CSSProperties), backgroundColor: color }}>
         {children}
     </div>;
 

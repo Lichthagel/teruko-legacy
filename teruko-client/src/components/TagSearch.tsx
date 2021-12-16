@@ -1,7 +1,8 @@
-import { FunctionComponent, useCallback, useState } from "react";
 import clsx from "clsx";
 import { Tag } from "../models";
 import useSuggestions from "../hooks/useSuggestions";
+import { FunctionComponent, JSX } from "preact";
+import { useCallback, useState } from "preact/hooks";
 
 const TagSearch: FunctionComponent<{
     tags: string[];
@@ -21,7 +22,7 @@ const TagSearch: FunctionComponent<{
         // handleSubmitParent();
     }, [setTags, tags]);
 
-    const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
         if (event.key === "Enter") {
             if (suggestions.length > activeSuggestion) {
                 handleSubmit(suggestions[activeSuggestion].slug);
@@ -42,8 +43,8 @@ const TagSearch: FunctionComponent<{
                 placeholder="Search..."
                 className="w-full"
                 value={tagsInput}
-                onChange={(event) => {
-                    setTagsInput(event.target.value);
+                onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => {
+                    setTagsInput((event.target as HTMLInputElement).value);
                     setActiveSuggestion(0);
                 }}
                 onKeyDown={handleKeyDown} />

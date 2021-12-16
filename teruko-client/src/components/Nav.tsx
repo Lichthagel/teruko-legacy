@@ -1,10 +1,11 @@
-import { FunctionComponent, useCallback } from "react";
 import { RefreshIcon } from "@heroicons/react/outline";
 import SortToggle from "./SortToggle";
 import TagSearch from "./TagSearch";
 import { useApolloClient } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import TagQuery from "./TagQuery";
+import { FunctionComponent } from "preact";
+import { useCallback } from "preact/hooks";
 
 const Nav: FunctionComponent<{
     tags: string[];

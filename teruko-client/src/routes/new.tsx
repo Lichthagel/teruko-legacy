@@ -1,8 +1,9 @@
-import { useCallback, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { NEW_IMAGE, NEW_IMAGE_FROM_PIXIV } from "../queries/image";
 import clsx from "clsx";
+import { useCallback, useState } from "preact/hooks";
+import { JSX } from "preact";
 
 const New = () => {
     const navigate = useNavigate();
@@ -44,20 +45,20 @@ const New = () => {
         }
     });
 
-    const handleDragOver = useCallback((event) => {
+    const handleDragOver = useCallback((event: DragEvent) => {
         event.stopPropagation();
         event.preventDefault();
 
-        if (!loading && !error) {
+        if (!loading && !error && event.dataTransfer) {
             event.dataTransfer.dropEffect = "copy";
         }
     }, [error, loading]);
 
-    const handleDrop = useCallback((event) => {
+    const handleDrop = useCallback((event: DragEvent) => {
         event.stopPropagation();
         event.preventDefault();
 
-        if (!loading && !error) {
+        if (!loading && !error && event.dataTransfer) {
             newImage({
                 variables: {
                     files: event.dataTransfer.files
@@ -71,7 +72,7 @@ const New = () => {
 
     }, [error, loading, navigate, newImage]);
 
-    const handlePixiv = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+    const handlePixiv = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
         event.stopPropagation();
         event.preventDefault();
 
@@ -108,7 +109,7 @@ const New = () => {
                     value={pixivUrl}
                     placeholder="or enter a pixiv URL"
                     disabled={loadingPixiv}
-                    onChange={(event) => setPixivUrl(event.target.value)} />
+                    onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => setPixivUrl((event.target as HTMLInputElement).value)} />
             </form>
         </div>
     );

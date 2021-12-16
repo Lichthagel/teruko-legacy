@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { FunctionComponent, useCallback } from "react";
 import { GET_IMAGES } from "../queries/image";
 import ImageCard from "./ImageCard";
 import { Image } from "../models";
+import { FunctionComponent } from "preact";
+import { useCallback } from "preact/hooks";
 
 const DEFAULT_TAKE = 12;
 

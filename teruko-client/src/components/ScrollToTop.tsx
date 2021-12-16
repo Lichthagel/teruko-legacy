@@ -1,4 +1,5 @@
-import { FunctionComponent, useLayoutEffect } from "react";
+import { FunctionComponent } from "preact";
+import { useLayoutEffect } from "preact/hooks";
 import { useLocation } from "react-router-dom";
 
 const ScrollToTop: FunctionComponent = () => {

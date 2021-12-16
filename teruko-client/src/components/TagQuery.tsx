@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "preact";
 import { Tag as TagModel } from "../models";
 import { GET_TAG } from "../queries/tag";
 import Chip from "./Chip";

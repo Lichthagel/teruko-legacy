@@ -1,9 +1,11 @@
-import { FunctionComponent, useCallback, useState } from "react";
 import clsx from "clsx";
+import { FunctionComponent, JSX } from "preact";
+import { useCallback, useState } from "preact/hooks";
 import useSuggestions from "../hooks/useSuggestions";
 
 const TagInput: FunctionComponent<{
     handleSubmit: (slug: string) => void;
+// eslint-disable-next-line react/prop-types
 }> = ({ handleSubmit: handleSubmitParent }) => {
 
     const [tagInput, setTagInput] = useState("");
@@ -17,7 +19,7 @@ const TagInput: FunctionComponent<{
         handleSubmitParent(tagSlug);
     }, [handleSubmitParent]);
 
-    const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
         if (event.key === "Enter") {
             if (suggestions.length >= activeSuggestion) {
                 if (activeSuggestion === 0) {
@@ -40,8 +42,8 @@ const TagInput: FunctionComponent<{
                 placeholder="Add tag..."
                 className="!pt-1 !pb-[calc(0.20rem)] !px-2 !h-auto !border-b-[0.05rem] !border-t-0 !border-l-0 !border-r-0 !border-indigo-500 dark:!placeholder-indigo-500"
                 value={tagInput}
-                onChange={(event) => {
-                    setTagInput(event.target.value);
+                onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => {
+                    setTagInput((event.target as HTMLInputElement).value);
                     setActiveSuggestion(0);
                 }}
                 onKeyDown={handleKeyDown} />

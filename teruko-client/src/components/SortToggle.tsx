@@ -1,4 +1,5 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, JSX } from "preact";
+import { useCallback } from "preact/hooks";
 import { useSearchParams } from "react-router-dom";
 
 const SortToggle: FunctionComponent = () => {
@@ -18,8 +19,8 @@ const SortToggle: FunctionComponent = () => {
         <select
             className="md:mr-1 bg-darkpurple"
             value={sort}
-            onChange={(event) => {
-                setSort(event.target.value);
+            onInput={(event: JSX.TargetedEvent<HTMLSelectElement>) => {
+                setSort((event.target as HTMLSelectElement).value);
             }}>
             <option value="newest">newest</option>
             <option value="oldest">oldest</option>

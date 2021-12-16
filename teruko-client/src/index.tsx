@@ -1,13 +1,14 @@
-import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import "./styles.css";
 import apolloClient from "./apolloClient";
+import { render } from "preact";
 
-const app = document.getElementById("app");
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const app = document.getElementById("app")!;
 
-ReactDOM.render(
+render(
     <ApolloProvider client={apolloClient}>
         <BrowserRouter>
             <App />

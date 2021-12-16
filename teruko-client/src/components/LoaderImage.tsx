@@ -1,7 +1,8 @@
 import clsx from "clsx";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, JSX } from "preact";
+import { useState } from "preact/hooks";
 
-const LoaderImage: FunctionComponent<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>> = ({ className, ...props }) => {
+const LoaderImage: FunctionComponent<JSX.HTMLAttributes<HTMLImageElement>> = ({ className, ...props }) => {
     const [loaded, setLoaded] = useState(false);
     return (
         <div className={clsx("relative", { "min-h-80": !loaded })}>

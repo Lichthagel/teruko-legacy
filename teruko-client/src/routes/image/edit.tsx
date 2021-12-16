@@ -1,6 +1,5 @@
 import { ADD_TAG, REMOVE_TAG } from "../../queries/tag";
 import { ArrowLeftIcon, DownloadIcon, TrashIcon } from "@heroicons/react/outline";
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import Tag from "../../components/Tag";
 import TagInput from "../../components/TagInput";
@@ -8,6 +7,8 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { DELETE_IMAGE, GET_IMAGE, UPDATE_IMAGE, UPDATE_IMAGE_PIXIV } from "../../queries/image";
 import IconButton from "../../components/IconButton";
 import LoadingIconButton from "../../components/LoadingIconButton";
+import { useCallback, useEffect, useState } from "preact/hooks";
+import { JSX } from "preact";
 
 const EditImage = () => {
     const navigate = useNavigate();
@@ -79,7 +80,7 @@ const EditImage = () => {
         }
     });
 
-    const handleSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
         event.preventDefault();
         updateImage({
             variables: {
@@ -142,7 +143,7 @@ const EditImage = () => {
                             <input
                                 type="text"
                                 value={title}
-                                onChange={(event) => setTitle(event.target.value)}
+                                onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => setTitle((event.target as HTMLInputElement).value)}
                                 className="w-96 outline-none" />
                         </div>
                         <div>
@@ -150,7 +151,7 @@ const EditImage = () => {
                             <input
                                 type="text"
                                 value={source}
-                                onChange={(event) => setSource(event.target.value)}
+                                onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => setSource((event.target as HTMLInputElement).value)}
                                 className="w-96 outline-none" />
                         </div>
                         <button type="submit" className="my-5">{updateLoading ? "..." : updateError ? "error" : "update"}</button>

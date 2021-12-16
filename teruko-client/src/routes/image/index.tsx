@@ -1,4 +1,3 @@
-import React, { Fragment, useCallback, useMemo } from "react";
 import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
 import { ChevronLeftIcon, ChevronRightIcon, ClipboardCopyIcon, DownloadIcon, PencilIcon } from "@heroicons/react/outline";
 import Tag from "../../components/Tag";
@@ -6,6 +5,8 @@ import { useQuery } from "@apollo/client";
 import LoaderImage from "../../components/LoaderImage";
 import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import { Image as ImageModel } from "../../models";
+import { useCallback, useMemo } from "preact/hooks";
+import { Fragment } from "preact";
 
 const Image = () => {
     const navigate = useNavigate();
@@ -148,7 +149,7 @@ const Image = () => {
                                     className="text-blue-800 dark:text-blue-300 mb-3">{image.source}</a>
                                 <ClipboardCopyIcon
                                     className="h-6 inline-block relative bottom-1 cursor-pointer transition-colors"
-                                    onClick={(event) => {
+                                    onClick={(event: MouseEvent) => {
                                         navigator.clipboard.writeText(image.source ?? "")
                                             .then(() => {
                                                 (event.target as SVGElement).classList.add("text-emerald-600");

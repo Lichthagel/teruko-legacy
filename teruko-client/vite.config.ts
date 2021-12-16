@@ -1,10 +1,16 @@
 import {defineConfig} from "vite";
-import react from "@vitejs/plugin-react";
+import preact from "@preact/preset-vite";
 
 export default defineConfig({
     //root: "src",
-    plugins: [react()],
+    plugins: [preact()],
     server: {
         host: true
+    },
+    resolve: {
+        alias: {
+            react: "preact/compat",
+            "react-dom": "preact/compat"
+        }
     }
 })
