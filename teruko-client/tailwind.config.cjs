@@ -4,6 +4,9 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
+    fontFamily: {
+      sans: ["Readex Pro", "Noto Sans JP", "sans-serif"]
+    },
     extend: {
       backgroundImage: {
         'conic-gradient-45': "conic-gradient(from 45deg, var(--tw-gradient-stops))"
