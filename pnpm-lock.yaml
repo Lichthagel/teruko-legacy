@@ -19,6 +19,8 @@ importers:
   teruko-client:
     specifiers:
       '@apollo/client': ^3.5.6
+      '@fontsource/noto-sans-jp': ^4.5.2
+      '@fontsource/readex-pro': ^4.5.0
       '@heroicons/react': ^1.0.5
       '@preact/preset-vite': ^2.1.5
       '@tailwindcss/forms': ^0.4.0
@@ -38,6 +40,8 @@ importers:
       vite: ^2.7.3
     dependencies:
       '@apollo/client': 3.5.6
+      '@fontsource/noto-sans-jp': 4.5.2
+      '@fontsource/readex-pro': 4.5.0
       '@heroicons/react': 1.0.5
       apollo-upload-client: 17.0.0_@apollo+client@3.5.6
       clsx: 1.1.1
@@ -49,8 +53,8 @@ importers:
       '@types/apollo-upload-client': 14.1.0
       '@types/node': 17.0.0
       autoprefixer: 10.4.0_postcss@8.4.5
-      eslint-plugin-react: 7.27.1_eslint@8.5.0
-      eslint-plugin-react-hooks: 4.3.0_eslint@8.5.0
+      eslint-plugin-react: 7.27.1
+      eslint-plugin-react-hooks: 4.3.0
       postcss: 8.4.5
       postcss-import: 14.0.2_postcss@8.4.5
       tailwindcss: 3.0.7_16a290f6d0e3717bf6d2667234aebd30
@@ -703,6 +707,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@fontsource/noto-sans-jp/4.5.2:
+    resolution: {integrity: sha512-CWvI1kXjswI8BKdGLwFZ9CfNLQBsaFi1oBF8cjv45TcYZXSaNKDuY/eziijGnn6so8TzU4bc+88izwQjb0PCmQ==}
+    dev: false
+
+  /@fontsource/readex-pro/4.5.0:
+    resolution: {integrity: sha512-wspMTkWm3KE7ckOLe5i/sWtB2O/ZdRKvQCrG9vXD2c177ttMEkW4mxerRM5TeGKxFd/dvIQ/4gwOYzizFsXMnQ==}
+    dev: false
 
   /@graphql-tools/merge/8.2.1:
     resolution: {integrity: sha512-Q240kcUszhXiAYudjuJgNuLgy9CryDP3wp83NOZQezfA6h3ByYKU7xI6DiKrdjyVaGpYN3ppUmdj0uf5GaXzMA==}
@@ -3361,16 +3373,14 @@ packages:
       tsconfig-paths: 3.12.0
     dev: true
 
-  /eslint-plugin-react-hooks/4.3.0_eslint@8.5.0:
+  /eslint-plugin-react-hooks/4.3.0:
     resolution: {integrity: sha512-XslZy0LnMn+84NEG9jSGR6eGqaZB3133L8xewQo3fQagbQuGt7a63gf+P1NGKZavEYEC3UXaWEAA/AqDkuN6xA==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
-    dependencies:
-      eslint: 8.5.0
     dev: true
 
-  /eslint-plugin-react/7.27.1_eslint@8.5.0:
+  /eslint-plugin-react/7.27.1:
     resolution: {integrity: sha512-meyunDjMMYeWr/4EBLTV1op3iSG3mjT/pz5gti38UzfM4OPpNc2m0t2xvKCOMU5D6FSdd34BIMFOvQbW+i8GAA==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -3379,7 +3389,6 @@ packages:
       array-includes: 3.1.4
       array.prototype.flatmap: 1.2.5
       doctrine: 2.1.0
-      eslint: 8.5.0
       estraverse: 5.3.0
       jsx-ast-utils: 3.2.1
       minimatch: 3.0.4
