@@ -20,7 +20,7 @@ importers:
     specifiers:
       '@apollo/client': ^3.5.6
       '@fontsource/noto-sans-jp': ^4.5.2
-      '@fontsource/readex-pro': ^4.5.0
+      '@fontsource/readex-pro': ^4.5.1
       '@heroicons/react': ^1.0.5
       '@preact/preset-vite': ^2.1.5
       '@tailwindcss/forms': ^0.4.0
@@ -41,7 +41,7 @@ importers:
     dependencies:
       '@apollo/client': 3.5.6
       '@fontsource/noto-sans-jp': 4.5.2
-      '@fontsource/readex-pro': 4.5.0
+      '@fontsource/readex-pro': 4.5.1
       '@heroicons/react': 1.0.5
       apollo-upload-client: 17.0.0_@apollo+client@3.5.6
       clsx: 1.1.1
@@ -53,8 +53,8 @@ importers:
       '@types/apollo-upload-client': 14.1.0
       '@types/node': 17.0.0
       autoprefixer: 10.4.0_postcss@8.4.5
-      eslint-plugin-react: 7.27.1
-      eslint-plugin-react-hooks: 4.3.0
+      eslint-plugin-react: 7.27.1_eslint@8.5.0
+      eslint-plugin-react-hooks: 4.3.0_eslint@8.5.0
       postcss: 8.4.5
       postcss-import: 14.0.2_postcss@8.4.5
       tailwindcss: 3.0.7_16a290f6d0e3717bf6d2667234aebd30
@@ -712,8 +712,8 @@ packages:
     resolution: {integrity: sha512-CWvI1kXjswI8BKdGLwFZ9CfNLQBsaFi1oBF8cjv45TcYZXSaNKDuY/eziijGnn6so8TzU4bc+88izwQjb0PCmQ==}
     dev: false
 
-  /@fontsource/readex-pro/4.5.0:
-    resolution: {integrity: sha512-wspMTkWm3KE7ckOLe5i/sWtB2O/ZdRKvQCrG9vXD2c177ttMEkW4mxerRM5TeGKxFd/dvIQ/4gwOYzizFsXMnQ==}
+  /@fontsource/readex-pro/4.5.1:
+    resolution: {integrity: sha512-lIUF+zLiSUvLledesBKXawozINm+rd5D6z1FSKS4Ji4oeBKdvZTeMnBfg6gHd+iVaAlbLPO0V8AkGp30fyFikw==}
     dev: false
 
   /@graphql-tools/merge/8.2.1:
@@ -1447,7 +1447,7 @@ packages:
       debug: 4.3.3
       eslint: 8.5.0
       functional-red-black-tree: 1.0.1
-      ignore: 5.1.9
+      ignore: 5.2.0
       regexpp: 3.2.0
       semver: 7.3.5
       tsutils: 3.21.0
@@ -3373,14 +3373,16 @@ packages:
       tsconfig-paths: 3.12.0
     dev: true
 
-  /eslint-plugin-react-hooks/4.3.0:
+  /eslint-plugin-react-hooks/4.3.0_eslint@8.5.0:
     resolution: {integrity: sha512-XslZy0LnMn+84NEG9jSGR6eGqaZB3133L8xewQo3fQagbQuGt7a63gf+P1NGKZavEYEC3UXaWEAA/AqDkuN6xA==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+    dependencies:
+      eslint: 8.5.0
     dev: true
 
-  /eslint-plugin-react/7.27.1:
+  /eslint-plugin-react/7.27.1_eslint@8.5.0:
     resolution: {integrity: sha512-meyunDjMMYeWr/4EBLTV1op3iSG3mjT/pz5gti38UzfM4OPpNc2m0t2xvKCOMU5D6FSdd34BIMFOvQbW+i8GAA==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -3389,6 +3391,7 @@ packages:
       array-includes: 3.1.4
       array.prototype.flatmap: 1.2.5
       doctrine: 2.1.0
+      eslint: 8.5.0
       estraverse: 5.3.0
       jsx-ast-utils: 3.2.1
       minimatch: 3.0.4
@@ -4043,7 +4046,7 @@ packages:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.2.7
-      ignore: 5.1.9
+      ignore: 5.2.0
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
@@ -4330,6 +4333,11 @@ packages:
 
   /ignore/5.1.9:
     resolution: {integrity: sha512-2zeMQpbKz5dhZ9IwL0gbxSW5w0NK/MSAMtNuhgIHEPmaU3vPdKPL0UdvUCXs5SS4JAwsBxysK5sFMW8ocFiVjQ==}
+    engines: {node: '>= 4'}
+    dev: true
+
+  /ignore/5.2.0:
+    resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
     dev: true
 
