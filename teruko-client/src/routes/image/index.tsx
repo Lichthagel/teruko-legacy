@@ -99,14 +99,34 @@ const Image = () => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
+            console.log(event.code);
+
             if (event.code === "ArrowRight") goNext();
             else if (event.code === "ArrowLeft") goPrevious();
+            else if (event.code === "Escape") {
+                navigate({
+                    pathname: "/",
+                    search: searchParams.toString()
+                });
+            } else if (event.code === "KeyE") {
+                navigate({
+                    pathname: `/${id}/edit`,
+                    search: `${searchParams.toString()}${next ? `&next=${next.id}` : ""}`
+                });
+            }
         };
 
         window.addEventListener("keydown", onKeyDown);
 
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [goNext, goPrevious]);
+    }, [
+        goNext,
+        goPrevious,
+        id,
+        navigate,
+        next,
+        searchParams
+    ]);
 
     const image: ImageModel = data && data.image || undefined;
 

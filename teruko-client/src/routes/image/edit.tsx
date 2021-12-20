@@ -91,6 +91,60 @@ const EditImage = () => {
         });
     }, [id, source, title, updateImage]);
 
+    const handleDelete = useCallback(() => {
+        if (confirm("Delete?")) {
+            deleteImage()
+                .then(() => {
+                    const next = searchParams.get("next");
+
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    newSearchParams.delete("next");
+
+                    navigate({
+                        pathname: next ? `/${next}` : "/",
+                        search: `?${newSearchParams.toString()}`
+                    }, {
+                        replace: true
+                    });
+                });
+        }
+    }, [deleteImage, navigate, searchParams]);
+
+    const handleUpdatePixiv = useCallback(() => {
+        updateImagePixiv({
+            variables: {
+                id
+            }
+        });
+    }, [id, updateImagePixiv]);
+
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            console.log(event.code);
+
+            if (event.code === "Escape") {
+                navigate({
+                    pathname: `/${id}`,
+                    search: searchParams.toString()
+                });
+            } else if (event.code === "KeyD") {
+                handleDelete();
+            } else if (event.code === "KeyP") {
+                handleUpdatePixiv();
+            }
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [
+        handleDelete,
+        handleUpdatePixiv,
+        id,
+        navigate,
+        searchParams
+    ]);
+
     return (
         <div className="max-w-2xl mx-auto rounded-md bg-neutral-200 dark:bg-neutral-800 p-2 mt-20 shadow-md dark:shadow-indigo-800">
             <div className="flex flex-row items-center">
@@ -102,35 +156,12 @@ const EditImage = () => {
                 <div className="flex-grow"></div>
                 <LoadingIconButton
                     loading={loadingFetchPixiv}
-                    onClick={() => {
-                        updateImagePixiv({
-                            variables: {
-                                id
-                            }
-                        });
-                    }}>
+                    onClick={handleUpdatePixiv}>
                     <DownloadIcon />
                 </LoadingIconButton>
                 <LoadingIconButton
                     loading={deleteLoading}
-                    onClick={() => {
-                        if (confirm("Delete?")) {
-                            deleteImage()
-                                .then(() => {
-                                    const next = searchParams.get("next");
-
-                                    const newSearchParams = new URLSearchParams(searchParams);
-                                    newSearchParams.delete("next");
-
-                                    navigate({
-                                        pathname: next ? `/${next}` : "/",
-                                        search: `?${newSearchParams.toString()}`
-                                    }, {
-                                        replace: true
-                                    });
-                                });
-                        }
-                    }}>
+                    onClick={handleDelete}>
                     <TrashIcon />
                 </LoadingIconButton>
             </div>
