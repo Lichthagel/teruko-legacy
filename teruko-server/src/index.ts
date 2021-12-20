@@ -7,6 +7,7 @@ import path, { dirname } from "path";
 import resolvers from "./resolvers/index.js";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
+import archiver from "archiver";
 
 process.setMaxListeners(0);
 
@@ -73,6 +74,37 @@ const port = 3030;
             sharp(path.join(context.imgFolder, image.filename))
                 .webp({ quality: 100 })
                 .pipe(res);
+        }
+    );
+
+    app.get(
+        "/zip/:slug",
+        async (req, res) => {
+            const slug = req.params.slug;
+
+            const images = await context.prisma.image.findMany({
+                where: {
+                    tags: {
+                        some: {
+                            slug
+                        }
+                    }
+                }
+            });
+
+            const archive = archiver("zip", {
+                zlib: { level: 9 }
+            });
+
+            res.attachment(`${slug}.zip`);
+
+            archive.pipe(res);
+
+            for (const image of images) {
+                archive.file(path.join(context.imgFolder, image.filename), { name: image.filename });
+            }
+
+            await archive.finalize();
         }
     );
 
