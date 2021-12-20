@@ -99,6 +99,7 @@ const Image = () => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
+            if (document.activeElement && document.activeElement.tagName.toUpperCase() === "INPUT") return;
 
             if (event.code === "ArrowRight") {
                 event.preventDefault();

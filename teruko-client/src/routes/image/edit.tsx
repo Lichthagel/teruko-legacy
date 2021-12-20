@@ -132,6 +132,8 @@ const EditImage = () => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
+            if (document.activeElement && document.activeElement.tagName.toUpperCase() === "INPUT") return;
+
             if (event.code === "Escape") {
                 event.preventDefault();
                 navigate({
