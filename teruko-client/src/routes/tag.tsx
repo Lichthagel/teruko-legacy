@@ -165,6 +165,7 @@ const Tag = () => {
             <div className="my-3 flex flex-row items-center mt-20">
                 <Heading loading={loading} data={data} slug={slug} />
                 <div className="flex-grow"></div>
+                {data && data.tag && <div className="text-gray-600 hidden md:block mx-2">{data.tag.count} images</div>}
                 <SortToggle />
                 <RefreshIcon
                     className="w-10 h-10 cursor-pointer"

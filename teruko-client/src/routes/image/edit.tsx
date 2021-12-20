@@ -62,7 +62,19 @@ const EditImage = () => {
     });
 
     const [addTag] = useMutation(ADD_TAG, {
-        refetchQueries: ["TagSuggestions"]
+        refetchQueries: ["TagSuggestions"],
+        update(cache, _, context) {
+            if (!context.variables) return;
+            cache.modify({
+                id: cache.identify({
+                    __typename: "Tag",
+                    slug: context.variables.tag
+                }),
+                fields: {
+                    count: (fieldValue, details) => details.INVALIDATE
+                }
+            });
+        }
     });
 
     const [removeTag] = useMutation(REMOVE_TAG, {

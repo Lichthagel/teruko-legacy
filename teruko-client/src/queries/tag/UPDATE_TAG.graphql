@@ -1,6 +1,7 @@
 mutation UpdateTag($slug: String!, $newSlug: String, $category: String) {
     updateTag(slug: $slug, newSlug: $newSlug, category: $category) {
         slug
+        count
         category {
             slug
             color

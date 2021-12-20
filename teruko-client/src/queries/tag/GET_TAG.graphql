@@ -1,6 +1,7 @@
 query Tag($slug: String!) {
     tag(slug: $slug) {
         slug
+        count
         category {
             slug
             color

@@ -64,7 +64,8 @@ const Gallery: FunctionComponent<{
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
-            if (event.code === "Space") {
+            console.log(document.activeElement);
+            if (event.code === "Space" && (!document.activeElement || document.activeElement.tagName.toUpperCase() !== "INPUT")) {
                 event.preventDefault();
                 loadMore();
             }
