@@ -3,7 +3,7 @@ import { ArrowLeftIcon, DownloadIcon, TrashIcon } from "@heroicons/react/outline
 import { useMutation, useQuery } from "@apollo/client";
 import Tag from "../../components/Tag";
 import TagInput from "../../components/TagInput";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { createSearchParams, Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { DELETE_IMAGE, GET_IMAGE, UPDATE_IMAGE, UPDATE_IMAGE_PIXIV } from "../../queries/image";
 import IconButton from "../../components/IconButton";
 import LoadingIconButton from "../../components/LoadingIconButton";
@@ -163,7 +163,7 @@ const EditImage = () => {
     return (
         <div className="max-w-2xl mx-auto rounded-md bg-neutral-200 dark:bg-neutral-800 p-2 mt-20 shadow-md dark:shadow-indigo-800">
             <div className="flex flex-row items-center">
-                <Link to={{ pathname: `/${id}`, search: `?${searchParams.toString()}` }} replace>
+                <Link to={{ pathname: `/${id}`, search: createSearchParams({ sort: searchParams.getAll("sort"), tags: searchParams.getAll("tags") }).toString() }} replace>
                     <IconButton>
                         <ArrowLeftIcon />
                     </IconButton>
