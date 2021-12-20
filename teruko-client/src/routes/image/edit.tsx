@@ -120,16 +120,17 @@ const EditImage = () => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
-            event.preventDefault();
-
             if (event.code === "Escape") {
+                event.preventDefault();
                 navigate({
                     pathname: `/${id}`,
                     search: searchParams.toString()
                 });
             } else if (event.ctrlKey && event.code === "KeyD") {
+                event.preventDefault();
                 handleDelete();
             } else if (event.ctrlKey && event.code === "KeyP") {
+                event.preventDefault();
                 handleUpdatePixiv();
             }
         };

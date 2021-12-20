@@ -3,7 +3,7 @@ import { GET_IMAGES } from "../queries/image";
 import ImageCard from "./ImageCard";
 import { Image } from "../models";
 import { FunctionComponent } from "preact";
-import { useCallback } from "preact/hooks";
+import { useCallback, useEffect } from "preact/hooks";
 
 const DEFAULT_TAKE = 12;
 
@@ -61,6 +61,19 @@ const Gallery: FunctionComponent<{
 
         return () => window.removeEventListener("scroll", onScroll);
     }, [loadMore]);*/
+
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.code === "Space") {
+                event.preventDefault();
+                loadMore();
+            }
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [loadMore]);
 
     if (loading) {
         return <GallerySkeletonLoader />;

@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { NEW_IMAGE, NEW_IMAGE_FROM_PIXIV } from "../queries/image";
 import clsx from "clsx";
-import { useCallback, useState } from "preact/hooks";
+import { useCallback, useEffect, useState } from "preact/hooks";
 import { JSX } from "preact";
 
 const New = () => {
@@ -86,6 +86,21 @@ const New = () => {
         newImageFromPixiv,
         pixivUrl
     ]);
+
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.code === "Escape") {
+                event.preventDefault();
+                navigate({
+                    pathname: "/"
+                });
+            }
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [navigate]);
 
     return (
         <div className="flex flex-col items-center mt-20">

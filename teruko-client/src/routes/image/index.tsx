@@ -99,16 +99,21 @@ const Image = () => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
-            event.preventDefault();
 
-            if (event.code === "ArrowRight") goNext();
-            else if (event.code === "ArrowLeft") goPrevious();
-            else if (event.code === "Escape") {
+            if (event.code === "ArrowRight") {
+                event.preventDefault();
+                goNext();
+            } else if (event.code === "ArrowLeft") {
+                event.preventDefault();
+                goPrevious();
+            } else if (event.code === "Escape") {
+                event.preventDefault();
                 navigate({
                     pathname: "/",
                     search: searchParams.toString()
                 });
             } else if (event.ctrlKey && event.code === "KeyE") {
+                event.preventDefault();
                 navigate({
                     pathname: `/${id}/edit`,
                     search: `${searchParams.toString()}${next ? `&next=${next.id}` : ""}`
