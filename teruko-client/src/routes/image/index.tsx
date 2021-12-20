@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import LoaderImage from "../../components/LoaderImage";
 import { useNavigate, useParams, useSearchParams, Link } from "react-router-dom";
 import { Image as ImageModel } from "../../models";
-import { useCallback, useMemo } from "preact/hooks";
+import { useCallback, useEffect, useMemo } from "preact/hooks";
 import { Fragment } from "preact";
 
 const Image = () => {
@@ -96,6 +96,17 @@ const Image = () => {
             }, { replace: true });
         }
     }, [navigate, next, sort, tags]);
+
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.code === "ArrowRight") goNext();
+            else if (event.code === "ArrowLeft") goPrevious();
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [goNext, goPrevious]);
 
     const image: ImageModel = data && data.image || undefined;
 
