@@ -171,7 +171,7 @@ const Image = () => {
                                 <DownloadIcon className="w-10 h-10 mx-1" />
                                 <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">webp</span>
                             </a>
-                            <Link to={{ pathname: `/${id}/edit`, search: searchParams.toString() }} replace className="flex-shrink-0">
+                            <Link to={{ pathname: `/${id}/edit`, search: `?${searchParams.toString()}${next ? `&next=${next.id}` : ""}` }} replace className="flex-shrink-0">
                                 <PencilIcon className="w-8 h-8 mx-1" />
                             </Link>
                         </div>
