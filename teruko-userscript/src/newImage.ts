@@ -50,6 +50,7 @@ function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open
                 }
             })
                 .catch(error => {
+                    console.error(error);
                     alert(`error: ${error}`);
                 });
 
