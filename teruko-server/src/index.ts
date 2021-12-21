@@ -16,7 +16,7 @@ process.setMaxListeners(0);
 
 const port = 3030;
 
-const app = fastify({ logger: process.env.NODE_ENV === "development" });
+const app = fastify({ logger: process.env.NODE_ENV === "development", maxParamLength: 10000 });
 
 const gqlServer = createGraphQLServer({
     typeDefs: fs.readFileSync(
@@ -108,7 +108,7 @@ app.get("/zip/:slug", async (request, reply) => {
     });
 
     reply.header("Content-Type", "application/zip");
-    reply.header("Content-Disposition", `attachment; filename=${slug}.zip`);
+    reply.header("Content-Disposition", `attachment; filename=${encodeURIComponent(slug)}.zip`);
 
     reply.send(archive);
 
