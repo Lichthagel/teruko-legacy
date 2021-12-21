@@ -1,130 +1,141 @@
-import context from "./context.js";
-import express from "express";
+import fastify from "fastify";
+import { createGraphQLServer } from "graphql-yoga";
 import fs from "fs";
 import path, { dirname } from "path";
-import resolvers from "./resolvers/index.js";
 import { fileURLToPath } from "url";
+import resolvers from "./resolvers/index.js";
+import context from "./context.js";
+import fastifyStatic from "fastify-static";
+import { fileTypeStream } from "file-type";
 import sharp from "sharp";
 import archiver from "archiver";
-import { createGraphQLServer } from "graphql-yoga";
-import cors from "cors";
+import fastifyCors from "fastify-cors";
+import fastifyMultipart from "fastify-multipart";
 
 process.setMaxListeners(0);
 
 const port = 3030;
 
-(async function() {
-    const app = express();
+const app = fastify({ logger: process.env.NODE_ENV === "development" });
 
-    app.use(cors({
-        origin: "*"
-    }));
+const gqlServer = createGraphQLServer({
+    typeDefs: fs.readFileSync(
+        path.join(dirname(fileURLToPath(import.meta.url)), "../schema.graphql"),
+        "utf8"
+    ),
+    resolvers,
+    context: () => Promise.resolve(context),
+    cors: true,
+    isDev: process.env.NODE_ENV === "development"
+});
 
-    app.use(
-        "/img",
-        express.static(context.imgFolder, {
-            index: false
-        })
-    );
+app.register(fastifyCors);
 
-    app.get(
-        "/original/:id",
-        async (req, res) => {
-            const id = parseInt(req.params.id);
-            if (isNaN(id)) {
-                res.status(400).send("not a valid id");
-                return;
-            }
+app.register(fastifyMultipart);
 
-            const image = await context.prisma.image.findUnique({
-                where: {
-                    id
-                }
-            });
+app.register(fastifyStatic, {
+    root: context.imgFolder,
+    prefix: "/img"
+});
 
-            if (!image) {
-                res.status(404).send("not found");
-                return;
-            }
+app.get("/original/:id", async (request, reply) => {
+    const id = parseInt((request.params as { id: string }).id);
+    if (isNaN(id)) {
+        reply.status(400).send("not a valid id");
+        return;
+    }
 
-            res.attachment(image.filename);
-
-            fs.createReadStream(path.join(context.imgFolder, image.filename)).pipe(res);
+    const image = await context.prisma.image.findUnique({
+        where: {
+            id
         }
-    );
-
-    app.get(
-        "/webp/:id",
-        async (req, res) => {
-            const id = parseInt(req.params.id);
-            if (isNaN(id)) {
-                res.status(400).send("not a valid id");
-                return;
-            }
-
-            const image = await context.prisma.image.findUnique({
-                where: {
-                    id
-                }
-            });
-
-            if (!image) {
-                res.status(404).send("not found");
-                return;
-            }
-
-            res.attachment(image.filename.replace(/[^./\\]+$/, "webp"));
-
-            sharp(path.join(context.imgFolder, image.filename))
-                .webp({ quality: 100 })
-                .pipe(res);
-        }
-    );
-
-    app.get(
-        "/zip/:slug",
-        async (req, res) => {
-            const slug = req.params.slug;
-
-            const images = await context.prisma.image.findMany({
-                where: {
-                    tags: {
-                        some: {
-                            slug
-                        }
-                    }
-                }
-            });
-
-            const archive = archiver("zip", {
-                zlib: { level: 9 }
-            });
-
-            res.attachment(`${slug}.zip`);
-
-            archive.pipe(res);
-
-            for (const image of images) {
-                archive.file(path.join(context.imgFolder, image.filename), { name: image.filename });
-            }
-
-            await archive.finalize();
-        }
-    );
-
-    const gqlServer = createGraphQLServer({
-        typeDefs: fs.readFileSync(
-            path.join(dirname(fileURLToPath(import.meta.url)), "../schema.graphql"),
-            "utf8"
-        ),
-        resolvers,
-        context: () => Promise.resolve(context)
     });
 
-    app.use("/graphql", gqlServer.requestListener);
+    if (!image) {
+        reply.status(404).send("not found");
+        return;
+    }
 
-    app.listen(port, () => {
-        console.log(`Teruko-Server listening on port ${port}`);
-        console.log(`GraphQL on ${"/graphql"}`);
+    const readStream = fs.createReadStream(path.join(context.imgFolder, image.filename));
+
+    const withFileType = await fileTypeStream(readStream);
+
+    reply.header("Content-Type", withFileType.fileType?.mime);
+    reply.header("Content-Disposition", `attachment; filename=${image.filename}`);
+
+    reply.send(withFileType);
+});
+
+app.get("/webp/:id", async (request, reply) => {
+    const id = parseInt((request.params as { id: string }).id);
+    if (isNaN(id)) {
+        reply.status(400).send("not a valid id");
+        return;
+    }
+
+    const image = await context.prisma.image.findUnique({
+        where: {
+            id
+        }
     });
-})();
+
+    if (!image) {
+        reply.status(404).send("not found");
+        return;
+    }
+
+    reply.header("Content-Type", "image/webp");
+    reply.header("Content-Disposition", `attachment; filename=${image.filename.replace(/[^./\\]+$/, "webp")}`);
+
+    reply.send(sharp(path.join(context.imgFolder, image.filename)).webp({ quality: 100 }));
+});
+
+app.get("/zip/:slug", async (request, reply) => {
+    const slug = (request.params as { slug: string }).slug;
+
+    const images = await context.prisma.image.findMany({
+        where: {
+            tags: {
+                some: {
+                    slug
+                }
+            }
+        }
+    });
+
+    const archive = archiver("zip", {
+        zlib: { level: 9 }
+    });
+
+    reply.header("Content-Type", "application/zip");
+    reply.header("Content-Disposition", `attachment; filename=${slug}.zip`);
+
+    reply.send(archive);
+
+    for (const image of images) {
+        archive.file(path.join(context.imgFolder, image.filename), { name: image.filename });
+    }
+
+    await archive.finalize();
+});
+
+app.route({
+    url: "/graphql",
+    method: ["GET", "POST", "OPTIONS"],
+    handler: async (request, reply) => {
+        const response = await gqlServer.handleIncomingMessage(request);
+        response.headers.forEach((val, key) => {
+            reply.header(key, val);
+        });
+
+        reply.status(response.status);
+        reply.send(response.body);
+    }
+});
+
+app.listen(port, "::", (err) => {
+    if (err) {
+        app.log.error(err);
+        process.exit(1);
+    }
+});
