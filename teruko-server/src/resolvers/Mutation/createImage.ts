@@ -1,22 +1,24 @@
 import { Context } from "../../context.js";
+import { FileUpload } from "graphql-upload";
 import { finished } from "stream/promises";
 import fs from "fs";
 import { fileTypeStream } from "file-type";
 import { fetchPixiv, toModel } from "./fetchPixiv.js";
 import path from "path";
 import sharp from "sharp";
-import { Readable } from "stream";
-
 
 const inUpload: string[] = [];
 
-async function createImage(parent: void, { files }: { files: File[] }, context: Context) {
-    return Promise.all(files.map(async (file: File) => {
+async function createImage(parent: void, { files }: { files: FileUpload[] }, context: Context) {
+    return Promise.all(files.map(async (file: FileUpload) => {
 
         // eslint-disable-next-line @typescript-eslint/await-thenable
-        const filename = file.name.replace(/[^./\\]+$/, "avif");
+        const resolvedFile = await file;
+        const filename = resolvedFile.filename.replace(/[^./\\]+$/, "avif");
 
-        const streamWithFileType = await fileTypeStream(Readable.from(file.stream()));
+        const stream = resolvedFile.createReadStream();
+
+        const streamWithFileType = await fileTypeStream(stream);
 
         if (!streamWithFileType.fileType || !streamWithFileType.fileType.mime.match(/^image\/(jpeg|gif|png|webp|avif)$/)) {
             throw new Error("not an image");
@@ -87,6 +89,8 @@ async function createImage(parent: void, { files }: { files: File[] }, context: 
 
         return newImage;
     }));
+
+    // return returnImages;
 }
 
 export default createImage;

@@ -1,3 +1,5 @@
+import { GraphQLUpload, graphqlUploadExpress } from "graphql-upload";
+import { ApolloServer } from "apollo-server-express";
 import context from "./context.js";
 import express from "express";
 import fs from "fs";
@@ -6,8 +8,6 @@ import resolvers from "./resolvers/index.js";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 import archiver from "archiver";
-import { createGraphQLServer } from "graphql-yoga";
-import cors from "cors";
 
 process.setMaxListeners(0);
 
@@ -15,10 +15,6 @@ const port = 3030;
 
 (async function() {
     const app = express();
-
-    app.use(cors({
-        origin: "*"
-    }));
 
     app.use(
         "/img",
@@ -112,19 +108,25 @@ const port = 3030;
         }
     );
 
-    const gqlServer = createGraphQLServer({
+    const apolloServer = new ApolloServer({
         typeDefs: fs.readFileSync(
             path.join(dirname(fileURLToPath(import.meta.url)), "../schema.graphql"),
             "utf8"
         ),
-        resolvers,
-        context: () => Promise.resolve(context)
+        resolvers: {
+            ...resolvers,
+            Upload: GraphQLUpload
+        },
+        context
     });
 
-    app.use("/graphql", gqlServer.requestListener);
+    await apolloServer.start();
+
+    app.use(graphqlUploadExpress());
+    apolloServer.applyMiddleware({ app });
 
     app.listen(port, () => {
         console.log(`Teruko-Server listening on port ${port}`);
-        console.log(`GraphQL on ${"/graphql"}`);
+        console.log(`GraphQL on ${apolloServer.graphqlPath}`);
     });
 })();

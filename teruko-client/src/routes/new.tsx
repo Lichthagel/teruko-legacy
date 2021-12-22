@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { NEW_IMAGE, NEW_IMAGE_FROM_PIXIV } from "../queries/image";
 import clsx from "clsx";
 import { useCallback, useEffect, useState } from "preact/hooks";
@@ -12,6 +12,15 @@ const New = () => {
 
     const [newImage, { loading, error }] = useMutation(NEW_IMAGE, {
         refetchQueries: ["Images", "GetNext"],
+        update(cache) {
+            cache.modify({
+                fields: {
+                    imageCount(prev = 0) {
+                        return prev + 1;
+                    }
+                }
+            });
+        },
         onError(error) {
             alert(`Error: ${error.message}`);
         }
@@ -22,6 +31,15 @@ const New = () => {
             url: pixivUrl
         },
         refetchQueries: ["Images", "GetNext"],
+        update(cache) {
+            cache.modify({
+                fields: {
+                    imageCount(prev = 0) {
+                        return prev + 1;
+                    }
+                }
+            });
+        },
         onError(error) {
             alert(`Error: ${error.message}`);
         }
@@ -46,12 +64,8 @@ const New = () => {
                     files: event.dataTransfer.files
                 }
             })
-                .then((res) => {
-                    if (res.data && res.data.createImage[0]) {
-                        navigate({ pathname: `/${res.data.createImage[0].id}`, search: createSearchParams({ sort: "newest" }).toString() });
-                    } else {
-                        navigate("/");
-                    }
+                .then(() => {
+                    navigate("/");
                 });
         }
 
