@@ -7,6 +7,9 @@ import path from "path";
 import sharp from "sharp";
 import { Readable } from "stream";
 
+
+const inUpload: string[] = [];
+
 async function createImage(parent: void, { files }: { files: File[] }, context: Context) {
     return Promise.all(files.map(async (file: File) => {
 
@@ -18,6 +21,15 @@ async function createImage(parent: void, { files }: { files: File[] }, context: 
         if (!streamWithFileType.fileType || !streamWithFileType.fileType.mime.match(/^image\/(jpeg|gif|png|webp|avif)$/)) {
             throw new Error("not an image");
         }
+
+        if (await context.prisma.image.findUnique({
+            where: {
+                filename
+            }
+        }) || inUpload.findIndex((val) => val === filename) >= 0) {
+            return Promise.reject(new Error("already exists"));
+        }
+        inUpload.push(filename);
 
         const transform = sharp().avif({ quality: 90 });
 
@@ -70,6 +82,9 @@ async function createImage(parent: void, { files }: { files: File[] }, context: 
                 height: metadata.height
             }
         });
+
+        inUpload.splice(inUpload.findIndex(val => val === filename), 1);
+
         return newImage;
     }));
 }
