@@ -162,7 +162,7 @@ const Tag = () => {
 
     return (
         <Fragment>
-            <div className="my-3 flex flex-row items-center mt-20">
+            <div className="my-3 flex flex-row items-center">
                 <Heading loading={loading} data={data} slug={slug} />
                 <div className="flex-grow"></div>
                 {data && data.tag && <div className="text-gray-600 hidden md:block mx-2">{data.tag.count} images</div>}

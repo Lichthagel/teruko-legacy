@@ -5,8 +5,9 @@ import IconButton from "./components/IconButton";
 import clsx from "clsx";
 import ScrollToTop from "./components/ScrollToTop";
 import { lazy, Suspense } from "preact/compat";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Fragment } from "preact";
+import Nav from "./components/Nav";
 
 const Image = lazy(() => import("./routes/image"));
 const EditImage = lazy(() => import("./routes/image/edit"));
@@ -15,8 +16,6 @@ const New = lazy(() => import("./routes/new"));
 
 const App = () => {
     const isImageView = useMatch(":id");
-
-    const [searchParams] = useSearchParams();
 
     const [showToTop, setShowToTop] = useState(false);
     const [showToBottom, setShowToBottom] = useState(true);
@@ -45,22 +44,7 @@ const App = () => {
     }, []);
 
     return <Fragment>
-        <div className="fixed top-2 right-0 left-0 z-20 pointer-events-none">
-            <div className="container mx-auto px-3">
-                <div className={clsx("pointer-events-auto flex flex-row items-center w-min bg-neutral-100 shadow-lg dark:bg-zinc-800 rounded-xl p-1 transition hover:opacity-100", { "opacity-20": isImageView })}>
-                    <Link to={{ pathname: "/", search: `?${searchParams.toString()}` }}> {/* TODO only tags and sort */}
-                        <IconButton>
-                            <HomeIcon className="w-10 h-10" />
-                        </IconButton>
-                    </Link>
-                    <Link to="/new">
-                        <IconButton>
-                            <PlusIcon className="w-10 h-10" />
-                        </IconButton>
-                    </Link>
-                </div>
-            </div>
-        </div>
+        <Nav />
         <div className="container mx-auto">
             <ScrollToTop />
             <Routes>

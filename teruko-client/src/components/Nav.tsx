@@ -1,58 +1,31 @@
-import { RefreshIcon } from "@heroicons/react/outline";
-import SortToggle from "./SortToggle";
-import TagSearch from "./TagSearch";
-import { useApolloClient } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
-import TagQuery from "./TagQuery";
+import { HomeIcon, PlusIcon } from "@heroicons/react/outline";
+import clsx from "clsx";
 import { FunctionComponent } from "preact";
-import { useCallback } from "preact/hooks";
+import { Link, useSearchParams } from "react-router-dom";
+import useIsImageView from "../hooks/useIsImageView";
+import IconButton from "./IconButton";
 
-const Nav: FunctionComponent<{
-    tags: string[];
-    setTags: (tags: string[]) => void;
-}> = ({ tags, setTags }) => {
+const Nav: FunctionComponent = () => {
 
-    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const isImageView = useIsImageView();
 
-    const apolloClient = useApolloClient();
-
-    const removeTag = useCallback(async (tagSlug: string) => {
-        navigate("/");
-        const newTags = tags.filter(el => el !== tagSlug);
-        setTags(newTags);
-    }, [navigate, setTags, tags]);
-
-    const resetTags = useCallback(async () => {
-        navigate("/");
-        setTags([]);
-    }, [navigate, setTags]);
-
-    return (
-        <div className="w-full md:w-2/3 lg:w-1/2 px-3 mx-auto mt-3 mb-5 z-10">
-            <div className="flex flex-col md:flex-row w-full mb-1 items-center">
-                <TagSearch tags={tags} setTags={setTags} />
-                <SortToggle />
-                <RefreshIcon
-                    className="w-10 h-10 cursor-pointer"
-                    onClick={() => {
-                        apolloClient.refetchQueries({
-                            include: ["Images"]
-                        });
-                    }} />
+    return <div className={clsx("left-0 right-0 top-0 z-50 mb-2 shadow-indigo-700/50  border-indigo-700 transition hover:opacity-100", { "fixed bg-transparent": isImageView, "sticky bg-neutral-100 dark:bg-neutral-900 shadow border-b": !isImageView })}>
+        <div className="container mx-auto flex flex-col md:flex-row items-center">
+            <div className={clsx("pointer-events-auto flex flex-row items-center w-min p-1 rounded", { "bg-neutral-100/70 dark:bg-neutral-900/70": isImageView })}>
+                <Link to={{ pathname: "/", search: `?${searchParams.toString()}` }}> {/* TODO only tags and sort */}
+                    <IconButton>
+                        <HomeIcon className="w-10 h-10" />
+                    </IconButton>
+                </Link>
+                <Link to="/new">
+                    <IconButton>
+                        <PlusIcon className="w-10 h-10" />
+                    </IconButton>
+                </Link>
             </div>
-            <div>
-                {tags?.map(slug => <TagQuery key={slug} slug={slug} onClick={() => removeTag(slug)} />)}
-                {tags && tags.length > 0 &&
-                <div
-                    key="resetButton"
-                    className="inline-block bg-red-700 text-white h-8 leading-8 px-2 rounded cursor-pointer mr-1"
-                    onClick={resetTags}>
-                    reset
-                </div>
-                }
-            </div>
+            <div id="navContent" className="flex-grow"></div>
         </div>
-    );
+    </div>;
 };
-
 export default Nav;
