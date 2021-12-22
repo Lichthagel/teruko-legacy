@@ -7,7 +7,7 @@ import path from "path";
 import sharp from "sharp";
 import { fileTypeStream } from "file-type";
 
-let inUpload: string[] = [];
+const inUpload: string[] = [];
 
 async function createImageFromPixiv(parent: void, { url }: { url: string }, context: Context) {
     const matches = url.match(/https?:\/\/www.pixiv.net(?:\/en)?\/artworks\/([0-9]+)/);
@@ -45,19 +45,25 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
             continue;
         }
 
-        let filename = `${matchesUrl[2]}_p${i}.avif`;
-        
+        const filename = `${matchesUrl[2]}_p${i}.avif`;
+
         if (await context.prisma.image.findUnique({
             where: {
                 filename
             }
-        }) || inUpload.findIndex((val) => val === filename) >= 0) {
-            resultPromises.push(Promise.reject(new Error("already exists")))
+        })) {
+            resultPromises.push(Promise.reject(new Error("already exists")));
             continue;
         }
+
+        if (inUpload.findIndex((val) => val === filename) >= 0) {
+            resultPromises.push(Promise.reject(new Error("already uploading")));
+            continue;
+        }
+
         inUpload.push(filename);
 
-        const transform = sharp().avif({quality: 90});
+        const transform = sharp().avif({ quality: 90 });
 
         const out = fs.createWriteStream(path.join(context.imgFolder, filename));
 

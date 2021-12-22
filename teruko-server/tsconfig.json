@@ -8,7 +8,7 @@
         "outDir": "build",
         "strict": true
     },
-    "include": ["./src/**/*"],
+    "include": ["./src/*"],
     "ts-node": {
         "files": true
     }

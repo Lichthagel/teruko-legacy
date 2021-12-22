@@ -28,9 +28,14 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
             where: {
                 filename
             }
-        }) || inUpload.findIndex((val) => val === filename) >= 0) {
+        })) {
             return Promise.reject(new Error("already exists"));
         }
+
+        if (inUpload.findIndex((val) => val === filename) >= 0) {
+            return Promise.reject(new Error("already uploading"));
+        }
+
         inUpload.push(filename);
 
         const transform = sharp().avif({ quality: 90 });
