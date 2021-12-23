@@ -15,12 +15,12 @@
     "lint": "eslint ./src"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.1.5",
+    "@preact/preset-vite": "^2.1.6",
     "@tailwindcss/forms": "^0.4.0",
     "@types/apollo-upload-client": "^14.1.0",
-    "@types/node": "^17.0.2",
+    "@types/node": "^17.0.4",
     "autoprefixer": "^10.4.0",
-    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
