@@ -125,6 +125,14 @@ const port = 3030;
     app.use(graphqlUploadExpress());
     apolloServer.applyMiddleware({ app });
 
+    if (process.env.FRONTEND_FOLDER) {
+        app.use(express.static(path.resolve(process.env.FRONTEND_FOLDER), {}));
+
+        app.use((req, res) => {
+            res.sendFile(path.resolve(process.env.FRONTEND_FOLDER || "", "index.html"));
+        });
+    }
+
     app.listen(port, () => {
         console.log(`Teruko-Server listening on port ${port}`);
         console.log(`GraphQL on ${apolloServer.graphqlPath}`);
