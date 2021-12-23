@@ -163,7 +163,7 @@ const EditImage = () => {
     return (
         <div className="max-w-2xl mx-auto rounded-md bg-neutral-200 dark:bg-neutral-800 p-2 mt-20 shadow-md dark:shadow-indigo-800">
             <div className="flex flex-row items-center">
-                <Link to={{ pathname: `/${id}`, search: createSearchParams({ sort: searchParams.getAll("sort"), tags: searchParams.getAll("tags") }).toString() }} replace>
+                <Link to={{ pathname: `/${id}`, search: createSearchParams({ sort: searchParams.getAll("sort"), tags: searchParams.getAll("tag") }).toString() }} replace>
                     <IconButton>
                         <ArrowLeftIcon />
                     </IconButton>
