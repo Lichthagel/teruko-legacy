@@ -187,15 +187,19 @@ const Image = () => {
                                 <ClipboardCopyIcon
                                     className="h-6 inline-block relative bottom-1 cursor-pointer transition-colors"
                                     onClick={(event: MouseEvent) => {
-                                        navigator.clipboard.writeText(image.source ?? "")
-                                            .then(() => {
-                                                (event.target as SVGElement).classList.add("text-emerald-600");
+                                        if (window.navigator.clipboard) {
+                                            window.navigator.clipboard.writeText(image.source ?? "")
+                                                .then(() => {
+                                                    (event.target as SVGElement).classList.add("text-emerald-600");
 
-                                                setTimeout(() => {
-                                                    (event.target as SVGElement).classList.remove("text-emerald-600");
-                                                }, 1000);
-                                            })
-                                            .catch((err) => alert(`could not copy: ${err}`));
+                                                    setTimeout(() => {
+                                                        (event.target as SVGElement).classList.remove("text-emerald-600");
+                                                    }, 1000);
+                                                })
+                                                .catch((err) => alert(`could not copy: ${err}`));
+                                        } else {
+                                            alert(`insecure context - ${image.source}`);
+                                        }
                                     }} />
                             </div>
                             :
