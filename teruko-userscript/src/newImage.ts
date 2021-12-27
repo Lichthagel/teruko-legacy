@@ -17,6 +17,14 @@ mutation ($url: String!) {
 `;
 
 function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open: boolean, target: HTMLDivElement) {
+    const beforeUnload = (event: BeforeUnloadEvent) => {
+        event.preventDefault();
+        event.returnValue = "";
+        return "Still uploading";
+    }
+
+    window.addEventListener("beforeunload", beforeUnload)
+
     target.textContent = "down..."
     GM_xmlhttpRequest({
         method: "GET",
@@ -42,6 +50,7 @@ function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open
                     files: [file]
                 }
             }).then(result => {
+                window.removeEventListener("beforeunload", beforeUnload);
                 if (result.data) {
                     if (open)
                         window.open(`http://192.168.1.178:3000/${result.data.createImage[0].id}`, "_blank");
@@ -55,6 +64,7 @@ function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open
                 }
             })
                 .catch(error => {
+                    window.removeEventListener("beforeunload", beforeUnload);
                     target.classList.add("terukoButtonSmall")
                     target.textContent = error.message;
                     // alert(`error: ${error}`);
