@@ -66,7 +66,8 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
                 }
             });
 
-            // returnImages.push(newImage);
+            inUpload.splice(inUpload.findIndex(val => val === filename), 1);
+
             return newImage;
         }
 
@@ -94,8 +95,6 @@ async function createImage(parent: void, { files }: { files: FileUpload[] }, con
 
         return newImage;
     }));
-
-    // return returnImages;
 }
 
 export default createImage;

@@ -77,6 +77,8 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
 
         if (!metadata.width || !metadata.height) throw new Error("cant read image dimensions");
 
+        inUpload.splice(inUpload.findIndex(val => val === filename), 1);
+
         resultPromises.push(context.prisma.image.create({
             data: {
                 ...toModel(pixivResult, matchesUrl[2]),
