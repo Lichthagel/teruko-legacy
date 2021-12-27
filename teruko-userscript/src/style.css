@@ -9,3 +9,8 @@
     z-index: 100;
     cursor: pointer;
 }
+
+.terukoButton.terukoButtonSmall {
+    font-size: 1rem;
+    line-height: 1rem;
+}

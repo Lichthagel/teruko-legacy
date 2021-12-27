@@ -16,7 +16,8 @@ mutation ($url: String!) {
 }
 `;
 
-function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open: boolean) {
+function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open: boolean, target: HTMLDivElement) {
+    target.textContent = "down..."
     GM_xmlhttpRequest({
         method: "GET",
         url,
@@ -33,7 +34,8 @@ function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open
                     type: blob.type
                 }
             );
-
+            
+            target.textContent = "up..."
             client.mutate({
                 mutation: NEW_IMAGE,
                 variables: {
@@ -44,13 +46,18 @@ function newImage(url: string, client: ApolloClient<NormalizedCacheObject>, open
                     if (open)
                         window.open(`http://192.168.1.178:3000/${result.data.createImage[0].id}`, "_blank");
                     else
-                        alert(`uploaded (id: ${result.data.createImage[0].id})`);
+                        target.textContent = `id: ${result.data.createImage[0].id}`;
+                        // alert(`uploaded (id: ${result.data.createImage[0].id})`);
                 } else {
-                    alert(`error: ${result}`);
+                    target.classList.add("terukoButtonSmall")
+                    target.textContent = result.toString()
+                    // alert(`error: ${result}`);
                 }
             })
                 .catch(error => {
-                    alert(`error: ${error}`);
+                    target.classList.add("terukoButtonSmall")
+                    target.textContent = error.message;
+                    // alert(`error: ${error}`);
                 });
 
         }

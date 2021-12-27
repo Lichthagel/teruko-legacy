@@ -39,7 +39,7 @@ const observer = new MutationObserver(async () => {
 
                 event.stopPropagation();
                 event.preventDefault();
-                newImage(node.href, client, event.shiftKey);
+                newImage(node.href, client, event.shiftKey, event.target as HTMLDivElement);
             });
 
             node.append(dlButton);
