@@ -11,7 +11,11 @@ async function deleteImage(parent: void, args: ImageModel, context: Context) {
         }
     });
 
-    await fs.promises.rm(path.join(context.imgFolder, deletedImage.filename));
+    try {
+        await fs.promises.rm(path.join(context.imgFolder, deletedImage.filename));
+    } catch (err) {
+        console.log(err);
+    }
 
     return deletedImage;
 }
