@@ -5,6 +5,7 @@ type Query {
     tag(slug: String!): Tag
     tagSuggestions(filter: String!): [Tag!]!
     tagCategories: [TagCategory!]!
+    config: Config!
 }
 
 type Mutation {

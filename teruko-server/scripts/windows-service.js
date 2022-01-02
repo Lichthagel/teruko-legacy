@@ -14,7 +14,8 @@ var svc = new Service({
     env: [
         { name: "NODE_ENV", value: "production" },
         { name: "DATABASE_URL", value: process.env.DATABASE_URL },
-        { name: "IMG_FOLDER", value: process.env.IMG_FOLDER }
+        { name: "IMG_FOLDER", value: process.env.IMG_FOLDER },
+        { name: "UV_THREADPOOL_SIZE", value: process.env.UV_THREADPOOL_SIZE }
     ]
 });
 

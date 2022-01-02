@@ -23,13 +23,18 @@ async function tagCategories(parent:void, args: void, context: Context) {
     return context.prisma.tagCategory.findMany({});
 }
 
+async function config() {
+    return {};
+}
+
 const Query = {
     image,
     images,
     imageCount,
     tag,
     tagSuggestions,
-    tagCategories
+    tagCategories,
+    config
 };
 
 export default Query;
