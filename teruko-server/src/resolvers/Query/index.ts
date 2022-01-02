@@ -2,6 +2,7 @@ import { Context } from "../../context.js";
 import { Tag } from "@prisma/client";
 import image from "./image.js";
 import images from "./images.js";
+import random from "./random.js";
 
 async function imageCount(parent: void, args: void, context: Context) {
     return context.prisma.image.count();
@@ -30,6 +31,7 @@ async function config() {
 const Query = {
     image,
     images,
+    random,
     imageCount,
     tag,
     tagSuggestions,

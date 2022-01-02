@@ -1,6 +1,7 @@
 type Query {
     image(id: Int!): Image
     images(skip: Int, take: Int, tags: [String!], sort: ImageSort): [Image!]!
+    random(orientation: Orientation): Image
     imageCount: Int!
     tag(slug: String!): Tag
     tagSuggestions(filter: String!): [Tag!]!
@@ -47,6 +48,14 @@ type TagCategory {
     tags: [Tag!]!
 }
 
+type Config {
+    database: String!
+    imageFolder: String!
+    frontendFolder: String
+    uvThreadpoolSize: Int
+    sharpConcurrency: Int
+}
+
 scalar DateTime
 scalar Upload
 
@@ -55,4 +64,9 @@ enum ImageSort {
     newest,
     oldest,
     last_updated
+}
+
+enum Orientation {
+    portrait,
+    landscape
 }

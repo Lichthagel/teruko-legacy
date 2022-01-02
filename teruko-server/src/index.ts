@@ -8,6 +8,8 @@ import resolvers from "./resolvers/index.js";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 import archiver from "archiver";
+import { fileTypeStream } from "file-type";
+import random from "./resolvers/Query/random.js";
 
 process.setMaxListeners(0);
 
@@ -74,6 +76,29 @@ const port = 3030;
             sharp(path.join(context.imgFolder, image.filename))
                 .webp({ quality: 100 })
                 .pipe(res);
+        }
+    );
+
+    app.get(
+        "/random",
+        async (req, res) => {
+            const image = await random(undefined, { orientation: req.query.orientation ? (req.query.orientation as "landscape" | "portrait") : undefined }, context);
+
+            if (!image) {
+                res.status(404).send("not found");
+                return;
+            }
+
+            res.header("Cache-Control", "max-age=0, no-cache, no-store, must-revalidate");
+            res.header("Pragma", "no-cache");
+            res.header("Expires", "Thu, 01 Jan 1970 00:00:00 GMT");
+
+            const streamWithType = await fileTypeStream(fs.createReadStream(path.join(context.imgFolder, image.filename)));
+
+            // res.attachment(image.filename);
+            res.header("Content-Type", streamWithType.fileType?.mime);
+
+            streamWithType.pipe(res);
         }
     );
 
