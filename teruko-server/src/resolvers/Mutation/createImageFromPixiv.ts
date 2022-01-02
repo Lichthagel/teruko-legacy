@@ -65,14 +65,14 @@ async function createImageFromPixiv(parent: void, { url }: { url: string }, cont
 
         const transform = sharp().avif({ quality: 90 });
 
-        const out = fs.createWriteStream(path.join(context.imgFolder, filename));
+        const out = fs.createWriteStream(path.resolve(context.imgFolder, filename));
 
         streamWithFileType.pipe(transform).pipe(out);
 
         await finished(out);
         out.close();
 
-        const metadata = await sharp(path.join(context.imgFolder, filename))
+        const metadata = await sharp(path.resolve(context.imgFolder, filename))
             .metadata();
 
         if (!metadata.width || !metadata.height) throw new Error("cant read image dimensions");
