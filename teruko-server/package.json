@@ -15,7 +15,7 @@
   "author": "Lichthagel <lichthagel@tuta.io>",
   "license": "MIT",
   "devDependencies": {
-    "@types/archiver": "^5.1.1",
+    "@types/archiver": "^5.3.1",
     "@types/express": "^4.17.13",
     "@types/graphql-upload": "^8.0.8",
     "@types/node": "^17.0.8",

@@ -62,7 +62,7 @@ importers:
   teruko-server:
     specifiers:
       '@prisma/client': ^3.6.0
-      '@types/archiver': ^5.1.1
+      '@types/archiver': ^5.3.1
       '@types/express': ^4.17.13
       '@types/graphql-upload': ^8.0.8
       '@types/node': ^17.0.8
@@ -96,7 +96,7 @@ importers:
       node-windows: 1.0.0-beta.6
       sharp: 0.29.3
     devDependencies:
-      '@types/archiver': 5.1.1
+      '@types/archiver': 5.3.1
       '@types/express': 4.17.13
       '@types/graphql-upload': 8.0.8
       '@types/node': 17.0.8
@@ -1063,8 +1063,8 @@ packages:
       - subscriptions-transport-ws
     dev: true
 
-  /@types/archiver/5.1.1:
-    resolution: {integrity: sha512-heuaCk0YH5m274NOLSi66H1zX6GtZoMsdE6TYFcpFFjBjg0FoU4i4/M/a/kNlgNg26Xk3g364mNOYe1JaiEPOQ==}
+  /@types/archiver/5.3.1:
+    resolution: {integrity: sha512-wKYZaSXaDvTZuInAWjCeGG7BEAgTWG2zZW0/f7IYFcoHB2X2d9lkVFnrOlXl3W6NrvO6Ml3FLLu8Uksyymcpnw==}
     dependencies:
       '@types/glob': 7.2.0
     dev: true
