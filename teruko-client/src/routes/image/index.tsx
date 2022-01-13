@@ -134,11 +134,13 @@ const Image = () => {
         searchParams
     ]);
 
-    const image: ImageModel = data && data.image || undefined;
+    const image: ImageModel | undefined = data && data.image || undefined;
+
+    const fileExt = image?.filename.slice(image.filename.lastIndexOf(".") + 1);
 
     return (
         <div className="flex flex-col items-center">
-            {!loading && data &&
+            {!loading && image &&
                 <Fragment>
                     <div className="w-full relative">
                         <LoaderImage
@@ -165,8 +167,12 @@ const Image = () => {
                             </div>
                             <a href={`http://${window.location.hostname}:3030/original/${image.id}`} className="flex-shrink-0 relative">
                                 <DownloadIcon className="w-10 h-10 mx-1" />
-                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">{image.filename.slice(image.filename.lastIndexOf(".") + 1)}</span>
+                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">{fileExt}</span>
                             </a>
+                            {fileExt && fileExt !== "avif" && <a href={`http://${window.location.hostname}:3030/avif/${image.id}`} className="flex-shrink-0 relative">
+                                <DownloadIcon className="w-10 h-10 mx-1" />
+                                <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">avif</span>
+                            </a>}
                             <a href={`http://${window.location.hostname}:3030/webp/${image.id}`} className="flex-shrink-0 relative">
                                 <DownloadIcon className="w-10 h-10 mx-1" />
                                 <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">webp</span>

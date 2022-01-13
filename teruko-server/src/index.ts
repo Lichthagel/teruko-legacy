@@ -80,6 +80,34 @@ const port = 3030;
     );
 
     app.get(
+        "/avif/:id",
+        async (req, res) => {
+            const id = parseInt(req.params.id);
+            if (isNaN(id)) {
+                res.status(400).send("not a valid id");
+                return;
+            }
+
+            const image = await context.prisma.image.findUnique({
+                where: {
+                    id
+                }
+            });
+
+            if (!image) {
+                res.status(404).send("not found");
+                return;
+            }
+
+            res.attachment(image.filename.replace(/[^./\\]+$/, "avif"));
+
+            sharp(path.join(context.imgFolder, image.filename))
+                .avif({ quality: 90 })
+                .pipe(res);
+        }
+    );
+
+    app.get(
         "/random",
         async (req, res) => {
             const image = await random(undefined, { orientation: req.query.orientation ? (req.query.orientation as "landscape" | "portrait") : undefined }, context);
