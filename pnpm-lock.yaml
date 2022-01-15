@@ -33,9 +33,9 @@ importers:
       postcss-import: ^14.0.2
       preact: ^10.6.4
       react-router-dom: ^6.2.1
-      tailwindcss: ^3.0.13
+      tailwindcss: ^3.0.15
       tailwindcss-animatecss: ^1.0.7
-      vite: ^2.7.11
+      vite: ^2.7.12
     dependencies:
       '@apollo/client': 3.5.7
       '@fontsource/noto-sans-jp': 4.5.2
@@ -46,8 +46,8 @@ importers:
       preact: 10.6.4
       react-router-dom: 6.2.1
     devDependencies:
-      '@preact/preset-vite': 2.1.7_preact@10.6.4+vite@2.7.11
-      '@tailwindcss/forms': 0.4.0_tailwindcss@3.0.13
+      '@preact/preset-vite': 2.1.7_preact@10.6.4+vite@2.7.12
+      '@tailwindcss/forms': 0.4.0_tailwindcss@3.0.15
       '@types/apollo-upload-client': 17.0.0
       '@types/node': 17.0.8
       autoprefixer: 10.4.2_postcss@8.4.5
@@ -55,13 +55,13 @@ importers:
       eslint-plugin-react-hooks: 4.3.0_eslint@8.6.0
       postcss: 8.4.5
       postcss-import: 14.0.2_postcss@8.4.5
-      tailwindcss: 3.0.13_ef48b3b8837f8a23677bffe8f9cd866d
+      tailwindcss: 3.0.15_ef48b3b8837f8a23677bffe8f9cd866d
       tailwindcss-animatecss: 1.0.7
-      vite: 2.7.11
+      vite: 2.7.12
 
   teruko-server:
     specifiers:
-      '@prisma/client': ^3.8.0
+      '@prisma/client': ^3.8.1
       '@types/archiver': ^5.3.1
       '@types/express': ^4.17.13
       '@types/graphql-upload': ^8.0.9
@@ -70,7 +70,7 @@ importers:
       '@typescript-eslint/parser': ^5.9.1
       apollo-server-express: ^3.6.1
       archiver: ^5.3.0
-      dotenv: ^11.0.0
+      dotenv: ^12.0.3
       eslint-import-resolver-typescript: ^2.5.0
       eslint-plugin-import: ^2.25.4
       express: ^5.0.0-alpha.8
@@ -79,16 +79,16 @@ importers:
       node-fetch: ^3.1.0
       node-windows: ^1.0.0-beta.6
       nodemon: ^2.0.15
-      prisma: ^3.8.0
+      prisma: ^3.8.1
       sharp: ^0.29.3
       ts-node: ^10.4.0
       ts-node-dev: ^1.1.8
       typescript: ^4.5.4
     dependencies:
-      '@prisma/client': 3.8.0_prisma@3.8.0
+      '@prisma/client': 3.8.1_prisma@3.8.1
       apollo-server-express: 3.6.1_express@5.0.0-alpha.8
       archiver: 5.3.0
-      dotenv: 11.0.0
+      dotenv: 12.0.3
       express: 5.0.0-alpha.8
       file-type: 17.1.1
       graphql-upload: 13.0.0
@@ -105,7 +105,7 @@ importers:
       eslint-import-resolver-typescript: 2.5.0_b5a36b8c1535387c8dd00eff7ec6b551
       eslint-plugin-import: 2.25.4_eslint@8.6.0
       nodemon: 2.0.15
-      prisma: 3.8.0
+      prisma: 3.8.1
       ts-node: 10.4.0_faf01e1d5a40372a98081522dcafc186
       ts-node-dev: 1.1.8_typescript@4.5.4
       typescript: 4.5.4
@@ -865,20 +865,20 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@preact/preset-vite/2.1.7_preact@10.6.4+vite@2.7.11:
+  /@preact/preset-vite/2.1.7_preact@10.6.4+vite@2.7.12:
     resolution: {integrity: sha512-/Ii+aN1Jm8TK5YzDVrj5UOVRZ91F2Nik1P3FbmZyQ5VJAg1ZCkOBBkmLrz9YhiMbbGl+U35yaZNUDMcO8Xlp2g==}
     peerDependencies:
       '@babel/core': 7.x
       vite: 2.x
     dependencies:
       '@babel/plugin-transform-react-jsx': 7.16.5
-      '@prefresh/vite': 2.2.6_preact@10.6.4+vite@2.7.11
+      '@prefresh/vite': 2.2.6_preact@10.6.4+vite@2.7.12
       '@rollup/pluginutils': 4.1.2
       babel-plugin-transform-hook-names: 1.0.2
       debug: 4.3.3
       kolorist: 1.5.1
       resolve: 1.20.0
-      vite: 2.7.11
+      vite: 2.7.12
     transitivePeerDependencies:
       - preact
       - supports-color
@@ -900,7 +900,7 @@ packages:
     resolution: {integrity: sha512-MUhT5m2XNN5NsZl4GnpuvlzLo6VSTa/+wBfBd3fiWUvHGhv0GF9hnA1pd//v0uJaKwUnVRQ1hYElxCV7DtYsCQ==}
     dev: true
 
-  /@prefresh/vite/2.2.6_preact@10.6.4+vite@2.7.11:
+  /@prefresh/vite/2.2.6_preact@10.6.4+vite@2.7.12:
     resolution: {integrity: sha512-Q5i15C27NanIPzimkvBuzImebCxeQS6p8OyyH2QpNKS/HGsm7WpnyCzgMkIsidnmMHY59qllKwF01TWpq9IeGA==}
     peerDependencies:
       preact: ^10.4.0
@@ -912,13 +912,13 @@ packages:
       '@prefresh/utils': 1.1.1
       '@rollup/pluginutils': 4.1.2
       preact: 10.6.4
-      vite: 2.7.11
+      vite: 2.7.12
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@prisma/client/3.8.0_prisma@3.8.0:
-    resolution: {integrity: sha512-odYAbzfGvVWpDxhk2Yb03DlcCg6zKgJjt5admcp4xtr7u0f76B2NppC4TSGxvdQUGzPI6G37afu2oZCb/uwGfg==}
+  /@prisma/client/3.8.1_prisma@3.8.1:
+    resolution: {integrity: sha512-NxD1Xbkx1eT1mxSwo1RwZe665mqBETs0VxohuwNfFIxMqcp0g6d4TgugPxwZ4Jb4e5wCu8mQ9quMedhNWIWcZQ==}
     engines: {node: '>=12.6'}
     requiresBuild: true
     peerDependencies:
@@ -928,7 +928,7 @@ packages:
         optional: true
     dependencies:
       '@prisma/engines-version': 3.8.0-43.34df67547cf5598f5a6cd3eb45f14ee70c3fb86f
-      prisma: 3.8.0
+      prisma: 3.8.1
     dev: false
 
   /@prisma/engines-version/3.8.0-43.34df67547cf5598f5a6cd3eb45f14ee70c3fb86f:
@@ -1003,13 +1003,13 @@ packages:
       defer-to-connect: 1.1.3
     dev: true
 
-  /@tailwindcss/forms/0.4.0_tailwindcss@3.0.13:
+  /@tailwindcss/forms/0.4.0_tailwindcss@3.0.15:
     resolution: {integrity: sha512-DeaQBx6EgEeuZPQACvC+mKneJsD8am1uiJugjgQK1+/Vt+Ai0GpFBC2T2fqnUad71WgOxyrZPE6BG1VaI6YqfQ==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
     dependencies:
       mini-svg-data-uri: 1.4.3
-      tailwindcss: 3.0.13_ef48b3b8837f8a23677bffe8f9cd866d
+      tailwindcss: 3.0.15_ef48b3b8837f8a23677bffe8f9cd866d
     dev: true
 
   /@tkausl/userscript-meta/1.0.2:
@@ -2809,8 +2809,8 @@ packages:
       is-obj: 2.0.0
     dev: true
 
-  /dotenv/11.0.0:
-    resolution: {integrity: sha512-Fp/b504Y5W+e+FpCxTFMUZ7ZEQkQYF0rx+KZtmwixJxGQbLHrhCwo3FjZgNC8vIfrSi29PABNbMoCGD9YoiXbQ==}
+  /dotenv/12.0.3:
+    resolution: {integrity: sha512-RlOysyzyGiABgDFgITo5fRnMV1QStdoVvkXhnxQc5Or/CiQo52s2Bh6DVMvzZsmFQ9IrNxYHOC/gdpNwHsitnQ==}
     engines: {node: '>=12'}
     dev: false
 
@@ -3450,8 +3450,8 @@ packages:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
     dev: true
 
-  /fast-glob/3.2.10:
-    resolution: {integrity: sha512-s9nFhFnvR63wls6/kM88kQqDhMu0AfdjqouE2l5GVQPbqLgyFjjU5ry/r2yKsJxpb9Py1EYNqieFrmMaX4v++A==}
+  /fast-glob/3.2.11:
+    resolution: {integrity: sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==}
     engines: {node: '>=8.6.0'}
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -3783,7 +3783,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.10
+      fast-glob: 3.2.11
       ignore: 5.2.0
       merge2: 1.4.1
       slash: 3.0.0
@@ -5362,8 +5362,8 @@ packages:
     hasBin: true
     dev: false
 
-  /prisma/3.8.0:
-    resolution: {integrity: sha512-xLmVyO/L6C4ZdHzHqiJVq3ZfDWSym29x75JcwJx746ps61UcNEg4ozSwN9ud7UjXLntdXe1xDLNOUO1lc7LN5g==}
+  /prisma/3.8.1:
+    resolution: {integrity: sha512-Q8zHwS9m70TaD7qI8u+8hTAmiTpK+IpvRYF3Rgb/OeWGQJOMgZCFFvNCiSfoLEQ95wilK7ctW3KOpc9AuYnRUA==}
     engines: {node: '>=12.6'}
     hasBin: true
     requiresBuild: true
@@ -5714,8 +5714,8 @@ packages:
       glob: 7.2.0
     dev: true
 
-  /rollup/2.63.0:
-    resolution: {integrity: sha512-nps0idjmD+NXl6OREfyYXMn/dar3WGcyKn+KBzPdaLecub3x/LrId0wUcthcr8oZUAcZAR8NKcfGGFlNgGL1kQ==}
+  /rollup/2.64.0:
+    resolution: {integrity: sha512-+c+lbw1lexBKSMb1yxGDVfJ+vchJH3qLbmavR+awDinTDA2C5Ug9u7lkOzj62SCu0PKUExsW36tpgW7Fmpn3yQ==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -6200,8 +6200,8 @@ packages:
     resolution: {integrity: sha512-PSGZDYSOqRNm+C/hJTMfw1pj4nprPQfbNh/wrYDC4G0R9dqtepPncIlKAFNSl7nTUFxH9ynhvBwcIul093ceXw==}
     dev: true
 
-  /tailwindcss/3.0.13_ef48b3b8837f8a23677bffe8f9cd866d:
-    resolution: {integrity: sha512-raRPGFwQSGXn/3h0ttHND9jyPYfqk/ur2NXtlQuK25+ZnrCjlH1s1j4/oPswHGMoZzGNykUVycZ/LcROanUE0A==}
+  /tailwindcss/3.0.15_ef48b3b8837f8a23677bffe8f9cd866d:
+    resolution: {integrity: sha512-bT2iy7FtjwgsXik4ZoJnHXR+SRCiGR1W95fVqpLZebr64m4ahwUwRbIAc5w5+2fzr1YF4Ct2eI7dojMRRl8sVQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     peerDependencies:
@@ -6217,7 +6217,7 @@ packages:
       detective: 5.2.0
       didyoumean: 1.2.2
       dlv: 1.1.3
-      fast-glob: 3.2.10
+      fast-glob: 3.2.11
       glob-parent: 6.0.2
       is-glob: 4.0.3
       normalize-path: 3.0.0
@@ -6637,8 +6637,8 @@ packages:
       extsprintf: 1.3.0
     dev: true
 
-  /vite/2.7.11:
-    resolution: {integrity: sha512-W1OVwJmtuxnzt9HwZ1AebVLgvsgNpe4TK/sxvF+1x2y8MRnTEHvaPqxy9A67IYb5BR0Q+nENmLYa3QfESmp5GQ==}
+  /vite/2.7.12:
+    resolution: {integrity: sha512-KvPYToRQWhRfBeVkyhkZ5hASuHQkqZUUdUcE3xyYtq5oYEPIJ0h9LWiWTO6v990glmSac2cEPeYeXzpX5Z6qKQ==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -6656,7 +6656,7 @@ packages:
       esbuild: 0.13.15
       postcss: 8.4.5
       resolve: 1.21.0
-      rollup: 2.63.0
+      rollup: 2.64.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
