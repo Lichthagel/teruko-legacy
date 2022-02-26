@@ -45,16 +45,14 @@ const App = () => {
 
     return <Fragment>
         <Nav />
-        <div className="container mx-auto">
-            <ScrollToTop />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path=":id" element={<Suspense fallback={"..."}><Image /></Suspense>} />
-                <Route path=":id/edit" element={<Suspense fallback={"..."}><EditImage /></Suspense>} />
-                <Route path="tag/:slug" element={<Suspense fallback={"..."}><Tag /></Suspense>} />
-                <Route path="new" element={<Suspense fallback={"..."}><New /></Suspense>} />
-            </Routes>
-        </div>
+        <ScrollToTop />
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path=":id" element={<Suspense fallback={"..."}><Image /></Suspense>} />
+            <Route path=":id/edit" element={<Suspense fallback={"..."}><EditImage /></Suspense>} />
+            <Route path="tag/:slug" element={<Suspense fallback={"..."}><Tag /></Suspense>} />
+            <Route path="new" element={<Suspense fallback={"..."}><New /></Suspense>} />
+        </Routes>
         <div className="fixed bottom-3 right-0 left-0 z-10 pointer-events-none">
             <div className="container mx-auto px-3">
                 <div className={clsx("pointer-events-auto flex flex-row ml-auto mr-0 w-min bg-neutral-100 shadow-lg dark:bg-zinc-800 rounded-xl p-1 transition hover:opacity-100", { "opacity-20": isImageView })}>

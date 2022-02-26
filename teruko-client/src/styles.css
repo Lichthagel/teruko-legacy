@@ -4,7 +4,7 @@
 
 @layer base {
     body {
-        @apply text-indigo-600 dark:text-indigo-400 pb-24 bg-fixed bg-conic-gradient-45 from-indigo-200 dark:from-slate-900 via-neutral-200 dark:via-neutral-900 to-indigo-200 dark:to-slate-900;
+        @apply text-indigo-600 dark:text-indigo-400 pb-24 bg-fixed bg-conic-gradient-45 from-indigo-200 dark:from-slate-900 via-neutral-200 dark:via-neutral-900 to-indigo-200 dark:to-slate-900 px-2;
     }
 
     input[type="text"] {

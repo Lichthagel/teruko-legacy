@@ -105,7 +105,7 @@ const New = () => {
     }, [navigate]);
 
     return (
-        <div className="flex flex-col items-center mt-20">
+        <div className="flex flex-col items-center mt-20 container mx-auto">
             <div
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}

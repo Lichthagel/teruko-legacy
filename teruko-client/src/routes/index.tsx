@@ -16,7 +16,7 @@ const Home: FunctionComponent = () => {
     });
 
     return (
-        <div className="relative mt-6">
+        <div className="relative mt-6 container mx-auto">
             <Search
                 tags={tags}
                 setTags={(tags: string[]) => {

@@ -161,7 +161,7 @@ const Tag = () => {
     });
 
     return (
-        <Fragment>
+        <div className="container mx-auto">
             <div className="my-3 flex flex-row items-center">
                 <Heading loading={loading} data={data} slug={slug} />
                 <div className="flex-grow"></div>
@@ -181,7 +181,7 @@ const Tag = () => {
             </div>
 
             {slug && <Gallery tags={[slug]} sort={sort as string} />}
-        </Fragment>
+        </div>
     );
 };
 
