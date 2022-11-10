@@ -56,6 +56,7 @@ interface PixivIllust {
     bookStyle: number;
     isHowto: boolean;
     isOriginal: boolean;
+    aiType: number;
     [key: string]: unknown;
 }
 

@@ -121,6 +121,17 @@ export function toModel(pixivResult: PixivIllustResult, pixivIdFallback?: string
             });
         }
 
+        if (pixivResult.body.aiType === 2) {
+            tags.push({
+                where: {
+                    slug: "AI-generated"
+                },
+                create: {
+                    slug: "AI-generated"
+                }
+            });
+        }
+
         if (pixivResult.body.tags && pixivResult.body.tags.tags) {
             for (const tag of pixivResult.body.tags.tags) {
                 const slug = tag.translation && tag.translation.en || tag.romaji || tag.tag;
