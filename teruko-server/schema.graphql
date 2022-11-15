@@ -12,7 +12,7 @@ type Query {
 type Mutation {
     #createImage(fileExt: String!, title: String, source: String): Image!
     createImage(files: [Upload!]!): [Image!]!
-    createImageFromPixiv(url: String!): [Image!]!
+    createImageFromUrl(url: String!): [Image!]!
     updateImage(id: Int!, title: String, source: String): Image!
     updateImagePixiv(id: Int!, source: String): Image!
     deleteImage(id: Int!): Image!

@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-import { NEW_IMAGE, NEW_IMAGE_FROM_PIXIV } from "../queries/image";
+import { NEW_IMAGE, NEW_IMAGE_FROM_URL } from "../queries/image";
 import clsx from "clsx";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { JSX } from "preact";
@@ -8,7 +8,7 @@ import { JSX } from "preact";
 const New = () => {
     const navigate = useNavigate();
 
-    const [pixivUrl, setPixivUrl] = useState("");
+    const [sourceUrl, setSourceUrl] = useState("");
 
     const [newImage, { loading, error }] = useMutation(NEW_IMAGE, {
         refetchQueries: ["Images", "GetNext"],
@@ -26,9 +26,9 @@ const New = () => {
         }
     });
 
-    const [newImageFromPixiv, { loading: loadingPixiv, error: errorPixiv }] = useMutation(NEW_IMAGE_FROM_PIXIV, {
+    const [newImageFromUrl, { loading: loadingUrl, error: errorUrl }] = useMutation(NEW_IMAGE_FROM_URL, {
         variables: {
-            url: pixivUrl
+            url: sourceUrl
         },
         refetchQueries: ["Images", "GetNext"],
         update(cache) {
@@ -72,19 +72,19 @@ const New = () => {
 
     }, [error, loading, navigate, newImage]);
 
-    const handlePixiv = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
+    const handleUrl = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
         event.stopPropagation();
         event.preventDefault();
 
-        if (pixivUrl !== "" && !loadingPixiv && !errorPixiv) {
-            newImageFromPixiv().then(() => navigate("/"));
+        if (sourceUrl !== "" && !loadingUrl && !errorUrl) {
+            newImageFromUrl().then(() => navigate("/"));
         }
     }, [
-        errorPixiv,
-        loadingPixiv,
+        errorUrl,
+        loadingUrl,
         navigate,
-        newImageFromPixiv,
-        pixivUrl
+        newImageFromUrl,
+        sourceUrl
     ]);
 
     useEffect(() => {
@@ -119,14 +119,14 @@ const New = () => {
                 {!loading ? "drop image here" : "..."}
             </div>
 
-            <form onSubmit={handlePixiv} className="my-3">
+            <form onSubmit={handleUrl} className="my-3">
                 <input
                     type="text"
-                    className={clsx("w-96 max-w-full", { "animate-pulse": loadingPixiv })}
-                    value={pixivUrl}
+                    className={clsx("w-96 max-w-full", { "animate-pulse": loadingUrl })}
+                    value={sourceUrl}
                     placeholder="or enter a pixiv URL"
-                    disabled={loadingPixiv}
-                    onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => setPixivUrl((event.target as HTMLInputElement).value)} />
+                    disabled={loadingUrl}
+                    onInput={(event: JSX.TargetedEvent<HTMLInputElement>) => setSourceUrl((event.target as HTMLInputElement).value)} />
             </form>
         </div>
     );

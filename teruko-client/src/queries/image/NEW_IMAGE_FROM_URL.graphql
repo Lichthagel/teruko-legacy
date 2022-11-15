@@ -1,5 +1,5 @@
 mutation ($url: String!) {
-    createImageFromPixiv(url: $url) {
+    createImageFromUrl(url: $url) {
         id
         filename
         title

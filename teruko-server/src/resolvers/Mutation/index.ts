@@ -1,6 +1,6 @@
 import addTag from "./addTag.js";
 import createImage from "./createImage.js";
-import createImageFromPixiv from "./createImageFromPixiv.js";
+import createImageFromUrl from "./createImageFromUrl.js";
 import deleteImage from "./deleteImage.js";
 import deleteTag from "./deleteTag.js";
 import removeTag from "./removeTag.js";
@@ -11,7 +11,7 @@ import updateTagCategory from "./updateTagCategory.js";
 
 const Mutation = {
     createImage,
-    createImageFromPixiv,
+    createImageFromUrl,
     updateImage,
     updateImagePixiv,
     deleteImage,
