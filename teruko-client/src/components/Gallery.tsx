@@ -104,7 +104,7 @@ const Gallery: FunctionComponent<{
                     image={image}
                     url={{
                         pathname: `/${image.id}`,
-                        search: `?sort=${sort}${tags.map(tag => `&tag=${tag}`).join("")}`
+                        search: `?sort=${sort}${tags.map(tag => `&tag=${encodeURIComponent(tag)}`).join("")}`
                     }} />)}
             </div>
             <div className="flex h-32 items-center justify-center mb-12">
