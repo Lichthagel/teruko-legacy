@@ -1,7 +1,7 @@
 import Tag from "./Tag.js";
 
 export interface Image {
-    id: number;
+    id: string;
     filename: string;
     title: string | undefined;
     source: string | undefined;

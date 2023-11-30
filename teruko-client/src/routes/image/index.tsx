@@ -13,7 +13,7 @@ const Image = () => {
     const params = useParams();
     const [searchParams] = useSearchParams();
 
-    const id = parseInt(params.id as string);
+    const id = params.id;
     const tags = searchParams.getAll("tag");
     const sort = searchParams.get("sort") || "random";
 
@@ -21,7 +21,7 @@ const Image = () => {
         variables: {
             id
         },
-        skip: isNaN(id)
+        skip: !id,
     });
 
     const { data: dataImages, fetchMore } = useQuery(GET_IMAGES, {

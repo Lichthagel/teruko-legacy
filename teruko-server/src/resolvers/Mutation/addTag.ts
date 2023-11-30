@@ -2,7 +2,7 @@ import { Context } from "../../context.js";
 
 
 export interface TagMutationArgs {
-    imageId: number;
+    imageId: string;
     tag: string;
 }
 

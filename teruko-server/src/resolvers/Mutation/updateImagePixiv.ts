@@ -1,7 +1,7 @@
 import { Context } from "../../context.js";
 import { fetchPixiv, toModel } from "./fetchPixiv.js";
 
-async function updateImagePixiv(parent: void, { id, source }: { id: number; source?: string }, context: Context) {
+async function updateImagePixiv(parent: void, { id, source }: { id: string; source?: string }, context: Context) {
 
     if (!source) {
         const image = await context.prisma.image.findUnique({

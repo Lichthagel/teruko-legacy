@@ -15,7 +15,7 @@ const EditImage = () => {
     const params = useParams();
     const [searchParams] = useSearchParams();
 
-    const id = parseInt(params.id as string);
+    const id = params.id;
 
     const [title, setTitle] = useState("");
     const [source, setSource] = useState("");
