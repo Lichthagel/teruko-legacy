@@ -1,4 +1,4 @@
-import ArtStationIllust from "../../models/ArtStationIllust.js";
+import ArtStationIllust, { ArtStationAsset } from "../../models/ArtStationIllust.js";
 import { Prisma } from "@prisma/client";
 import https from "https";
 
@@ -33,7 +33,7 @@ export async function fetchArtStation(artStationId: string): Promise<ArtStationI
     });
 }
 
-export function toModel(artStationIllust: ArtStationIllust): Partial<Prisma.ImageCreateInput> {
+export function toModel(artStationIllust: ArtStationIllust, asset: ArtStationAsset): Partial<Prisma.ImageCreateInput> {
     const tags: Prisma.TagCreateOrConnectWithoutImagesInput[] = [
         {
             where: {
@@ -122,7 +122,7 @@ export function toModel(artStationIllust: ArtStationIllust): Partial<Prisma.Imag
         }
     }
 
-    const title = artStationIllust.title;
+    const title = artStationIllust.title + (asset.title && asset.title !== "" ? ` - ${asset.title}` : "");
     const source = artStationIllust.permalink;
 
 

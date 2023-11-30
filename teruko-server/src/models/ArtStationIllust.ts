@@ -1,4 +1,4 @@
-interface ArtStationAsset {
+export interface ArtStationAsset {
     has_image: boolean;
     has_embedded_player: boolean;
     player_embedded?: unknown;
