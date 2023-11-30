@@ -1,4 +1,4 @@
-import { Context } from "../../context";
+import { Context } from "../../context.js";
 import { Image } from "@prisma/client";
 
 async function random(parent: void, { orientation }: { orientation: "landscape" | "portrait" | undefined | null }, context: Context) {

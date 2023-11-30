@@ -1,6 +1,6 @@
 import path from "path";
 import sharp from "sharp";
-import { Context } from "../context";
+import { Context } from "../context.js";
 
 async function database() {
     return process.env.DATABASE_URL;

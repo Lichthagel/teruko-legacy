@@ -1,4 +1,4 @@
-import TagCategory from "./TagCategory";
+import TagCategory from "./TagCategory.js";
 
 interface Tag {
     slug: string;
