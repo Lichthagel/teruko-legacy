@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
-        "module": "es2020",
-        "moduleResolution": "node",
+        "allowJs": true,
+        "module": "node16",
+        "moduleResolution": "node16",
         "esModuleInterop": true,
         "target": "es6",
         "rootDir": "src",
