@@ -136,7 +136,12 @@
               mkdir -p $out/bin
               makeWrapper ${pkgs.nodejs}/bin/node $out/bin/teruko \
                 --add-flags "$out/lib/teruko/teruko-server/build/index.js" \
-                --prefix FRONTEND_FOLDER : "$out/lib/teruko/teruko-client/dist"
+                --prefix FRONTEND_FOLDER : "$out/lib/teruko/teruko-client/dist" \
+                --prefix PRISMA_MIGRATION_ENGINE_BINARY : "$PRISMA_MIGRATION_ENGINE_BINARY" \
+                --prefix PRISMA_QUERY_ENGINE_BINARY : "$PRISMA_QUERY_ENGINE_BINARY" \
+                --prefix PRISMA_QUERY_ENGINE_LIBRARY : "$PRISMA_QUERY_ENGINE_LIBRARY" \
+                --prefix PRISMA_INTROSPECTION_ENGINE_BINARY : "$PRISMA_INTROSPECTION_ENGINE_BINARY" \
+                --prefix PRISMA_FMT_BINARY : "$PRISMA_FMT_BINARY"
 
               runHook postInstall
             '';
