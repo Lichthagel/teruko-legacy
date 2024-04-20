@@ -25,6 +25,125 @@
         );
     in
     {
+      packages = eachSystems (
+        { pkgs, ... }:
+        let
+          pnpmDeps = pkgs.stdenvNoCC.mkDerivation {
+            name = "teruko-pnpm-deps";
+
+            src = ./.;
+
+            nativeBuildInputs = with pkgs; [
+              nodePackages.pnpm
+              jq
+              moreutils
+              cacert
+            ];
+
+            configurePhase = ''
+              runHook preConfigure
+
+              export HOME=$(mktemp -d)
+              pnpm config set store-dir $out
+
+              runHook postConfigure
+            '';
+
+            installPhase = ''
+              runHook preInstall
+
+              # use --ignore-script and --no-optional to avoid downloading binaries
+              # use --frozen-lockfile to avoid checking git deps
+              pnpm install -r --frozen-lockfile --ignore-script
+
+              runHook postInstall
+            '';
+
+            fixupPhase = ''
+              runHook preFixup
+
+              rm -rf $out/v3/tmp
+              for f in $(find $out -name "*.json"); do
+                sed -i -E -e 's/"checkedAt":[0-9]+,//g' $f
+                jq --sort-keys . $f | sponge $f
+              done
+
+              runHook postFixup
+            '';
+
+            # dontConfigure = true;
+            dontBuild = true;
+
+            outputHashMode = "recursive";
+            outputHash = "sha256-o0YqbHtJocaH6dzJSZJdFL4IuCXAOSjuNjS5sEmqhYs=";
+            outputHashAlgo = "sha256";
+          };
+        in
+        rec {
+          default = teruko;
+
+          teruko = pkgs.stdenvNoCC.mkDerivation {
+            name = "teruko";
+
+            src = ./.;
+
+            nativeBuildInputs = with pkgs; [
+              nodePackages.pnpm
+              makeWrapper
+              openssl
+            ];
+
+            PRISMA_MIGRATION_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/migration-engine";
+            PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
+            PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+            PRISMA_INTROSPECTION_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/introspection-engine";
+            PRISMA_FMT_BINARY = "${pkgs.prisma-engines}/bin/prisma-fmt";
+
+            postConfigure = ''
+              export HOME=$(mktemp -d)
+              export STORE_PATH=$(mktemp -d)
+
+              cp -Tr "${pnpmDeps}" "$STORE_PATH"
+              chmod -R +w "$STORE_PATH"
+
+              pnpm config set store-dir "$STORE_PATH"
+
+              pnpm install --offline --frozen-lockfile --ignore-script -r
+
+              patchShebangs node_modules/{*,.*}
+            '';
+
+            buildPhase = ''
+              runHook preBuild
+
+              cd teruko-client
+              pnpm run build
+
+              cd ../teruko-server
+              pnpm run build
+
+              cd ..
+
+              runHook postBuild
+            '';
+
+            installPhase = ''
+              runHook preInstall
+
+              mkdir -p $out/lib
+              cp -r . $out/lib/teruko
+
+              mkdir -p $out/bin
+              makeWrapper ${pkgs.nodejs}/bin/node $out/bin/teruko \
+                --add-flags "$out/lib/teruko/teruko-server/build/index.js" \
+                --prefix FRONTEND_FOLDER : "$out/lib/teruko/teruko-client/dist"
+
+              runHook postInstall
+            '';
+          };
+        }
+      );
+
       devShells = eachSystems (
         { system, pkgs, ... }:
         {
