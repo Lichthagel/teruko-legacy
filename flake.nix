@@ -2,11 +2,7 @@
   description = "A very basic flake";
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixpkgs-23-05,
-    }:
+    inputs:
     let
       systems = [
         "x86_64-linux"
@@ -14,11 +10,17 @@
       ];
       eachSystems =
         f:
-        nixpkgs.lib.genAttrs systems (
+        inputs.nixpkgs.lib.genAttrs systems (
           system:
           f (rec {
             inherit system;
-            pkgs = nixpkgs.legacyPackages.${system};
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+
+              overlays = [
+                (final: prev: { prisma-engines = inputs.nixpkgs-23-05.legacyPackages.${system}.prisma-engines; })
+              ];
+            };
           })
         );
     in
@@ -35,17 +37,13 @@
               openssl
               prisma-engines
             ];
-            shellHook =
-              let
-                prisma-engines = nixpkgs-23-05.legacyPackages.${system}.prisma-engines;
-              in
-              ''
-                export PRISMA_MIGRATION_ENGINE_BINARY="${prisma-engines}/bin/migration-engine"
-                export PRISMA_QUERY_ENGINE_BINARY="${prisma-engines}/bin/query-engine"
-                export PRISMA_QUERY_ENGINE_LIBRARY="${prisma-engines}/lib/libquery_engine.node"
-                export PRISMA_INTROSPECTION_ENGINE_BINARY="${prisma-engines}/bin/introspection-engine"
-                export PRISMA_FMT_BINARY="${prisma-engines}/bin/prisma-fmt"
-              '';
+            shellHook = ''
+              export PRISMA_MIGRATION_ENGINE_BINARY="${pkgs.prisma-engines}/bin/migration-engine"
+              export PRISMA_QUERY_ENGINE_BINARY="${pkgs.prisma-engines}/bin/query-engine"
+              export PRISMA_QUERY_ENGINE_LIBRARY="${pkgs.prisma-engines}/lib/libquery_engine.node"
+              export PRISMA_INTROSPECTION_ENGINE_BINARY="${pkgs.prisma-engines}/bin/introspection-engine"
+              export PRISMA_FMT_BINARY="${pkgs.prisma-engines}/bin/prisma-fmt"
+            '';
           };
         }
       );
