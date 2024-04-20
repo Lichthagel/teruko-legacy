@@ -54,7 +54,7 @@
 
               # use --ignore-script and --no-optional to avoid downloading binaries
               # use --frozen-lockfile to avoid checking git deps
-              pnpm install -r --frozen-lockfile --ignore-script
+              pnpm install -r
 
               runHook postInstall
             '';
@@ -75,7 +75,7 @@
             dontBuild = true;
 
             outputHashMode = "recursive";
-            outputHash = "sha256-o0YqbHtJocaH6dzJSZJdFL4IuCXAOSjuNjS5sEmqhYs=";
+            outputHash = "sha256-+/x8G3jNt0V9seBotmP/+28CLt6q2KNyIaFc5UebzxY=";
             outputHashAlgo = "sha256";
           };
         in
@@ -108,7 +108,7 @@
 
               pnpm config set store-dir "$STORE_PATH"
 
-              pnpm install --offline --frozen-lockfile --ignore-script -r
+              pnpm install --offline -r
 
               patchShebangs node_modules/{*,.*}
             '';
