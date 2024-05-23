@@ -40,21 +40,15 @@
               cacert
             ];
 
-            configurePhase = ''
-              runHook preConfigure
-
-              export HOME=$(mktemp -d)
-              pnpm config set store-dir $out
-
-              runHook postConfigure
-            '';
-
             installPhase = ''
               runHook preInstall
 
-              # use --ignore-script and --no-optional to avoid downloading binaries
-              # use --frozen-lockfile to avoid checking git deps
-              pnpm install -r
+              export HOME=$(mktemp -d)
+              pnpm config set store-dir $out
+              pnpm config set side-effects-cache false
+              pnpm config set update-notifier false
+
+              pnpm install --frozen-lockfile --force
 
               runHook postInstall
             '';
@@ -64,8 +58,7 @@
 
               rm -rf $out/v3/tmp
               for f in $(find $out -name "*.json"); do
-                sed -i -E -e 's/"checkedAt":[0-9]+,//g' $f
-                jq --sort-keys . $f | sponge $f
+                jq --sort-keys "del(.. | .checkedAt?)" $f | sponge $f
               done
 
               runHook postFixup
@@ -75,7 +68,7 @@
             dontBuild = true;
 
             outputHashMode = "recursive";
-            outputHash = "sha256-+/x8G3jNt0V9seBotmP/+28CLt6q2KNyIaFc5UebzxY=";
+            outputHash = "sha256-MlXCPz12hYcti0GB37LZjWG+QwprbLf+PVv1i04wPY8=";
             outputHashAlgo = "sha256";
           };
         in
@@ -150,7 +143,7 @@
       );
 
       devShells = eachSystems (
-        { system, pkgs, ... }:
+        { pkgs, ... }:
         {
           default = pkgs.mkShell {
             packages = with pkgs; [

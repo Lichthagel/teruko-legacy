@@ -14,6 +14,6 @@
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "eslint": "^8.27.0",
-    "eslint-config-lichthagel": "github:lichthagel/eslint-config-lichthagel"
+    "eslint-config-lichthagel": "github:lichthagel/eslint-config-lichthagel#9a3b34517573a0ca4f475c060bc25cbd038816b2"
   }
 }
