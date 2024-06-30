@@ -27,84 +27,32 @@
     {
       packages = eachSystems (
         { pkgs, ... }:
-        let
-          pnpmDeps = pkgs.stdenvNoCC.mkDerivation {
-            name = "teruko-pnpm-deps";
-
-            src = ./.;
-
-            nativeBuildInputs = with pkgs; [
-              nodePackages.pnpm
-              jq
-              moreutils
-              cacert
-            ];
-
-            installPhase = ''
-              runHook preInstall
-
-              export HOME=$(mktemp -d)
-              pnpm config set store-dir $out
-              pnpm config set side-effects-cache false
-              pnpm config set update-notifier false
-
-              pnpm install --frozen-lockfile --force
-
-              runHook postInstall
-            '';
-
-            fixupPhase = ''
-              runHook preFixup
-
-              rm -rf $out/v3/tmp
-              for f in $(find $out -name "*.json"); do
-                jq --sort-keys "del(.. | .checkedAt?)" $f | sponge $f
-              done
-
-              runHook postFixup
-            '';
-
-            # dontConfigure = true;
-            dontBuild = true;
-
-            outputHashMode = "recursive";
-            outputHash = "sha256-MlXCPz12hYcti0GB37LZjWG+QwprbLf+PVv1i04wPY8=";
-            outputHashAlgo = "sha256";
-          };
-        in
         rec {
           default = teruko;
 
-          teruko = pkgs.stdenvNoCC.mkDerivation {
-            name = "teruko";
+          teruko = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+            pname = "teruko";
+            version = "git";
 
             src = ./.;
 
             nativeBuildInputs = with pkgs; [
-              nodePackages.pnpm
+              nodejs
               makeWrapper
               openssl
+              pnpm.configHook
             ];
+
+            pnpmDeps = pkgs.pnpm.fetchDeps {
+              inherit (finalAttrs) pname version src;
+              hash = "sha256-ENbPqmHE9RtbqeUTi4HDTlG/4ykpv5hiuL0uBSbQjRI=";
+            };
 
             PRISMA_MIGRATION_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/migration-engine";
             PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
             PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
             PRISMA_INTROSPECTION_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/introspection-engine";
             PRISMA_FMT_BINARY = "${pkgs.prisma-engines}/bin/prisma-fmt";
-
-            postConfigure = ''
-              export HOME=$(mktemp -d)
-              export STORE_PATH=$(mktemp -d)
-
-              cp -Tr "${pnpmDeps}" "$STORE_PATH"
-              chmod -R +w "$STORE_PATH"
-
-              pnpm config set store-dir "$STORE_PATH"
-
-              pnpm install --offline -r
-
-              patchShebangs node_modules/{*,.*}
-            '';
 
             buildPhase = ''
               runHook preBuild
@@ -138,7 +86,7 @@
 
               runHook postInstall
             '';
-          };
+          });
         }
       );
 
