@@ -7,7 +7,6 @@
     },
     "ignorePatterns": ["dist/*", "*.config.*"],
     "rules": {
-        "linebreak-style": ["warn", "windows"],
         "react/prop-types": "off"
     }
 }

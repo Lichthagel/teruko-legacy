@@ -96,7 +96,7 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               nodejs
-              nodePackages.pnpm
+              corepack
               pkg-config
               zlib
               openssl
