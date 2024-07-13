@@ -5,7 +5,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ["Readex ProVariable", "Noto Sans JP", "sans-serif"]
+      sans: ["Readex Pro Variable", "Noto Sans JP Variable", "sans-serif"]
     },
     extend: {
       backgroundImage: {

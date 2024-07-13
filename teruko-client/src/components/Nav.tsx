@@ -1,4 +1,4 @@
-import { HomeIcon, PlusIcon } from "@heroicons/react/outline";
+import { HomeIcon, PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { FunctionComponent } from "preact";
 import { Link, useSearchParams } from "react-router-dom";

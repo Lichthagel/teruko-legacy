@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { CheckIcon, DownloadIcon, PencilIcon, RefreshIcon, TrashIcon, XIcon } from "@heroicons/react/outline";
+import { CheckIcon, ArrowDownTrayIcon, PencilIcon, ArrowPathIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { DELETE_TAG, GET_TAG, UPDATE_TAG } from "../queries/tag";
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import Button from "../components/Button";
@@ -112,7 +112,7 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
                 }}>
                 <TrashIcon />
             </LoadingIconButton>
-            <XIcon className="w-8 h-8 cursor-pointer" onClick={() => setEdit(false)} />
+            <XMarkIcon className="w-8 h-8 cursor-pointer" onClick={() => setEdit(false)} />
         </form>
     );
 };
@@ -167,11 +167,11 @@ const Tag = () => {
                 <div className="flex-grow"></div>
                 {data && data.tag && <div className="text-gray-600 hidden md:block mx-2">{data.tag.count} images</div>}
                 <a href={`http://${window.location.hostname}:3030/zip/${encodeURIComponent(slug)}`} className="flex-shrink-0 relative">
-                    <DownloadIcon className="w-10 h-10 mx-1" />
+                    <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                     <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">zip</span>
                 </a>
                 <SortToggle />
-                <RefreshIcon
+                <ArrowPathIcon
                     className="w-10 h-10 cursor-pointer"
                     onClick={() => {
                         apolloClient.refetchQueries({

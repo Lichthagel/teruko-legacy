@@ -1,5 +1,5 @@
 import { ADD_TAG, REMOVE_TAG } from "../../queries/tag";
-import { ArrowLeftIcon, DownloadIcon, TrashIcon } from "@heroicons/react/outline";
+import { ArrowLeftIcon, ArrowDownTrayIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery } from "@apollo/client";
 import Tag from "../../components/Tag";
 import TagInput from "../../components/TagInput";
@@ -172,7 +172,7 @@ const EditImage = () => {
                 <LoadingIconButton
                     loading={loadingFetchPixiv}
                     onClick={handleUpdatePixiv}>
-                    <DownloadIcon />
+                    <ArrowDownTrayIcon />
                 </LoadingIconButton>
                 <LoadingIconButton
                     loading={deleteLoading}

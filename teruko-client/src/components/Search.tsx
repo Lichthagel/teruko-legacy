@@ -1,4 +1,4 @@
-import { RefreshIcon } from "@heroicons/react/outline";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import SortToggle from "./SortToggle";
 import TagSearch from "./TagSearch";
 import { useApolloClient } from "@apollo/client";
@@ -48,7 +48,7 @@ const Search: FunctionComponent<{
             <div className="inline-flex flex-col md:flex-row w-auto my-1 items-center">
                 <TagSearch tags={tags} setTags={setTags} />
                 <SortToggle />
-                <RefreshIcon
+                <ArrowPathIcon
                     className="w-10 h-10 cursor-pointer"
                     onClick={() => {
                         apolloClient.refetchQueries({

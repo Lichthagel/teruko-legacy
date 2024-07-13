@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon, HomeIcon, PlusIcon } from "@heroicons/react/outline";
+import { ChevronDownIcon, ChevronUpIcon, HomeIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Route, Routes, Link, useMatch, useSearchParams } from "react-router-dom";
 import Home from "./routes/index";
 import IconButton from "./components/IconButton";

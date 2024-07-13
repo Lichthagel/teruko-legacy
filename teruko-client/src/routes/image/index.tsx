@@ -1,5 +1,5 @@
 import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
-import { ChevronLeftIcon, ChevronRightIcon, ClipboardCopyIcon, DownloadIcon, PencilIcon } from "@heroicons/react/outline";
+import { ChevronLeftIcon, ChevronRightIcon, ClipboardDocumentIcon, ArrowDownTrayIcon, PencilIcon } from "@heroicons/react/24/outline";
 import Tag from "../../components/Tag";
 import { useQuery } from "@apollo/client";
 import LoaderImage from "../../components/LoaderImage";
@@ -167,15 +167,15 @@ const Image = () => {
                                     <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
                                 </div>
                                 <a href={`http://${window.location.hostname}:3030/original/${image.id}`} className="flex-shrink-0 relative">
-                                    <DownloadIcon className="w-10 h-10 mx-1" />
+                                    <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                                     <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">{fileExt}</span>
                                 </a>
                                 {fileExt && fileExt !== "avif" && <a href={`http://${window.location.hostname}:3030/avif/${image.id}`} className="flex-shrink-0 relative">
-                                    <DownloadIcon className="w-10 h-10 mx-1" />
+                                    <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                                     <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">avif</span>
                                 </a>}
                                 <a href={`http://${window.location.hostname}:3030/webp/${image.id}`} className="flex-shrink-0 relative">
-                                    <DownloadIcon className="w-10 h-10 mx-1" />
+                                    <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                                     <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">webp</span>
                                 </a>
                                 <Link to={{ pathname: `/${id}/edit`, search: `?${searchParams.toString()}${next ? `&next=${next.id}` : ""}` }} replace className="flex-shrink-0">
@@ -191,7 +191,7 @@ const Image = () => {
                                         href={image.source}
                                         rel="noreferrer"
                                         className="text-blue-800 dark:text-blue-300 mb-3">{image.source}</a>
-                                    <ClipboardCopyIcon
+                                    <ClipboardDocumentIcon
                                         className="h-6 inline-block relative bottom-1 cursor-pointer transition-colors"
                                         onClick={(event: MouseEvent) => {
                                             if (window.navigator.clipboard) {

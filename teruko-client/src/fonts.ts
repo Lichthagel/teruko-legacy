@@ -1,2 +1,2 @@
-import "@fontsource/readex-pro/variable.css";
-import "@fontsource/noto-sans-jp";
+import "@fontsource-variable/readex-pro";
+import "@fontsource-variable/noto-sans-jp";
