@@ -14,7 +14,7 @@
     "@babel/core": "^7.24.8",
     "@babel/preset-typescript": "^7.24.7",
     "@types/apollo-upload-client": "^14.1.0",
-    "babel-loader": "^8.3.0",
+    "babel-loader": "^9.0.0",
     "css-loader": "^6.11.0",
     "style-loader": "^3.3.4",
     "webpack": "^5.93.0",
