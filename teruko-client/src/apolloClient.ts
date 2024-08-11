@@ -4,7 +4,7 @@ import { Image } from "./models";
 
 const client = new ApolloClient({
   link: createUploadLink({
-    uri: "http://192.168.1.178:3030/graphql",
+    uri: `/graphql`,
     headers: {
       "Apollo-Require-Preflight": "true",
     },
