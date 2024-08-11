@@ -82,8 +82,8 @@ importers:
         specifier: ^3.4.4
         version: 3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
       tailwindcss-animatecss:
-        specifier: ^1.0.7
-        version: 1.0.7
+        specifier: ^3.0.0
+        version: 3.0.5(tailwindcss@3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)))
       vite:
         specifier: ^5.3.3
         version: 5.3.3(@types/node@20.14.10)(terser@5.31.2)
@@ -4249,8 +4249,10 @@ packages:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
     engines: {node: '>=0.10'}
 
-  tailwindcss-animatecss@1.0.7:
-    resolution: {integrity: sha512-PSGZDYSOqRNm+C/hJTMfw1pj4nprPQfbNh/wrYDC4G0R9dqtepPncIlKAFNSl7nTUFxH9ynhvBwcIul093ceXw==}
+  tailwindcss-animatecss@3.0.5:
+    resolution: {integrity: sha512-5RDYryJ+O+xQfK1FhSPl1nIe4PPa1ZfHev21CpBGUNSRwUoLEoA6Oe2ftcuCWZEAa55jniqktbtkoHIoKS4jzQ==}
+    peerDependencies:
+      tailwindcss: '>=3.1.0'
 
   tailwindcss@3.4.4:
     resolution: {integrity: sha512-ZoyXOdJjISB7/BcLTR6SEsLgKtDStYyYZVLsUtWChO4Ps20CBad7lfJKVDiejocV4ME1hLmyY0WJE3hSDcmQ2A==}
@@ -9187,7 +9189,9 @@ snapshots:
 
   symbol-observable@4.0.0: {}
 
-  tailwindcss-animatecss@1.0.7: {}
+  tailwindcss-animatecss@3.0.5(tailwindcss@3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))):
+    dependencies:
+      tailwindcss: 3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3))
 
   tailwindcss@3.4.4(ts-node@10.9.2(@types/node@20.14.10)(typescript@5.5.3)):
     dependencies:
