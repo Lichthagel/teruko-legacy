@@ -1,4 +1,9 @@
-module.exports = {
+import type { Config } from "tailwindcss";
+import forms from "@tailwindcss/forms";
+import animatecss from "tailwindcss-animatecss";
+
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}"
@@ -15,11 +20,12 @@ module.exports = {
         '3xl': '2120px'
       }
     },
+    animatedSettings: {
+      classes: ["animated", "fadeInUp"]
+    }
   },
   plugins: [
-    require("@tailwindcss/forms"),
-    require("tailwindcss-animatecss")({
-      classes: ["animate__animated", "animate__fadeInUp"]
-    })
+    forms,
+    animatecss
   ],
 }
