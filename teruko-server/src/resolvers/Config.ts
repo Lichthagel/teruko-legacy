@@ -20,6 +20,7 @@ function uvThreadpoolSize() {
 }
 
 function sharpConcurrency() {
+    // @eslint-disable-next-line import/no-named-as-default-member
     return sharp.concurrency();
 }
 
