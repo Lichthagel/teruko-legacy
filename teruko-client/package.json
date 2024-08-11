@@ -17,7 +17,7 @@
   "devDependencies": {
     "@preact/preset-vite": "^2.9.0",
     "@tailwindcss/forms": "^0.5.7",
-    "@types/apollo-upload-client": "^17.0.5",
+    "@types/apollo-upload-client": "^18.0.0",
     "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
@@ -37,7 +37,7 @@
     "@fontsource-variable/noto-sans-jp": "^5.0.19",
     "@fontsource-variable/readex-pro": "^5.0.13",
     "@heroicons/react": "^2.1.5",
-    "apollo-upload-client": "^17.0.0",
+    "apollo-upload-client": "^18.0.0",
     "clsx": "^2.1.1",
     "preact": "^10.22.1",
     "react-router-dom": "^6.24.1"
