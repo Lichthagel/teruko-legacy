@@ -9,5 +9,12 @@
     "teruko-client",
     "teruko-server",
     "teruko-userscript"
-  ]
+  ],
+  "scripts": {
+    "build": "nx run-many -t build",
+    "lint": "nx run-many -t lint"
+  },
+  "devDependencies": {
+    "nx": "^19.5.7"
+  }
 }

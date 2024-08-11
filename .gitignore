@@ -3,3 +3,5 @@ node_modules
 .parcel-cache
 .direnv/
 .vscode/
+.nx/cache
+.nx/workspace-data
