@@ -25,7 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^8.57.0",
-    "eslint-config-lichthagel": "github:lichthagel/eslint-config#9a3b34517573a0ca4f475c060bc25cbd038816b2",
+    "eslint-config-lichthagel": "github:lichthagel/eslint-config#dbabbc772faf980291d26b0501d6b19bd76cd721",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "nodemon": "^3.1.4",
