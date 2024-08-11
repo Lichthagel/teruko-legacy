@@ -1,7 +1,7 @@
 import { Context } from "../../context.js";
 
 
-export interface TagMutationArgs {
+export type TagMutationArgs = {
     imageId: string;
     tag: string;
 }

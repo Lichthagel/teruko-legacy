@@ -15,24 +15,38 @@ const TagSearch: FunctionComponent<{
     const suggestions = useSuggestions(tagsInput);
 
     const handleSubmit = useCallback((tagSlug: string) => {
-        if (tags.find((el) => el === tagSlug)) return;
-        setTags((tags || []).concat([tagSlug]));
+        if (tags.includes(tagSlug)) return;
+        setTags([...(tags || []), tagSlug]);
         setTagsInput("");
         setActiveSuggestion(0);
         // handleSubmitParent();
     }, [setTags, tags]);
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        if (event.key === "Enter") {
+        switch (event.key) {
+        case "Enter": {
             if (suggestions.length > activeSuggestion) {
                 handleSubmit(suggestions[activeSuggestion].slug);
             }
-        } else if (event.key === "ArrowUp") {
+        
+            break;
+        }
+        case "ArrowUp": {
             setActiveSuggestion(activeSuggestion - 1);
-        } else if (event.key === "ArrowDown") {
+        
+            break;
+        }
+        case "ArrowDown": {
             setActiveSuggestion(activeSuggestion + 1);
-        } else if (event.key === "Escape") {
+        
+            break;
+        }
+        case "Escape": {
             setTags([]);
+        
+            break;
+        }
+        // No default
         }
     }, [activeSuggestion, handleSubmit, setTags, suggestions]);
 

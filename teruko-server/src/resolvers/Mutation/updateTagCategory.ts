@@ -1,7 +1,6 @@
 import { Context } from "../../context.js";
 
-
-export interface TagCategoryUpdateArgs {
+export type TagCategoryUpdateArgs = {
     slug: string;
     newSlug?: string;
     color?: string;

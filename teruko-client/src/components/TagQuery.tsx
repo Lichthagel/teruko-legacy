@@ -9,7 +9,7 @@ const TagQuery: FunctionComponent<{
     slug: string;
     onClick?: (tag: TagModel) => void;
 }> = ({ slug, onClick }) => {
-    const { data, loading } = useQuery(GET_TAG, {
+    const { data, loading } = useQuery<{tag?: TagModel}>(GET_TAG, {
         variables: {
             slug
         }

@@ -1,6 +1,6 @@
 import PixivIllustResult from "../../models/PixivIllustResult.js";
 import { Prisma } from "@prisma/client";
-import https from "https";
+import https from "node:https";
 
 export async function fetchPixiv(pixivId: string): Promise<PixivIllustResult> {
     return new Promise<PixivIllustResult>((resolve, reject) => {
@@ -21,7 +21,7 @@ export async function fetchPixiv(pixivId: string): Promise<PixivIllustResult> {
             });
 
             res.on("end", () => {
-                resolve(JSON.parse(responseBody));
+                resolve(JSON.parse(responseBody) as PixivIllustResult);
             });
         });
 
@@ -150,7 +150,8 @@ export function toModel(pixivResult: PixivIllustResult, pixivIdFallback?: string
         }
 
         title = pixivResult.body.illustTitle;
-        source = `https://www.pixiv.net/en/artworks/${pixivResult.body.illustId || pixivIdFallback}`;
+        const illustId = pixivResult.body.illustId || pixivIdFallback;
+        source = illustId ? `https://www.pixiv.net/en/artworks/${illustId}` : undefined;
     }
 
     return {

@@ -24,7 +24,7 @@ async function tagCategories(parent:void, args: void, context: Context) {
     return context.prisma.tagCategory.findMany({});
 }
 
-async function config() {
+function config() {
     return {};
 }
 

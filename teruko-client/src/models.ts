@@ -1,4 +1,4 @@
-export interface Image {
+export type Image = {
     id:number;
     filename: string;
     title?: string;
@@ -8,12 +8,12 @@ export interface Image {
     tags: Tag[];
 }
 
-export interface Tag {
+export type Tag = {
     slug: string;
     category?: TagCategory;
 }
 
-export interface TagCategory {
+export type TagCategory = {
     slug: string;
     color?: string;
 }

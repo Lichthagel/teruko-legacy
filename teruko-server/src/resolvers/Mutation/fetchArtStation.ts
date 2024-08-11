@@ -1,6 +1,6 @@
 import ArtStationIllust, { ArtStationAsset } from "../../models/ArtStationIllust.js";
 import { Prisma } from "@prisma/client";
-import https from "https";
+import https from "node:https";
 
 export async function fetchArtStation(artStationId: string): Promise<ArtStationIllust> {
     return new Promise<ArtStationIllust>((resolve, reject) => {
@@ -21,7 +21,7 @@ export async function fetchArtStation(artStationId: string): Promise<ArtStationI
             });
 
             res.on("end", () => {
-                resolve(JSON.parse(responseBody));
+                resolve(JSON.parse(responseBody) as ArtStationIllust);
             });
         });
 

@@ -2,9 +2,9 @@ import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { FunctionComponent, JSX } from "preact";
 
-interface LoadingIconButtonProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "loading"> {
+type LoadingIconButtonProps = {
     loading: boolean;
-}
+} & Omit<JSX.HTMLAttributes<HTMLDivElement>, "loading">
 
 const LoadingIconButton: FunctionComponent<LoadingIconButtonProps> = ({ loading, children, ...props }) => {
     if (loading) {

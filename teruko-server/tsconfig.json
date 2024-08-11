@@ -4,12 +4,12 @@
         "module": "node16",
         "moduleResolution": "node16",
         "esModuleInterop": true,
-        "target": "es6",
+        "target": "es2017",
         "rootDir": "src",
         "outDir": "build",
         "strict": true
     },
-    "include": ["./src/*"],
+    "include": ["./src/**/*"],
     "ts-node": {
         "files": true
     }

@@ -15,8 +15,8 @@ const New = () => {
         update(cache) {
             cache.modify({
                 fields: {
-                    imageCount(prev = 0) {
-                        return prev + 1;
+                    imageCount(prev?: number) {
+                        return (prev || 0) + 1;
                     }
                 }
             });
@@ -34,8 +34,8 @@ const New = () => {
         update(cache) {
             cache.modify({
                 fields: {
-                    imageCount(prev = 0) {
-                        return prev + 1;
+                    imageCount(prev?: number) {
+                        return (prev || 0) + 1;
                     }
                 }
             });
@@ -58,15 +58,16 @@ const New = () => {
         event.stopPropagation();
         event.preventDefault();
 
-        if (!loading && !error && event.dataTransfer) {
-            newImage({
-                variables: {
-                    files: event.dataTransfer.files
-                }
-            })
-                .then(() => {
-                    navigate("/");
-                });
+        if (!loading && !error && !!event.dataTransfer) {
+            void (async () => {
+                await newImage({
+                    variables: {
+                        files: event.dataTransfer.files
+                    }
+                })
+                
+                navigate("/");
+            })()
         }
 
 
@@ -77,7 +78,10 @@ const New = () => {
         event.preventDefault();
 
         if (sourceUrl !== "" && !loadingUrl && !errorUrl) {
-            newImageFromUrl().then(() => navigate("/"));
+            void (async () => {
+                await newImageFromUrl();
+                navigate("/");
+            })();
         }
     }, [
         errorUrl,
@@ -116,7 +120,7 @@ const New = () => {
                         "border-red-800 dark:border-red-400": error
                     }
                 )}>
-                {!loading ? "drop image here" : "..."}
+                {loading ? "..." : "drop image here"}
             </div>
 
             <form onSubmit={handleUrl} className="my-3">

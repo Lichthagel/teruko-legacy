@@ -1,4 +1,4 @@
-export interface ArtStationAsset {
+export type ArtStationAsset = {
     has_image: boolean;
     has_embedded_player: boolean;
     player_embedded?: unknown;
@@ -15,7 +15,7 @@ export interface ArtStationAsset {
     [key: string]: unknown;
 }
 
-interface ArtStationUser {
+type ArtStationUser = {
     id: number;
     username: string;
     headline: string;
@@ -28,22 +28,22 @@ interface ArtStationUser {
     [key: string]: unknown;
 }
 
-interface ArtStationMedium {
+type ArtStationMedium = {
     name: string;
     id: number;
 }
 
-interface ArtStationCategory {
+type ArtStationCategory = {
     name: string;
     id: number;
 }
 
-interface ArtStationSoftware {
+type ArtStationSoftware = {
     name: string;
     icon_url: string;
 }
 
-interface ArtStationIllust {
+type ArtStationIllust = {
     liked: boolean;
     tags: string[];
     hide_as_adult: boolean;

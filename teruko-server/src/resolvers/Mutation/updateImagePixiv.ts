@@ -17,7 +17,7 @@ async function updateImagePixiv(parent: void, { id, source }: { id: string; sour
         source = image.source;
     }
 
-    const matches = source.match(/https?:\/\/www.pixiv.net(?:\/en)?\/artworks\/([0-9]+)/);
+    const matches = source.match(/https?:\/\/www.pixiv.net(?:\/en)?\/artworks\/(\d+)/);
 
     if (!matches) throw new Error("not a valid pixiv url");
 

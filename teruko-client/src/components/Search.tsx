@@ -17,18 +17,18 @@ const Search: FunctionComponent<{
 
     const apolloClient = useApolloClient();
 
-    const removeTag = useCallback(async (tagSlug: string) => {
+    const removeTag = useCallback((tagSlug: string) => {
         navigate("/");
         const newTags = tags.filter(el => el !== tagSlug);
         setTags(newTags);
     }, [navigate, setTags, tags]);
 
-    const resetTags = useCallback(async () => {
+    const resetTags = useCallback(() => {
         navigate("/");
         setTags([]);
     }, [navigate, setTags]);
 
-    const navContent = document.getElementById("navContent");
+    const navContent = document.querySelector("#navContent");
 
     if (!navContent) return;
 
@@ -51,7 +51,7 @@ const Search: FunctionComponent<{
                 <ArrowPathIcon
                     className="w-10 h-10 cursor-pointer"
                     onClick={() => {
-                        apolloClient.refetchQueries({
+                        void apolloClient.refetchQueries({
                             include: ["Images"]
                         });
                     }} />

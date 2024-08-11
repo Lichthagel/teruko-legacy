@@ -10,40 +10,43 @@ import { GET_TAG_CATEGORIES } from "../queries/category";
 import LoadingIconButton from "../components/LoadingIconButton";
 import { Fragment, FunctionComponent, JSX } from "preact";
 import { useCallback, useState } from "preact/hooks";
+import type { Tag, TagCategory } from "../models";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: boolean) => void }> = ({ slug, data, setEdit }) => {
+const EditHeading: FunctionComponent<{ slug: string; data: {
+    tag: Tag;
+}; setEdit: (edit: boolean) => void }> = ({ slug, data, setEdit }) => {
     const navigate = useNavigate();
 
     const [newSlug, setNewSlug] = useState(slug);
-    const [category, setCategory] = useState(data.tag.category && data.tag.category.slug || "");
+    const [category, setCategory] = useState<string>(data.tag.category && data.tag.category.slug || "");
 
-    const { data: dataCategories } = useQuery(GET_TAG_CATEGORIES);
+    const { data: dataCategories } = useQuery<{tagCategories: TagCategory[]}>(GET_TAG_CATEGORIES);
 
-    const [updateTag, { loading: loadingUpdate }] = useMutation(UPDATE_TAG, {
+    const [updateTag, { loading: loadingUpdate }] = useMutation<{updateTag: Tag}>(UPDATE_TAG, {
         refetchQueries: ["TagSuggestions"],
         update(cache, result) {
-            if (!result.data) return;
-            if (slug !== result.data.slug) {
+            if (!!result.data && slug !== result.data.updateTag.slug) {
                 cache.modify({
                     id: cache.identify({
                         __typename: "Tag",
                         slug: slug
                     }),
                     fields: {
-                        slug: () => result.data.slug,
-                        category: () => result.data.category
+                        slug: () => result.data?.updateTag.slug,
+                        category: () => result.data?.updateTag.category
                     }
                 });
             }
         }
     });
 
-    const [deleteTag, { loading: loadingDelete }] = useMutation(DELETE_TAG, {
+    const [deleteTag, { loading: loadingDelete }] = useMutation<{deleteTag: {slug: string;}}>(DELETE_TAG, {
         variables: {
             slug
         },
         update(cache, result) {
+            if (result.data)
             cache.modify({
                 id: cache.identify(result.data.deleteTag),
                 fields(fieldValue, details) {
@@ -55,18 +58,20 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
 
     const handleSubmit = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
         event.preventDefault();
-        updateTag({
-            variables: {
-                slug,
-                newSlug: newSlug !== slug ? newSlug : undefined,
-                category: category !== "" ? category : null
-            }
-        }).then(result => {
+        void (async () => {
+            const result = await updateTag({
+                variables: {
+                    slug,
+                    newSlug: newSlug === slug ? undefined : newSlug,
+                    category: category === "" ? null : category
+                }
+            });
+
             if (result.data) {
                 navigate(`/tag/${encodeURIComponent(result.data.updateTag.slug)}`, { replace: true });
             }
             setEdit(false);
-        });
+        })();
     }, [
         category,
         navigate,
@@ -104,10 +109,10 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
                 className="w-8 h-8"
                 onClick={() => {
                     if (confirm("Delete?")) {
-                        deleteTag()
-                            .then(() => {
-                                navigate("/");
-                            });
+                        void (async () => {
+                            await deleteTag()
+                            navigate("/");
+                        })()
                     }
                 }}>
                 <TrashIcon />
@@ -118,7 +123,7 @@ const EditHeading: FunctionComponent<{ slug: string; data: any; setEdit: (edit: 
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Heading: FunctionComponent<{ slug: string; loading: boolean; data: any }> = ({ slug, loading, data }) => {
+const Heading: FunctionComponent<{ slug: string; loading: boolean; data: {tag: Tag} }> = ({ slug, loading, data }) => {
 
     const [edit, setEdit] = useState(false);
 
@@ -150,15 +155,19 @@ const Tag = () => {
     const params = useParams();
     const [searchParams] = useSearchParams();
 
-    const slug = params.slug as string;
+    const slug = params.slug;
     const sort = searchParams.get("sort") || "newest";
 
-    const { loading, data } = useQuery(GET_TAG, {
+    const { loading, data } = useQuery<{tag?: Tag & {count: number}}>(GET_TAG, {
         variables: {
             slug
         },
         skip: !slug
     });
+
+    if (!slug) return null;
+
+    if (!data || !data.tag) return null;
 
     return (
         <div className="container mx-auto">
@@ -174,13 +183,13 @@ const Tag = () => {
                 <ArrowPathIcon
                     className="w-10 h-10 cursor-pointer"
                     onClick={() => {
-                        apolloClient.refetchQueries({
+                        void apolloClient.refetchQueries({
                             include: ["Images"]
                         });
                     }} />
             </div>
 
-            {slug && <Gallery tags={[slug]} sort={sort as string} />}
+            {slug && <Gallery tags={[slug]} sort={sort } />}
         </div>
     );
 };

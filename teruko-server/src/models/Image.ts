@@ -1,6 +1,6 @@
 import Tag from "./Tag.js";
 
-export interface Image {
+export type Image = {
     id: string;
     filename: string;
     title: string | undefined;

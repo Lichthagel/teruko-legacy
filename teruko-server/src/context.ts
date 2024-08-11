@@ -1,10 +1,10 @@
+/* eslint-disable n/no-process-env */
 import Prisma, { PrismaClient } from "@prisma/client";
-// import type { PrismaClient } from "@prisma/client";
 import { config } from "dotenv";
 
 config();
 
-export interface Context {
+export type Context = {
     prisma: PrismaClient;
     imgFolder: string;
 }

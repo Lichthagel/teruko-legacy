@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { FunctionComponent, JSX } from "preact";
 
-interface ChipProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "size"> {
+type ChipProps = {
     color?: string;
     size?: "small" | "normal";
-}
+} & Omit<JSX.HTMLAttributes<HTMLDivElement>, "size">
 
 // eslint-disable-next-line react/prop-types
 const Chip: FunctionComponent<ChipProps> = ({ children, color, size = "normal", className, style, ...props }) =>

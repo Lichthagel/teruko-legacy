@@ -1,10 +1,10 @@
 import { Context } from "../../context.js";
 import { FileUpload } from "graphql-upload/Upload.mjs";
-import { finished } from "stream/promises";
-import fs from "fs";
+import { finished } from "node:stream/promises";
+import fs from "node:fs";
 import { fileTypeStream } from "file-type";
 import { fetchPixiv, toModel } from "./fetchPixiv.js";
-import path from "path";
+import path from "node:path";
 import sharp from "sharp";
 import { createId } from "@paralleldrive/cuid2";
 
@@ -27,8 +27,8 @@ async function createImage(
 
       if (
         !streamWithFileType.fileType ||
-        !streamWithFileType.fileType.mime.match(
-          /^image\/(jpeg|gif|png|webp|avif)$/
+        !/^image\/(jpeg|gif|png|webp|avif)$/.test(
+          streamWithFileType.fileType.mime
         )
       ) {
         throw new Error("not an image");
@@ -41,11 +41,11 @@ async function createImage(
           },
         })
       ) {
-        return Promise.reject(new Error("already exists"));
+        throw new Error("already exists");
       }
 
-      if (inUpload.findIndex((val) => val === filename) >= 0) {
-        return Promise.reject(new Error("already uploading"));
+      if (inUpload.includes(filename)) {
+        throw new Error("already uploading");
       }
 
       inUpload.push(filename);
@@ -68,7 +68,7 @@ async function createImage(
 
       // PIXIV stuff
       const matches = filename.match(
-        /([0-9]+)_p[0-9]+\.(?:jpg|png|gif|jpeg|webp|avif)/
+        /(\d+)_p\d+\.(?:jpg|png|gif|jpeg|webp|avif)/
       );
       if (matches) {
         const pixivId = matches[1];
@@ -83,10 +83,7 @@ async function createImage(
           },
         });
 
-        inUpload.splice(
-          inUpload.findIndex((val) => val === filename),
-          1
-        );
+        inUpload.splice(inUpload.indexOf(filename), 1);
 
         return newImage;
       }
@@ -112,10 +109,7 @@ async function createImage(
         },
       });
 
-      inUpload.splice(
-        inUpload.findIndex((val) => val === filename),
-        1
-      );
+      inUpload.splice(inUpload.indexOf(filename), 1);
 
       return newImage;
     })

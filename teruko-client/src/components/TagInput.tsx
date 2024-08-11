@@ -20,7 +20,8 @@ const TagInput: FunctionComponent<{
     }, [handleSubmitParent]);
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        if (event.key === "Enter") {
+        switch (event.key) {
+        case "Enter": {
             if (suggestions.length >= activeSuggestion) {
                 if (activeSuggestion === 0) {
                     handleSubmit(tagInput);
@@ -28,10 +29,20 @@ const TagInput: FunctionComponent<{
                     handleSubmit(suggestions[activeSuggestion - 1].slug);
                 }
             }
-        } else if (event.key === "ArrowUp") {
+        
+            break;
+        }
+        case "ArrowUp": {
             setActiveSuggestion(activeSuggestion - 1);
-        } else if (event.key === "ArrowDown") {
+        
+            break;
+        }
+        case "ArrowDown": {
             setActiveSuggestion(activeSuggestion + 1);
+        
+            break;
+        }
+        // No default
         }
     }, [activeSuggestion, handleSubmit, suggestions, tagInput]);
 
@@ -47,7 +58,7 @@ const TagInput: FunctionComponent<{
                     setActiveSuggestion(0);
                 }}
                 onKeyDown={handleKeyDown} />
-            {tagInput.length !== 0 &&
+            {tagInput.length > 0 &&
                 <ul className="block absolute z-20 bg-gray-700 left-0 right-0">
                     <li
                         key={"new_tag"}

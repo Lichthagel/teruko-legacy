@@ -3,7 +3,7 @@ import { Tag } from "../models";
 import { GET_TAG_SUGGESTIONS } from "../queries/tag";
 
 function useSuggestions(filter: string): Tag[] {
-    const { data } = useQuery(GET_TAG_SUGGESTIONS, {
+    const { data } = useQuery<{tagSuggestions: Tag[];}>(GET_TAG_SUGGESTIONS, {
         variables: {
             filter: filter
         },

@@ -17,14 +17,14 @@ const Image = () => {
     const tags = searchParams.getAll("tag");
     const sort = searchParams.get("sort") || "random";
 
-    const { loading, data } = useQuery(GET_IMAGE, {
+    const { loading, data } = useQuery<{image?: ImageModel}>(GET_IMAGE, {
         variables: {
             id
         },
         skip: !id,
     });
 
-    const { data: dataImages, fetchMore } = useQuery(GET_IMAGES, {
+    const { data: dataImages, fetchMore } = useQuery<{images: ImageModel[]}>(GET_IMAGES, {
         variables: {
             skip: 0,
             take: 1,
@@ -38,11 +38,9 @@ const Image = () => {
             const images: ImageModel[] = dataImages.images;
             if (images.length > 0) {
                 const index = images.findIndex((el) => el.id === data.image.id);
-                if (index !== -1) {
-                    if (index > 0) {
-                        return images[index - 1];
-                    } else return null;
-                } else return null;
+                if (index === -1) {return null;} else {
+                    return index > 0 ? images[index - 1] : null;
+                }
             } else return null;
         } else return null;
     }, [data, dataImages]);
@@ -52,9 +50,11 @@ const Image = () => {
             const images: ImageModel[] = dataImages.images;
             if (images.length > 0) {
                 const index = images.findIndex((el) => el.id === data.image.id);
-                if (index !== -1) {
+                if (index === -1) {
+                    return images[0];
+                } else {
                     if (index + 1 >= images.length) {
-                        fetchMore({
+                        void fetchMore({
                             variables: {
                                 skip: images.length,
                                 take: sort === "random" ? 3 : 1, // take 3 since although unlike one image might be one which was already fetched
@@ -66,8 +66,6 @@ const Image = () => {
                     } else {
                         return images[index + 1];
                     }
-                } else {
-                    return images[0];
                 }
             } else return null;
         } else return null;
@@ -79,7 +77,7 @@ const Image = () => {
         tags
     ]);
 
-    const goPrevious = useCallback(async () => {
+    const goPrevious = useCallback(() => {
         if (previous) {
             navigate({
                 pathname: `/${previous.id}`,
@@ -88,7 +86,7 @@ const Image = () => {
         }
     }, [navigate, previous, sort, tags]);
 
-    const goNext = useCallback(async () => {
+    const goNext = useCallback(() => {
         if (next) {
             navigate({
                 pathname: `/${next.id}`,
@@ -101,24 +99,38 @@ const Image = () => {
         const onKeyDown = (event: KeyboardEvent) => {
             if (document.activeElement && document.activeElement.tagName.toUpperCase() === "INPUT") return;
 
-            if (event.code === "ArrowRight") {
+            switch (event.code) {
+            case "ArrowRight": {
                 event.preventDefault();
-                goNext();
-            } else if (event.code === "ArrowLeft") {
+                void goNext();
+            
+            break;
+            }
+            case "ArrowLeft": {
                 event.preventDefault();
-                goPrevious();
-            } else if (event.code === "Escape") {
+                void goPrevious();
+            
+            break;
+            }
+            case "Escape": {
                 event.preventDefault();
                 navigate({
                     pathname: "/",
                     search: searchParams.toString()
                 });
-            } else if (event.ctrlKey && event.code === "KeyE") {
+            
+            break;
+            }
+            default: { if (event.ctrlKey && event.code === "KeyE") {
                 event.preventDefault();
-                navigate({
-                    pathname: `/${id}/edit`,
-                    search: `${searchParams.toString()}${next ? `&next=${next.id}` : ""}`
-                });
+                if (id) {
+                    navigate({
+                        pathname: `/${id}/edit`,
+                        search: `${searchParams.toString()}${next ? `&next=${next.id}` : ""}`
+                    });
+                }
+            }
+            }
             }
         };
 
@@ -140,11 +152,11 @@ const Image = () => {
 
     return (
         <div className="flex flex-col items-center">
-            {!loading && image &&
+            {!loading && image && id &&
                 <Fragment>
                     <div className="w-full relative">
                         <LoaderImage
-                            src={`http://${window.location.hostname}:3030/img/${data.image.filename}`}
+                            src={`/img/${image.filename}`}
                             alt={image.title || image.id.toString()}
                             className="max-w-full h-auto max-h-[100vh] mx-auto cursor-pointer shadow-xl shadow-indigo-400 dark:shadow-indigo-800"
                             onClick={goNext} />
@@ -164,7 +176,7 @@ const Image = () => {
                                 {image.title ? <h1 className="text-3xl flex-grow overflow-hidden">{image.title}</h1> : <h1 className="text-3xl flex-grow text-gray-500 dark:text-gray-400 overflow-hidden">No title</h1>}
                                 <div className="mx-2 text-indigo-500/80 dark:text-gray-400 text-sm text-right flex-shrink-0">
                                     <div><span className="font-light">Created At: </span>{new Date(image.createdAt).toLocaleString()}</div>
-                                    <div><span className="font-light">Updated At: </span>{new Date(data.image.updatedAt).toLocaleString()}</div>
+                                    <div><span className="font-light">Updated At: </span>{new Date(image.updatedAt).toLocaleString()}</div>
                                 </div>
                                 <a href={`http://${window.location.hostname}:3030/original/${image.id}`} className="flex-shrink-0 relative">
                                     <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
@@ -193,19 +205,20 @@ const Image = () => {
                                         className="text-blue-800 dark:text-blue-300 mb-3">{image.source}</a>
                                     <ClipboardDocumentIcon
                                         className="h-6 inline-block relative bottom-1 cursor-pointer transition-colors"
-                                        onClick={(event: MouseEvent) => {
+                                        onClick={async (event: MouseEvent) => {
                                             if (window.navigator.clipboard) {
-                                                window.navigator.clipboard.writeText(image.source ?? "")
-                                                    .then(() => {
-                                                        (event.target as SVGElement).classList.add("text-emerald-600");
+                                                try {
+                                                    await window.navigator.clipboard.writeText(image.source ?? "");
+                                                    (event.target as SVGElement).classList.add("text-emerald-600");
 
-                                                        setTimeout(() => {
-                                                            (event.target as SVGElement).classList.remove("text-emerald-600");
-                                                        }, 1000);
-                                                    })
-                                                    .catch((err) => alert(`could not copy: ${err}`));
+                                                    setTimeout(() => {
+                                                        (event.target as SVGElement).classList.remove("text-emerald-600");
+                                                    }, 1000);
+                                                } catch (error: unknown) {
+                                                    alert(`could not copy: ${error as string}`);
+                                                }
                                             } else {
-                                                alert(`insecure context - ${image.source}`);
+                                                alert(`insecure context - ${image.source || "no source"}`);
                                             }
                                         }} />
                                 </div>

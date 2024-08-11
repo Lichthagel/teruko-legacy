@@ -1,11 +1,11 @@
-import { ChevronDownIcon, ChevronUpIcon, HomeIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Route, Routes, Link, useMatch, useSearchParams } from "react-router-dom";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { Route, Routes, useMatch } from "react-router-dom";
 import Home from "./routes/index";
 import IconButton from "./components/IconButton";
 import clsx from "clsx";
 import ScrollToTop from "./components/ScrollToTop";
 import { lazy, Suspense } from "preact/compat";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact";
 import Nav from "./components/Nav";
 

@@ -6,8 +6,11 @@ import "./styles.css";
 import apolloClient from "./apolloClient";
 import { render } from "preact";
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const app = document.getElementById("app")!;
+const app = document.querySelector("#app");
+
+if (!app) {
+    throw new Error("Could not find app element");
+}
 
 render(
     <ApolloProvider client={apolloClient}>

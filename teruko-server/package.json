@@ -45,7 +45,6 @@
     "express": "^4.19.2",
     "file-type": "^19.1.1",
     "graphql-upload": "^16.0.2",
-    "node-fetch": "^3.3.2",
     "node-windows": "1.0.0-beta.8",
     "sharp": "^0.33.4"
   },

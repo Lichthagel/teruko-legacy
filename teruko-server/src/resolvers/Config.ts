@@ -1,24 +1,25 @@
-import path from "path";
+/* eslint-disable n/no-process-env */
+import path from "node:path";
 import sharp from "sharp";
 import { Context } from "../context.js";
 
-async function database() {
+function database() {
     return process.env.DATABASE_URL;
 }
 
-async function imageFolder(parent:void, args: void, context: Context) {
+function imageFolder(parent:void, args: void, context: Context) {
     return path.resolve(context.imgFolder);
 }
 
-async function frontendFolder() {
+function frontendFolder() {
     return process.env.FRONTEND_FOLDER ? path.resolve(process.env.FRONTEND_FOLDER) : undefined;
 }
 
-async function uvThreadpoolSize() {
+function uvThreadpoolSize() {
     return process.env.UV_THREADPOOL_SIZE;
 }
 
-async function sharpConcurrency() {
+function sharpConcurrency() {
     return sharp.concurrency();
 }
 

@@ -1,6 +1,6 @@
 import TagCategory from "./TagCategory.js";
 
-interface Tag {
+type Tag = {
     slug: string;
     category?: TagCategory;
 }

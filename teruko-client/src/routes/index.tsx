@@ -11,8 +11,8 @@ const Home: FunctionComponent = () => {
     const tags = searchParams.getAll("tag");
     const sort = searchParams.get("sort") || "newest";
 
-    const { data: dataCount } = useQuery(GET_IMAGE_COUNT, {
-        pollInterval: 300000 // 5 mins
+    const { data: dataCount } = useQuery<{imageCount: number}>(GET_IMAGE_COUNT, {
+        pollInterval: 300_000 // 5 mins
     });
 
     return (
@@ -28,7 +28,7 @@ const Home: FunctionComponent = () => {
 
             {dataCount && <div className="absolute right-3 -top-5 text-gray-600 hidden md:block">{dataCount.imageCount} images</div>}
 
-            <Gallery tags={tags} sort={sort as string} />
+            <Gallery tags={tags} sort={sort} />
         </div>
     );
 };

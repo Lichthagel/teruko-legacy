@@ -1,10 +1,9 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
-import { Image } from "./models";
 
 const client = new ApolloClient({
   link: createUploadLink({
-    uri: `/graphql`,
+    uri: "/graphql",
     headers: {
       "Apollo-Require-Preflight": "true",
     },
@@ -19,7 +18,7 @@ const client = new ApolloClient({
           images: {
             keyArgs: ["tags", "sort"],
             // eslint-disable-next-line @typescript-eslint/default-param-last
-            merge(existing = [], incoming, { args }) {
+            merge(existing: {__ref: string;}[] = [], incoming: {__ref: string;}[], { args }: {args: Record<string, unknown> | null;}) {
               if (args?.sort === "random")
                 return [
                   ...existing,
@@ -32,11 +31,11 @@ const client = new ApolloClient({
                   ),
                 ];
 
-              const skip = args?.skip || 0;
-              const merged = existing.slice(0);
-              incoming.forEach((image: Image, index: number) => {
+              const skip = args?.skip as number | null || 0;
+              const merged = [...existing];
+              for (const [index, image] of incoming.entries()) {
                 merged[skip + index] = image;
-              });
+              }
               return merged;
             },
           },
@@ -44,7 +43,7 @@ const client = new ApolloClient({
             read(_, { args, toReference }) {
               return toReference({
                 __typename: "Image",
-                id: args?.id,
+                id: args?.id as string,
               });
             },
           },
@@ -52,7 +51,7 @@ const client = new ApolloClient({
             read(_, { args, toReference }) {
               return toReference({
                 __typename: "Tag",
-                slug: args?.slug,
+                slug: args?.slug as string,
               });
             },
           },

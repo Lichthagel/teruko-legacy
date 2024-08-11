@@ -30,18 +30,20 @@ const Gallery: FunctionComponent<{
     tags: string[];
     sort: string;
 }> = ({ tags, sort }) => {
-    const { loading, error, data, fetchMore } = useQuery(GET_IMAGES, {
+    const { loading, error, data, fetchMore } = useQuery<{images: Image[]}>(GET_IMAGES, {
         variables: {
             skip: 0,
             take: DEFAULT_TAKE,
             sort,
             tags
         },
-        pollInterval: sort === "random" ? 0 : 60000
+        pollInterval: sort === "random" ? 0 : 60_000
     });
 
     const loadMore = useCallback(() => {
-        fetchMore({ variables: { skip: data.images.length } });
+        if (data) {
+            void fetchMore({ variables: { skip: data.images.length } });
+        }
     }, [data, fetchMore]);
 
     /* useEffect(() => {
@@ -82,7 +84,7 @@ const Gallery: FunctionComponent<{
     }
 
     if (error) {
-        return <h1>{`Error: ${error}`}</h1>;
+        return <h1>{`Error: ${error.name} ${error.message}`}</h1>;
     }
 
     if (!data) {
@@ -100,7 +102,7 @@ const Gallery: FunctionComponent<{
                 {data.images.map((image: Image, index: number) => <ImageCard
                     // eslint-disable-next-line react/no-array-index-key
                     key={`${image.id}_${index}`}
-                    filterTags={tag => tags.indexOf(tag.slug) === -1}
+                    filterTags={tag => !tags.includes(tag.slug)}
                     image={image}
                     url={{
                         pathname: `/${image.id}`,

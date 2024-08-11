@@ -9,6 +9,7 @@ import IconButton from "../../components/IconButton";
 import LoadingIconButton from "../../components/LoadingIconButton";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { JSX } from "preact";
+import type { Image } from "../../models";
 
 const EditImage = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const EditImage = () => {
     const [title, setTitle] = useState("");
     const [source, setSource] = useState("");
 
-    const { loading, data } = useQuery(GET_IMAGE, {
+    const { loading, data } = useQuery<{image?: Image}>(GET_IMAGE, {
         variables: {
             id
         },
@@ -44,7 +45,7 @@ const EditImage = () => {
         }
     });
 
-    const [deleteImage, { loading: deleteLoading }] = useMutation(DELETE_IMAGE, {
+    const [deleteImage, { loading: deleteLoading }] = useMutation<{deleteImage: {id: string}}>(DELETE_IMAGE, {
         variables: {
             id
         },
@@ -68,7 +69,7 @@ const EditImage = () => {
             cache.modify({
                 id: cache.identify({
                     __typename: "Tag",
-                    slug: context.variables.tag
+                    slug: context.variables.tag as string
                 }),
                 fields: {
                     count: (fieldValue, details) => details.INVALIDATE
@@ -83,7 +84,7 @@ const EditImage = () => {
             cache.modify({
                 id: cache.identify({
                     __typename: "Tag",
-                    slug: context.variables.tag
+                    slug: context.variables.tag as string
                 }),
                 fields(fieldValue, details) {
                     return details.INVALIDATE;
@@ -94,36 +95,39 @@ const EditImage = () => {
 
     const handleSubmit = useCallback((event: JSX.TargetedEvent<HTMLFormElement>) => {
         event.preventDefault();
-        updateImage({
+        void updateImage({
             variables: {
                 id,
-                title: title !== "" ? title : undefined,
-                source: source !== "" ? source : undefined
+                title: title === "" ? undefined : title,
+                source: source === "" ? undefined : source
             }
         });
     }, [id, source, title, updateImage]);
 
     const handleDelete = useCallback(() => {
         if (confirm("Delete?")) {
-            deleteImage()
-                .then(() => {
-                    const next = searchParams.get("next");
+            void (async () => {
+                await deleteImage()
 
-                    const newSearchParams = new URLSearchParams(searchParams);
-                    newSearchParams.delete("next");
+                const next = searchParams.get("next");
 
-                    navigate({
-                        pathname: next ? `/${next}` : "/",
-                        search: `?${newSearchParams.toString()}`
-                    }, {
-                        replace: true
-                    });
+                const newSearchParams = new URLSearchParams(searchParams);
+                newSearchParams.delete("next");
+
+                navigate({
+                    pathname: next ? `/${next}` : "/",
+                    search: `?${newSearchParams.toString()}`
+                }, {
+                    replace: true
                 });
+
+                return;
+            })();
         }
     }, [deleteImage, navigate, searchParams]);
 
     const handleUpdatePixiv = useCallback(() => {
-        updateImagePixiv({
+        void updateImagePixiv({
             variables: {
                 id
             }
@@ -136,13 +140,15 @@ const EditImage = () => {
 
             if (event.code === "Escape") {
                 event.preventDefault();
-                navigate({
-                    pathname: `/${id}`,
-                    search: searchParams.toString()
-                });
+                if (id) {
+                    navigate({
+                        pathname: `/${id}`,
+                        search: searchParams.toString()
+                    });
+                }
             } else if (event.ctrlKey && event.code === "KeyD") {
                 event.preventDefault();
-                handleDelete();
+                void handleDelete();
             } else if (event.ctrlKey && event.code === "KeyP") {
                 event.preventDefault();
                 handleUpdatePixiv();
@@ -163,7 +169,7 @@ const EditImage = () => {
     return (
         <div className="max-w-2xl mx-auto rounded-md bg-neutral-200 dark:bg-neutral-800 p-2 mt-20 shadow-md dark:shadow-indigo-800">
             <div className="flex flex-row items-center">
-                <Link to={{ pathname: `/${id}`, search: createSearchParams({ sort: searchParams.getAll("sort"), tag: searchParams.getAll("tag") }).toString() }} replace>
+                <Link to={{ pathname: `/${id || ""}`, search: createSearchParams({ sort: searchParams.getAll("sort"), tag: searchParams.getAll("tag") }).toString() }} replace>
                     <IconButton>
                         <ArrowLeftIcon />
                     </IconButton>
@@ -210,15 +216,17 @@ const EditImage = () => {
                                     key={tag.slug}
                                     tag={tag}
                                     onClick={
-                                        () => removeTag({
-                                            variables: {
-                                                imageId: id,
-                                                tag: tag.slug
-                                            }
-                                        })
+                                        () => {
+                                            void removeTag({
+                                                variables: {
+                                                    imageId: id,
+                                                    tag: tag.slug
+                                                }
+                                            })
+                                        }
                                     } />)}
                             <TagInput handleSubmit={slug => {
-                                addTag({
+                                void addTag({
                                     variables: {
                                         imageId: id,
                                         tag: slug

@@ -1,8 +1,8 @@
-interface PixivTranslation {
+type PixivTranslation = {
     en?: string;
 }
 
-interface PixivTag {
+type PixivTag = {
     tag: string;
     locked: boolean;
     deletable: boolean;
@@ -12,7 +12,7 @@ interface PixivTag {
     userName?: string;
 }
 
-interface PixivIllust {
+type PixivIllust = {
     illustId: string;
     illustTitle?: string;
     illustComment?: string;
@@ -60,7 +60,7 @@ interface PixivIllust {
     [key: string]: unknown;
 }
 
-interface PixivIllustResult {
+type PixivIllustResult = {
     error: boolean;
     message: string;
     body?: PixivIllust;

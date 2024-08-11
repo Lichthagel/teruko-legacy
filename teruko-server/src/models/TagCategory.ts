@@ -1,4 +1,4 @@
-interface TagCategory {
+type TagCategory = {
     slug: string;
     color: string | undefined;
 }

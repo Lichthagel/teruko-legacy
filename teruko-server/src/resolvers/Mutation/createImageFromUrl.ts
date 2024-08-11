@@ -4,13 +4,14 @@ import {
   fetchArtStation,
   toModel as toArtStationModel,
 } from "./fetchArtStation.js";
-import fetch from "node-fetch";
-import fs from "fs";
-import { finished } from "stream/promises";
-import path from "path";
+import fs from "node:fs";
+import { finished } from "node:stream/promises";
+import path from "node:path";
 import sharp from "sharp";
 import { fileTypeStream } from "file-type";
 import { createId } from "@paralleldrive/cuid2";
+import { Readable } from "node:stream";
+import type { ReadableStream } from "node:stream/web";
 
 const inUpload: string[] = [];
 
@@ -20,7 +21,7 @@ async function createImageFromUrl(
   context: Context
 ) {
   let matches = url.match(
-    /https?:\/\/www\.pixiv\.net(?:\/en)?\/artworks\/([0-9]+)/
+    /https?:\/\/www\.pixiv\.net(?:\/en)?\/artworks\/(\d+)/
   );
 
   if (matches) {
@@ -30,7 +31,7 @@ async function createImageFromUrl(
   }
 
   matches = url.match(
-    /https?:\/\/www\.artstation\.com\/artwork\/([0-9a-zA-Z]+)/
+    /https?:\/\/www\.artstation\.com\/artwork\/([\dA-Za-z]+)/
   );
 
   if (!matches) throw new Error("not a valid url");
@@ -54,86 +55,91 @@ async function createImageFromPixiv(
 
   if (!imgUrl) throw new Error("couldnt retrieve image url");
 
-  const matchesUrl = imgUrl.match(/(.*\/)([0-9]+)_p[0-9]+\.(.*)/);
+  const matchesUrl = imgUrl.match(/(.*\/)(\d+)_p\d+\.(.*)/);
 
   if (!matchesUrl) throw new Error("invalid pixiv url");
 
   const resultPromises = [];
 
   for (let i = 0; i < pixivResult.body.pageCount; i++) {
-    const res = await fetch(
-      `${matchesUrl[1] + matchesUrl[2]}_p${i}.${matchesUrl[3]}`,
-      {
-        headers: {
-          Referer: "https://www.pixiv.net/",
-        },
-        compress: true,
-      }
-    );
-
-    const streamWithFileType = await fileTypeStream(res.body);
-
-    if (
-      !streamWithFileType.fileType ||
-      !streamWithFileType.fileType.mime.match(
-        /^image\/(jpeg|gif|png|webp|avif)$/
-      )
-    ) {
-      resultPromises.push(Promise.reject(new Error("not an image")));
-      continue;
-    }
-
-    const filename = `${matchesUrl[2]}_p${i}.avif`;
-
-    if (
-      await context.prisma.image.findUnique({
-        where: {
-          filename,
-        },
-      })
-    ) {
-      resultPromises.push(Promise.reject(new Error("already exists")));
-      continue;
-    }
-
-    if (inUpload.findIndex((val) => val === filename) >= 0) {
-      resultPromises.push(Promise.reject(new Error("already uploading")));
-      continue;
-    }
-
-    inUpload.push(filename);
-
-    const transform = sharp().avif({ quality: 90 });
-
-    const out = fs.createWriteStream(path.resolve(context.imgFolder, filename));
-
-    streamWithFileType.pipe(transform).pipe(out);
-
-    await finished(out);
-    out.close();
-
-    const metadata = await sharp(
-      path.resolve(context.imgFolder, filename)
-    ).metadata();
-
-    if (!metadata.width || !metadata.height)
-      throw new Error("cant read image dimensions");
-
-    inUpload.splice(
-      inUpload.findIndex((val) => val === filename),
-      1
-    );
-
     resultPromises.push(
-      context.prisma.image.create({
-        data: {
-          ...toPixivModel(pixivResult, matchesUrl[2]),
-          id: createId(),
-          filename,
-          height: metadata.height,
-          width: metadata.width,
-        },
-      })
+      (async () => {
+        const res = await fetch(
+          `${matchesUrl[1] + matchesUrl[2]}_p${i}.${matchesUrl[3]}`,
+          {
+            headers: {
+              Referer: "https://www.pixiv.net/",
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("failed to fetch image");
+        }
+
+        if (!res.body) {
+          throw new Error("no body in response");
+        }
+
+        const streamWithFileType = await fileTypeStream(Readable.fromWeb(res.body as ReadableStream<Uint8Array>));
+
+        if (
+          !streamWithFileType.fileType ||
+          !/^image\/(jpeg|gif|png|webp|avif)$/.test(
+            streamWithFileType.fileType.mime
+          )
+        ) {
+          throw new Error("not an image");
+        }
+
+        const filename = `${matchesUrl[2]}_p${i}.avif`;
+
+        if (
+          await context.prisma.image.findUnique({
+            where: {
+              filename,
+            },
+          })
+        ) {
+          throw new Error("already exists");
+        }
+
+        if (inUpload.includes(filename)) {
+          throw new Error("already uploading");
+        }
+
+        inUpload.push(filename);
+
+        const transform = sharp().avif({ quality: 90 });
+
+        const out = fs.createWriteStream(
+          path.resolve(context.imgFolder, filename)
+        );
+
+        streamWithFileType.pipe(transform).pipe(out);
+
+        await finished(out);
+        out.close();
+
+        const metadata = await sharp(
+          path.resolve(context.imgFolder, filename)
+        ).metadata();
+
+        if (!metadata.width || !metadata.height)
+          throw new Error("cant read image dimensions");
+
+        inUpload.splice(inUpload.indexOf(filename), 1);
+
+        return context.prisma.image.create({
+          data: {
+            ...toPixivModel(pixivResult, matchesUrl[2]),
+            id: createId(),
+            filename,
+            height: metadata.height,
+            width: metadata.width,
+          },
+        });
+      })()
     );
   }
 
@@ -150,78 +156,93 @@ async function createImageFromArtStation(
   const resultPromises = [];
 
   for (let i = 0; i < asResult.assets.length; i++) {
-    const asset = asResult.assets[i];
+    resultPromises.push(
+      (async () => {
+        const asset = asResult.assets[i];
 
-    if (asset.asset_type !== "image") continue;
+        if (asset.asset_type !== "image") return;
 
-    const res = await fetch(asset.image_url);
+        if (!asset.image_url) {
+          throw new Error("no image url");
+        }
 
-    const streamWithFileType = await fileTypeStream(res.body);
+        const res = await fetch(asset.image_url);
 
-    if (
-      !streamWithFileType.fileType ||
-      !streamWithFileType.fileType.mime.match(
-        /^image\/(jpeg|gif|png|webp|avif|gif)$/
-      )
-    ) {
-      resultPromises.push(Promise.reject(new Error("not an image")));
-      continue;
-    }
+        if (!res.ok) {
+          throw new Error("failed to fetch image");
+        }
 
-    if (streamWithFileType.fileType.mime === "image/gif") continue;
+        if (!res.body) {
+          throw new Error("no body in response");
+        }
 
-    const filename = `${asset.id}.avif`;
+        const streamWithFileType = await fileTypeStream(
+          Readable.fromWeb(res.body as ReadableStream<Uint8Array>)
+        );
 
-    if (
-      await context.prisma.image.findUnique({
-        where: {
-          filename,
-        },
-      })
-    ) {
-      // resultPromises.push(Promise.reject(new Error("already exists")));
-      continue;
-    }
+        if (
+          !streamWithFileType.fileType ||
+          !/^image\/(jpeg|gif|png|webp|avif)$/.test(
+            streamWithFileType.fileType.mime
+          )
+        ) {
+          throw new Error("not an image");
+        }
 
-    if (inUpload.findIndex((val) => val === filename) >= 0) {
-      resultPromises.push(Promise.reject(new Error("already uploading")));
-      continue;
-    }
+        if (streamWithFileType.fileType.mime === "image/gif") return;
 
-    inUpload.push(filename);
+        const filename = `${asset.id}.avif`;
 
-    const transform = sharp().avif({ quality: 90 });
+        if (
+          await context.prisma.image.findUnique({
+            where: {
+              filename,
+            },
+          })
+        ) {
+          // throw new Error("already exists");
+          return;
+        }
 
-    const out = fs.createWriteStream(path.resolve(context.imgFolder, filename));
+        if (inUpload.includes(filename)) {
+          throw new Error("already uploading");
+        }
 
-    streamWithFileType.pipe(transform).pipe(out);
+        inUpload.push(filename);
 
-    await finished(out);
-    out.close();
+        const transform = sharp().avif({ quality: 90 });
 
-    const metadata = await sharp(
-      path.resolve(context.imgFolder, filename)
-    ).metadata();
+        const out = fs.createWriteStream(
+          path.resolve(context.imgFolder, filename)
+        );
 
-    if (!metadata.width || !metadata.height)
-      throw new Error("cant read image dimensions");
+        streamWithFileType.pipe(transform).pipe(out);
 
-    inUpload.splice(
-      inUpload.findIndex((val) => val === filename),
-      1
+        await finished(out);
+        out.close();
+
+        const metadata = await sharp(
+          path.resolve(context.imgFolder, filename)
+        ).metadata();
+
+        if (!metadata.width || !metadata.height)
+          throw new Error("cant read image dimensions");
+
+        inUpload.splice(inUpload.indexOf(filename), 1);
+
+        const image = context.prisma.image.create({
+          data: {
+            ...toArtStationModel(asResult, asset),
+            id: createId(),
+            filename,
+            height: metadata.height,
+            width: metadata.width,
+          },
+        });
+
+        return image;
+      })()
     );
-
-    const image = context.prisma.image.create({
-      data: {
-        ...toArtStationModel(asResult, asset),
-        id: createId(),
-        filename,
-        height: metadata.height,
-        width: metadata.width,
-      },
-    });
-
-    resultPromises.push(image);
   }
 
   return await Promise.all(resultPromises);

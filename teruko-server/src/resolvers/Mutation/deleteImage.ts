@@ -1,7 +1,7 @@
 import { Context } from "../../context.js";
 import ImageModel from "../../models/Image.js";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 
 async function deleteImage(parent: void, args: ImageModel, context: Context) {
@@ -26,14 +26,14 @@ async function deleteImage(parent: void, args: ImageModel, context: Context) {
         AND "Tag"."slug" = ${tag.slug};`;
             }
         }
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
     }
 
     try {
         await fs.promises.rm(path.join(context.imgFolder, deletedImage.filename));
-    } catch (err) {
-        console.log(err);
+    } catch (error) {
+        console.log(error);
     }
 
     return deletedImage;

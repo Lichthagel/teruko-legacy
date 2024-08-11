@@ -6,20 +6,25 @@ function getTagQuery(tag: string, index: number) {
     return `"_ImageToTag"."B" = $${index + 2}`;
 }
 function parseSort(sort: ImageSort): Prisma.ImageOrderByWithRelationInput | undefined {
-    if (sort === ImageSort.Newest) {
+    switch (sort) {
+    case ImageSort.Newest: {
         return {
             createdAt: "desc"
         };
-    } else if (sort === ImageSort.Oldest) {
+    }
+    case ImageSort.Oldest: {
         return {
             createdAt: "asc"
         };
-    } else if (sort === ImageSort.LastUpdated) {
+    }
+    case ImageSort.LastUpdated: {
         return {
             updatedAt: "desc"
         };
-    } else {
+    }
+    default: {
         return undefined;
+    }
     }
 }
 
