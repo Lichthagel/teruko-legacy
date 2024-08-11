@@ -16,6 +16,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { expressMiddleware } from "@apollo/server/express4";
 import http from "http";
+import https from "https";
 
 process.setMaxListeners(0);
 
@@ -185,7 +186,21 @@ const port = 3030;
     });
   }
 
-  app.listen(port, () => {
+  let server;
+
+  if (process.env.SSL_KEY && process.env.SSL_CERT) {
+    server = https.createServer(
+      {
+        key: fs.readFileSync(process.env.SSL_KEY),
+        cert: fs.readFileSync(process.env.SSL_CERT),
+      },
+      app
+    );
+  } else {
+    server = http.createServer(app);
+  }
+
+  server.listen(port, () => {
     console.log(`Teruko-Server listening on port ${port}`);
     console.log("GraphQL on /graphql");
   });
