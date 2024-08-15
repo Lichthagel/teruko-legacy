@@ -20,6 +20,7 @@ import bodyParser from "body-parser";
 import { expressMiddleware } from "@apollo/server/express4";
 import http from "node:http";
 import https from "node:https";
+import { getListenArgs } from "@derhuerst/systemd";
 
 process.setMaxListeners(0);
 
@@ -197,7 +198,9 @@ const server =
       )
     : http.createServer(app);
 
-server.listen(port, () => {
+const listenArgs = getListenArgs() || [port];
+
+server.listen(...listenArgs, () => {
   console.log(`Teruko-Server listening on port ${port}`);
   console.log("GraphQL on /graphql");
 });

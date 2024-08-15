@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.10.4",
+    "@derhuerst/systemd": "^0.5.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.16.2",
     "archiver": "^7.0.1",
