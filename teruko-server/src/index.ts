@@ -21,6 +21,7 @@ import { expressMiddleware } from "@apollo/server/express4";
 import http from "node:http";
 import https from "node:https";
 import { getListenArgs } from "@derhuerst/systemd";
+import { ListenOptions } from "node:net";
 
 process.setMaxListeners(0);
 
@@ -198,7 +199,9 @@ const server =
       )
     : http.createServer(app);
 
-const listenArgs = getListenArgs() || [port];
+const listenArgs: [number | string | ListenOptions] = (
+  getListenArgs as () => [number | string | ListenOptions]
+)() || [port];
 
 server.listen(...listenArgs, () => {
   console.log(`Teruko-Server listening on port ${port}`);
