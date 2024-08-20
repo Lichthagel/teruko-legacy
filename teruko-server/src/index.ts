@@ -200,8 +200,10 @@ const server =
     : http.createServer(app);
 
 const listenArgs: [number | string | ListenOptions] = (
-  getListenArgs as () => [number | string | ListenOptions]
-)() || [port];
+  getListenArgs as (
+    ...nonSocketArgs: any[]
+  ) => [number | string | ListenOptions]
+)(port);
 
 server.listen(...listenArgs, () => {
   console.log(`Teruko-Server listening on port ${port}`);
