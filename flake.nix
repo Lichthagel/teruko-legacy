@@ -12,7 +12,7 @@
         f:
         inputs.nixpkgs.lib.genAttrs systems (
           system:
-          f (rec {
+          f rec {
             inherit system;
             pkgs = import inputs.nixpkgs {
               inherit system;
@@ -21,7 +21,7 @@
                 (final: prev: { prisma-engines = inputs.nixpkgs-23-05.legacyPackages.${system}.prisma-engines; })
               ];
             };
-          })
+          }
         );
     in
     {
