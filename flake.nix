@@ -45,7 +45,7 @@
 
             pnpmDeps = pkgs.pnpm.fetchDeps {
               inherit (finalAttrs) pname version src;
-              hash = "sha256-nhJRUrDXDKLT62KZSIiukE8G6upsS2dK+zqFJhDfp/o=";
+              hash = "sha256-m0WqGjD4puZqMImp1fhWLwvalPAaPG9dv9AwcKtK3Cg=";
             };
 
             PRISMA_MIGRATION_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/migration-engine";
