@@ -1,4 +1,4 @@
-mutation RemoveTag($imageId: Int!, $tag: String!) {
+mutation RemoveTag($imageId: String!, $tag: String!) {
     removeTag(imageId: $imageId, tag: $tag) {
         id
         tags {
