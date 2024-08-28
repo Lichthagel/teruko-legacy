@@ -1,4 +1,3 @@
-/* eslint-disable n/no-process-env */
 import path from "node:path";
 import sharp from "sharp";
 

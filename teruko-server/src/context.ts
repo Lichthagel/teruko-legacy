@@ -1,4 +1,3 @@
-/* eslint-disable n/no-process-env */
 import Prisma, { PrismaClient } from "@prisma/client";
 import { config } from "dotenv";
 

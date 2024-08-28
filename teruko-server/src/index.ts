@@ -8,7 +8,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import { fileTypeStream } from "file-type";
-/* eslint-disable n/no-process-env */
 import GraphQLUpload from "graphql-upload/GraphQLUpload.mjs";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs";
 import { createReadStream } from "node:fs";
