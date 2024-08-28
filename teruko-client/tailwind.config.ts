@@ -1,31 +1,25 @@
 import type { Config } from "tailwindcss";
+
 import forms from "@tailwindcss/forms";
 import animatecss from "tailwindcss-animatecss";
 
-/** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
-      sans: ["Readex Pro Variable", "Noto Sans JP Variable", "sans-serif"]
+      sans: ["Readex Pro Variable", "Noto Sans JP Variable", "sans-serif"],
     },
     extend: {
       backgroundImage: {
-        'conic-gradient-45': "conic-gradient(from 45deg, var(--tw-gradient-stops))"
+        "conic-gradient-45": "conic-gradient(from 45deg, var(--tw-gradient-stops))",
       },
       screens: {
-        '3xl': '2120px'
-      }
+        "3xl": "2120px",
+      },
     },
     animatedSettings: {
-      classes: ["animated", "fadeInUp"]
-    }
+      classes: ["animated", "fadeInUp"],
+    },
   },
-  plugins: [
-    forms,
-    animatecss
-  ],
-}
+  plugins: [forms, animatecss],
+} satisfies Config;

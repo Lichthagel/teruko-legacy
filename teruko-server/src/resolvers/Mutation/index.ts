@@ -10,16 +10,16 @@ import updateTag from "./updateTag.js";
 import updateTagCategory from "./updateTagCategory.js";
 
 const Mutation = {
-    createImage,
-    createImageFromUrl,
-    updateImage,
-    updateImagePixiv,
-    deleteImage,
-    addTag,
-    removeTag,
-    updateTag,
-    deleteTag,
-    updateTagCategory
+  createImage,
+  createImageFromUrl,
+  updateImage,
+  updateImagePixiv,
+  deleteImage,
+  addTag,
+  removeTag,
+  updateTag,
+  deleteTag,
+  updateTagCategory,
 };
 
 export default Mutation;

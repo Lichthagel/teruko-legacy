@@ -2,9 +2,10 @@
 import Prisma from "@prisma/client";
 import { config } from "dotenv";
 import { access } from "node:fs/promises";
-import createImageFromUrl from "../resolvers/Mutation/createImageFromUrl.js";
-import context from "../context.js";
 import path from "node:path";
+
+import context from "../context.js";
+import createImageFromUrl from "../resolvers/Mutation/createImageFromUrl.js";
 
 config();
 
@@ -22,7 +23,6 @@ while (downloaded < DOWNLOAD_COUNT) {
   results.push(
     // eslint-disable-next-line unicorn/prefer-top-level-await
     (async () => {
-      console.log("getting images");
       const images = await prisma.image.findMany({
         skip,
         take: 10,
@@ -40,14 +40,11 @@ while (downloaded < DOWNLOAD_COUNT) {
       return Promise.all(
         images.map(async (image: Prisma.Image) => {
           try {
-            console.log("looking for file");
             await access(path.join(context.imgFolder, image.filename));
           } catch {
             const source = image.source;
 
             if (source && source.search("pixiv") >= 0) {
-              console.log(`fetching: ${image.filename}`);
-
               await prisma.image.update({
                 where: {
                   id: image.id,
@@ -71,14 +68,13 @@ while (downloaded < DOWNLOAD_COUNT) {
               try {
                 await createImageFromUrl(undefined, { url: source }, context);
               } catch (error) {
-                console.log("could not receive");
                 console.error(error);
               }
             }
           }
-        })
+        }),
       );
-    })()
+    })(),
   );
 }
 

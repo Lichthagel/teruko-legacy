@@ -18,18 +18,19 @@ const client = new ApolloClient({
           images: {
             keyArgs: ["tags", "sort"],
             // eslint-disable-next-line @typescript-eslint/default-param-last
-            merge(existing: {__ref: string;}[] = [], incoming: {__ref: string;}[], { args }: {args: Record<string, unknown> | null;}) {
-              if (args?.sort === "random")
+            merge(existing: { __ref: string }[] = [], incoming: { __ref: string }[], { args }: { args: Record<string, unknown> | null }) {
+              if (args?.sort === "random") {
                 return [
                   ...existing,
                   ...incoming.filter(
                     (incomingImage: { __ref: string }) =>
-                      existing.findIndex(
+                      !existing.some(
                         (el: { __ref: string }) =>
-                          el.__ref === incomingImage.__ref
-                      ) === -1
+                          el.__ref === incomingImage.__ref,
+                      ),
                   ),
                 ];
+              }
 
               const skip = args?.skip as number | null || 0;
               const merged = [...existing];

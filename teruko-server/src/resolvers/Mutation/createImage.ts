@@ -1,19 +1,20 @@
-import { Context } from "../../context.js";
-import { FileUpload } from "graphql-upload/Upload.mjs";
-import { finished } from "node:stream/promises";
-import fs from "node:fs";
-import { fileTypeStream } from "file-type";
-import { fetchPixiv, toModel } from "./fetchPixiv.js";
-import path from "node:path";
-import sharp from "sharp";
 import { createId } from "@paralleldrive/cuid2";
+import { fileTypeStream } from "file-type";
+import { FileUpload } from "graphql-upload/Upload.mjs";
+import fs from "node:fs";
+import path from "node:path";
+import { finished } from "node:stream/promises";
+import sharp from "sharp";
+
+import { Context } from "../../context.js";
+import { fetchPixiv, toModel } from "./fetchPixiv.js";
 
 const inUpload: string[] = [];
 
 async function createImage(
   parent: void,
   { files }: { files: FileUpload[] },
-  context: Context
+  context: Context,
 ) {
   return Promise.all(
     files.map(async (file: FileUpload) => {
@@ -28,7 +29,7 @@ async function createImage(
       if (
         !streamWithFileType.fileType ||
         !/^image\/(jpeg|gif|png|webp|avif)$/.test(
-          streamWithFileType.fileType.mime
+          streamWithFileType.fileType.mime,
         )
       ) {
         throw new Error("not an image");
@@ -60,15 +61,16 @@ async function createImage(
       out.close();
 
       const metadata = await sharp(
-        path.join(context.imgFolder, filename)
+        path.join(context.imgFolder, filename),
       ).metadata();
 
-      if (!metadata.width || !metadata.height)
+      if (!metadata.width || !metadata.height) {
         throw new Error("cant read image dimensions");
+      }
 
       // PIXIV stuff
       const matches = filename.match(
-        /(\d+)_p\d+\.(?:jpg|png|gif|jpeg|webp|avif)/
+        /(\d+)_p\d+\.(?:jpg|png|gif|jpeg|webp|avif)/,
       );
       if (matches) {
         const pixivId = matches[1];
@@ -112,7 +114,7 @@ async function createImage(
       inUpload.splice(inUpload.indexOf(filename), 1);
 
       return newImage;
-    })
+    }),
   );
 }
 

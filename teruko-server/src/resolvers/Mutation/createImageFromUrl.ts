@@ -1,63 +1,44 @@
+import type { ReadableStream } from "node:stream/web";
+
+import { createId } from "@paralleldrive/cuid2";
+import { fileTypeStream } from "file-type";
+import fs from "node:fs";
+import path from "node:path";
+import { Readable } from "node:stream";
+import { finished } from "node:stream/promises";
+import sharp from "sharp";
+
 import { Context } from "../../context.js";
-import { fetchPixiv, toModel as toPixivModel } from "./fetchPixiv.js";
 import {
   fetchArtStation,
   toModel as toArtStationModel,
 } from "./fetchArtStation.js";
-import fs from "node:fs";
-import { finished } from "node:stream/promises";
-import path from "node:path";
-import sharp from "sharp";
-import { fileTypeStream } from "file-type";
-import { createId } from "@paralleldrive/cuid2";
-import { Readable } from "node:stream";
-import type { ReadableStream } from "node:stream/web";
+import { fetchPixiv, toModel as toPixivModel } from "./fetchPixiv.js";
 
 const inUpload: string[] = [];
-
-async function createImageFromUrl(
-  parent: void,
-  { url }: { url: string },
-  context: Context
-) {
-  let matches = url.match(
-    /https?:\/\/www\.pixiv\.net(?:\/en)?\/artworks\/(\d+)/
-  );
-
-  if (matches) {
-    const pixivId = matches[1];
-
-    return createImageFromPixiv(parent, pixivId, context);
-  }
-
-  matches = url.match(
-    /https?:\/\/www\.artstation\.com\/artwork\/([\dA-Za-z]+)/
-  );
-
-  if (!matches) throw new Error("not a valid url");
-
-  const artStationId = matches[1];
-
-  return await createImageFromArtStation(parent, artStationId, context);
-}
 
 async function createImageFromPixiv(
   parent: void,
   pixivId: string,
-  context: Context
+  context: Context,
 ) {
   const pixivResult = await fetchPixiv(pixivId);
 
-  if (pixivResult.error || !pixivResult.body)
+  if (pixivResult.error || !pixivResult.body) {
     throw new Error("failed to retrieve pixiv metadata");
+  }
 
   const imgUrl = pixivResult.body.urls.original;
 
-  if (!imgUrl) throw new Error("couldnt retrieve image url");
+  if (!imgUrl) {
+    throw new Error("couldnt retrieve image url");
+  }
 
   const matchesUrl = imgUrl.match(/(.*\/)(\d+)_p\d+\.(.*)/);
 
-  if (!matchesUrl) throw new Error("invalid pixiv url");
+  if (!matchesUrl) {
+    throw new Error("invalid pixiv url");
+  }
 
   const resultPromises = [];
 
@@ -70,7 +51,7 @@ async function createImageFromPixiv(
             headers: {
               Referer: "https://www.pixiv.net/",
             },
-          }
+          },
         );
 
         if (!res.ok) {
@@ -86,7 +67,7 @@ async function createImageFromPixiv(
         if (
           !streamWithFileType.fileType ||
           !/^image\/(jpeg|gif|png|webp|avif)$/.test(
-            streamWithFileType.fileType.mime
+            streamWithFileType.fileType.mime,
           )
         ) {
           throw new Error("not an image");
@@ -113,7 +94,7 @@ async function createImageFromPixiv(
         const transform = sharp().avif({ quality: 90 });
 
         const out = fs.createWriteStream(
-          path.resolve(context.imgFolder, filename)
+          path.resolve(context.imgFolder, filename),
         );
 
         streamWithFileType.pipe(transform).pipe(out);
@@ -122,11 +103,12 @@ async function createImageFromPixiv(
         out.close();
 
         const metadata = await sharp(
-          path.resolve(context.imgFolder, filename)
+          path.resolve(context.imgFolder, filename),
         ).metadata();
 
-        if (!metadata.width || !metadata.height)
+        if (!metadata.width || !metadata.height) {
           throw new Error("cant read image dimensions");
+        }
 
         inUpload.splice(inUpload.indexOf(filename), 1);
 
@@ -139,7 +121,7 @@ async function createImageFromPixiv(
             width: metadata.width,
           },
         });
-      })()
+      })(),
     );
   }
 
@@ -149,7 +131,7 @@ async function createImageFromPixiv(
 async function createImageFromArtStation(
   parent: void,
   artStationId: string,
-  context: Context
+  context: Context,
 ) {
   const asResult = await fetchArtStation(artStationId);
 
@@ -160,7 +142,9 @@ async function createImageFromArtStation(
       (async () => {
         const asset = asResult.assets[i];
 
-        if (asset.asset_type !== "image") return;
+        if (asset.asset_type !== "image") {
+          return;
+        }
 
         if (!asset.image_url) {
           throw new Error("no image url");
@@ -177,19 +161,21 @@ async function createImageFromArtStation(
         }
 
         const streamWithFileType = await fileTypeStream(
-          Readable.fromWeb(res.body as ReadableStream<Uint8Array>)
+          Readable.fromWeb(res.body as ReadableStream<Uint8Array>),
         );
 
         if (
           !streamWithFileType.fileType ||
           !/^image\/(jpeg|gif|png|webp|avif)$/.test(
-            streamWithFileType.fileType.mime
+            streamWithFileType.fileType.mime,
           )
         ) {
           throw new Error("not an image");
         }
 
-        if (streamWithFileType.fileType.mime === "image/gif") return;
+        if (streamWithFileType.fileType.mime === "image/gif") {
+          return;
+        }
 
         const filename = `${asset.id}.avif`;
 
@@ -213,7 +199,7 @@ async function createImageFromArtStation(
         const transform = sharp().avif({ quality: 90 });
 
         const out = fs.createWriteStream(
-          path.resolve(context.imgFolder, filename)
+          path.resolve(context.imgFolder, filename),
         );
 
         streamWithFileType.pipe(transform).pipe(out);
@@ -222,11 +208,12 @@ async function createImageFromArtStation(
         out.close();
 
         const metadata = await sharp(
-          path.resolve(context.imgFolder, filename)
+          path.resolve(context.imgFolder, filename),
         ).metadata();
 
-        if (!metadata.width || !metadata.height)
+        if (!metadata.width || !metadata.height) {
           throw new Error("cant read image dimensions");
+        }
 
         inUpload.splice(inUpload.indexOf(filename), 1);
 
@@ -241,11 +228,39 @@ async function createImageFromArtStation(
         });
 
         return image;
-      })()
+      })(),
     );
   }
 
   return await Promise.all(resultPromises);
+}
+
+async function createImageFromUrl(
+  parent: void,
+  { url }: { url: string },
+  context: Context,
+) {
+  let matches = url.match(
+    /https?:\/\/www\.pixiv\.net(?:\/en)?\/artworks\/(\d+)/,
+  );
+
+  if (matches) {
+    const pixivId = matches[1];
+
+    return createImageFromPixiv(parent, pixivId, context);
+  }
+
+  matches = url.match(
+    /https?:\/\/www\.artstation\.com\/artwork\/([\dA-Za-z]+)/,
+  );
+
+  if (!matches) {
+    throw new Error("not a valid url");
+  }
+
+  const artStationId = matches[1];
+
+  return await createImageFromArtStation(parent, artStationId, context);
 }
 
 export default createImageFromUrl;

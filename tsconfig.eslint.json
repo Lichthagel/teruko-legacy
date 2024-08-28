@@ -1,0 +1,7 @@
+{
+  "include": ["**/*.ts", "**/*.cjs", "**/*.mjs"],
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true
+  }
+}
