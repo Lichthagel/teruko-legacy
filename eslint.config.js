@@ -5,7 +5,7 @@ import lichthagel from "@lichthagel/eslint-config";
 export default [
   ...await lichthagel({
     browser: true,
-    node: true,
+    node: false, // TODO enable in teruko-server
     react: false,
   }),
   react.configs.recommended,
