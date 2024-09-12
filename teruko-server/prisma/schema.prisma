@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -9,15 +8,15 @@ datasource db {
 }
 
 model Image {
-  id        String   @id
-  filename  String   @unique
-  title     String?
-  source    String?
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
-  width     Int
-  height    Int
-  tags      Tag[]    @relation("ImageToTag")
+  filename   String       @unique
+  title      String?
+  source     String?
+  createdAt  DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
+  width      Int
+  height     Int
+  id         Int       @id @unique(map: "Image_id_new_key") @default(autoincrement())
+  ImageToTag ImageToTag[]
 
   @@index([createdAt(sort: Desc)])
 }
@@ -26,11 +25,24 @@ model Tag {
   slug         String       @id
   categorySlug String?
   category     TagCategory? @relation(fields: [categorySlug], references: [slug])
-  images       Image[]      @relation("ImageToTag")
+  ImageToTag   ImageToTag[]
 }
 
 model TagCategory {
   slug  String  @id
   color String?
   tags  Tag[]
+}
+
+model ImageToTag {
+  tagSlug String
+  imageId Int
+  Image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  Tag     Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade)
+
+  @@id([imageId, tagSlug])
+  @@unique([imageId, tagSlug], map: "_ImageToTag_imageId-tagSlug_index")
+  @@index([imageId], map: "_ImageToTag_imageId_index")
+  @@index([tagSlug], map: "_ImageToTag_tagSlug_index")
+  @@map("_ImageToTag")
 }

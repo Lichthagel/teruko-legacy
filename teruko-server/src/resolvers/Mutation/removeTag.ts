@@ -8,9 +8,12 @@ async function removeTag(parent: void, args: TagMutationArgs, context: Context) 
     },
     data: {
       updatedAt: new Date(),
-      tags: {
+      ImageToTag: {
         disconnect: {
-          slug: args.tag,
+          imageId_tagSlug: {
+            imageId: args.imageId,
+            tagSlug: args.tag,
+          },
         },
       },
     },

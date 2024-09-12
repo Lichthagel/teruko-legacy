@@ -1,4 +1,3 @@
-import { createId } from "@paralleldrive/cuid2";
 import { fileTypeStream } from "file-type";
 import { FileUpload } from "graphql-upload/Upload.mjs";
 import fs from "node:fs";
@@ -78,7 +77,6 @@ async function createImage(
         const newImage = await context.prisma.image.create({
           data: {
             ...toModel(await fetchPixiv(pixivId), pixivId),
-            id: createId(),
             filename,
             width: metadata.width,
             height: metadata.height,
@@ -92,16 +90,19 @@ async function createImage(
 
       const newImage = await context.prisma.image.create({
         data: {
-          id: createId(),
           filename,
-          tags: {
-            connectOrCreate: [
+          ImageToTag: {
+            create: [
               {
-                where: {
-                  slug: "untagged",
-                },
-                create: {
-                  slug: "untagged",
+                Tag: {
+                  connectOrCreate: {
+                    where: {
+                      slug: "untagged",
+                    },
+                    create: {
+                      slug: "untagged",
+                    },
+                  },
                 },
               },
             ],

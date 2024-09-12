@@ -1,7 +1,7 @@
 import { Context } from "../../context.js";
 
 export type TagMutationArgs = {
-  imageId: string;
+  imageId: number;
   tag: string;
 };
 
@@ -12,14 +12,17 @@ async function addTag(parent: void, args: TagMutationArgs, context: Context) {
     },
     data: {
       updatedAt: new Date(),
-      tags: {
+      ImageToTag: {
         connectOrCreate: [
           {
             where: {
-              slug: args.tag,
+              imageId_tagSlug: {
+                imageId: args.imageId,
+                tagSlug: args.tag,
+              },
             },
             create: {
-              slug: args.tag,
+              tagSlug: args.tag,
             },
           },
         ],

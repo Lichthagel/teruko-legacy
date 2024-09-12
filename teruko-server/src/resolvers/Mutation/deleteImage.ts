@@ -5,7 +5,15 @@ import { Context } from "../../context.js";
 import ImageModel from "../../models/Image.js";
 
 async function deleteImage(parent: void, args: ImageModel, context: Context) {
-  const deletedImageTags = await context.prisma.image.findUnique({ where: { id: args.id } }).tags();
+  const deletedImageTags = await context.prisma.tag.findMany({
+    where: {
+      ImageToTag: {
+        some: {
+          imageId: args.id,
+        },
+      },
+    },
+  });
 
   const deletedImage = await context.prisma.image.delete({
     where: {

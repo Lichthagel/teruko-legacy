@@ -63,9 +63,9 @@ async function images(parent: void, args: {
     if (args.tags && args.tags.length > 0) {
       query.where = {
         AND: args.tags.map((tag) => ({
-          tags: {
+          ImageToTag: {
             some: {
-              slug: tag,
+              tagSlug: tag,
             },
           },
         })),
@@ -76,7 +76,9 @@ async function images(parent: void, args: {
       query.orderBy = parseSort(args.sort);
     }
 
-    return context.prisma.image.findMany(query);
+    const res = await context.prisma.image.findMany(query);
+
+    return res;
   }
 }
 

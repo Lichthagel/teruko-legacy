@@ -27,9 +27,9 @@ while (downloaded < DOWNLOAD_COUNT) {
         skip,
         take: 10,
         where: {
-          tags: {
+          ImageToTag: {
             none: {
-              slug: "refetched",
+              tagSlug: "refetched",
             },
           },
         },
@@ -50,13 +50,17 @@ while (downloaded < DOWNLOAD_COUNT) {
                   id: image.id,
                 },
                 data: {
-                  tags: {
-                    connectOrCreate: {
-                      where: {
-                        slug: "refetched",
-                      },
-                      create: {
-                        slug: "refetched",
+                  ImageToTag: {
+                    create: {
+                      Tag: {
+                        connectOrCreate: {
+                          where: {
+                            slug: "refetched",
+                          },
+                          create: {
+                            slug: "refetched",
+                          },
+                        },
                       },
                     },
                   },

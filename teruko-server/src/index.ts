@@ -39,7 +39,7 @@ app.use(
 app.get("/original/:id", async (req, res) => {
   const image = await context.prisma.image.findUnique({
     where: {
-      id: req.params.id,
+      id: Number.parseInt(req.params.id),
     },
   });
 
@@ -56,7 +56,7 @@ app.get("/original/:id", async (req, res) => {
 app.get("/webp/:id", async (req, res) => {
   const image = await context.prisma.image.findUnique({
     where: {
-      id: req.params.id,
+      id: Number.parseInt(req.params.id),
     },
   });
 
@@ -75,7 +75,7 @@ app.get("/webp/:id", async (req, res) => {
 app.get("/avif/:id", async (req, res) => {
   const image = await context.prisma.image.findUnique({
     where: {
-      id: req.params.id,
+      id: Number.parseInt(req.params.id),
     },
   });
 
@@ -126,9 +126,9 @@ app.get("/zip/:slug", async (req, res) => {
 
   const images = await context.prisma.image.findMany({
     where: {
-      tags: {
+      ImageToTag: {
         some: {
-          slug,
+          tagSlug: slug,
         },
       },
     },

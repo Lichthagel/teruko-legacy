@@ -9,14 +9,14 @@ export type TagUpdateArgs = {
 async function updateTag(parent: void, args: TagUpdateArgs, context: Context) {
   if (args.newSlug) {
     await context.prisma.$queryRaw`
-INSERT INTO "_ImageToTag" as "t0" ("A", "B")
-SELECT t1."A", ${args.slug}
+INSERT INTO "_ImageToTag" as "t0" ("imageId", "tagSlug")
+SELECT t1."imageId", ${args.slug}
 FROM "_ImageToTag" as t1
-WHERE t1."B" = ${args.newSlug}
-AND t1."A" NOT IN (
-    SELECT t2."A"
+WHERE t1."tagSlug" = ${args.newSlug}
+AND t1."imageId" NOT IN (
+    SELECT t2."imageId"
     FROM "_ImageToTag" as t2
-    WHERE t2."B" = ${args.slug}
+    WHERE t2."tagSlug" = ${args.slug}
 );
         `;
 

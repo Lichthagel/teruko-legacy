@@ -35,7 +35,7 @@ export async function fetchPixiv(pixivId: string): Promise<PixivIllustResult> {
 }
 
 export function toModel(pixivResult: PixivIllustResult, pixivIdFallback?: string): Partial<Prisma.ImageCreateInput> {
-  const tags: Prisma.TagCreateOrConnectWithoutImagesInput[] = [
+  const tags: Prisma.TagCreateOrConnectWithoutImageToTagInput[] = [
     {
       where: {
         slug: "pixiv",
@@ -154,11 +154,15 @@ export function toModel(pixivResult: PixivIllustResult, pixivIdFallback?: string
     source = illustId ? `https://www.pixiv.net/en/artworks/${illustId}` : undefined;
   }
 
+  const uniqueTags = tags.filter((tag, index, self) => self.findIndex((t) => t.where.slug === tag.where.slug) === index);
+
   return {
     title,
     source,
-    tags: {
-      connectOrCreate: tags,
+    ImageToTag: {
+      create: uniqueTags.map((tag) => ({
+        Tag: { connectOrCreate: tag },
+      })),
     },
   };
 }

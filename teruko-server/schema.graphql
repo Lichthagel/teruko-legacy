@@ -1,5 +1,5 @@
 type Query {
-    image(id: String!): Image
+    image(id: Int!): Image
     images(skip: Int, take: Int, tags: [String!], sort: ImageSort): [Image!]!
     random(orientation: Orientation): Image
     imageCount: Int!
@@ -13,18 +13,18 @@ type Mutation {
     #createImage(fileExt: String!, title: String, source: String): Image!
     createImage(files: [Upload!]!): [Image!]!
     createImageFromUrl(url: String!): [Image!]!
-    updateImage(id: String!, title: String, source: String): Image!
-    updateImagePixiv(id: String!, source: String): Image!
-    deleteImage(id: String!): Image!
-    addTag(imageId: String!, tag: String!): Image!
-    removeTag(imageId: String!, tag: String!): Image!
+    updateImage(id: Int!, title: String, source: String): Image!
+    updateImagePixiv(id: Int!, source: String): Image!
+    deleteImage(id: Int!): Image!
+    addTag(imageId: Int!, tag: String!): Image!
+    removeTag(imageId: Int!, tag: String!): Image!
     updateTag(slug: String!, newSlug: String, category: String): Tag!
     deleteTag(slug: String!): Tag!
     updateTagCategory(slug: String!, color: String): TagCategory!
 }
 
 type Image {
-    id: String!
+    id: Int!
     filename: String!
     title: String
     source: String

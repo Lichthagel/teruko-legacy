@@ -35,7 +35,7 @@ export async function fetchArtStation(artStationId: string): Promise<ArtStationI
 }
 
 export function toModel(artStationIllust: ArtStationIllust, asset: ArtStationAsset): Partial<Prisma.ImageCreateInput> {
-  const tags: Prisma.TagCreateOrConnectWithoutImagesInput[] = [
+  const tags: Prisma.TagCreateOrConnectWithoutImageToTagInput[] = [
     {
       where: {
         slug: "ArtStation",
@@ -127,8 +127,8 @@ export function toModel(artStationIllust: ArtStationIllust, asset: ArtStationAss
   return {
     title,
     source,
-    tags: {
-      connectOrCreate: tags,
+    ImageToTag: {
+      create: tags.map((tag) => ({ Tag: { connectOrCreate: tag } })),
     },
   };
 }

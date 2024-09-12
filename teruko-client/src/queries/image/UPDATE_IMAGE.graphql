@@ -1,4 +1,4 @@
-mutation UpdateImage($id: String!, $title: String, $source: String) {
+mutation UpdateImage($id: Int!, $title: String, $source: String) {
     updateImage(id: $id, title: $title, source: $source) {
         id
         title

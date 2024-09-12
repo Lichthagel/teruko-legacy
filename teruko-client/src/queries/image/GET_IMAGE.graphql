@@ -1,4 +1,4 @@
-query Image($id: String!) {
+query Image($id: Int!) {
     image(id: $id) {
         id
         filename

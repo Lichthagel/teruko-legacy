@@ -1,6 +1,5 @@
 import type { ReadableStream } from "node:stream/web";
 
-import { createId } from "@paralleldrive/cuid2";
 import { fileTypeStream } from "file-type";
 import fs from "node:fs";
 import path from "node:path";
@@ -115,7 +114,6 @@ async function createImageFromPixiv(
         return context.prisma.image.create({
           data: {
             ...toPixivModel(pixivResult, matchesUrl[2]),
-            id: createId(),
             filename,
             height: metadata.height,
             width: metadata.width,
@@ -220,7 +218,6 @@ async function createImageFromArtStation(
         const image = context.prisma.image.create({
           data: {
             ...toArtStationModel(asResult, asset),
-            id: createId(),
             filename,
             height: metadata.height,
             width: metadata.width,

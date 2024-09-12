@@ -1,7 +1,7 @@
 import Tag from "./Tag.js";
 
 export type Image = {
-  id: string;
+  id: number;
   filename: string;
   title: string | undefined;
   source: string | undefined;
