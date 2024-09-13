@@ -22,7 +22,7 @@ const EditImage = () => {
   const params = useParams();
   const [searchParams] = useSearchParams();
 
-  const id = params.id;
+  const id = Number.parseInt(params.id || "0");
 
   const [title, setTitle] = useState("");
   const [source, setSource] = useState("");
