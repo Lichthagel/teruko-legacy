@@ -10,6 +10,7 @@ import {
 
 import LoaderImage from "../../components/LoaderImage";
 import Tag from "../../components/Tag";
+import { IMG_BASE_URL } from "../../constants";
 import { Image as ImageModel } from "../../models";
 import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
 
@@ -178,7 +179,7 @@ const Image = () => {
               alt={image.title || image.id.toString()}
               className="max-w-full h-auto max-h-[100vh] mx-auto cursor-pointer shadow-xl shadow-indigo-400 dark:shadow-indigo-800"
               onClick={goNext}
-              src={`/img/${image.filename}`}
+              src={`${IMG_BASE_URL}/${image.filename}`}
             />
 
             <ChevronLeftIcon

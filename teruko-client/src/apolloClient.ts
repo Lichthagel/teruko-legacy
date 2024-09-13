@@ -1,9 +1,11 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
 
+import { API_URL } from "./constants";
+
 const client = new ApolloClient({
   link: createUploadLink({
-    uri: "/graphql",
+    uri: API_URL,
     headers: {
       "Apollo-Require-Preflight": "true",
     },
