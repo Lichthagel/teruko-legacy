@@ -15,15 +15,16 @@ model Image {
   updatedAt  DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
   width      Int
   height     Int
-  id         Int       @id @unique(map: "Image_id_new_key") @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   ImageToTag ImageToTag[]
 
   @@index([createdAt(sort: Desc)])
 }
 
 model Tag {
-  slug         String       @id
+  slug         String       @unique(map: "Tag_slug_idx")
   categorySlug String?
+  id           Int          @id @default(autoincrement())
   category     TagCategory? @relation(fields: [categorySlug], references: [slug])
   ImageToTag   ImageToTag[]
 }
@@ -35,14 +36,13 @@ model TagCategory {
 }
 
 model ImageToTag {
-  tagSlug String
   imageId Int
-  Image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
-  Tag     Tag    @relation(fields: [tagSlug], references: [slug], onDelete: Cascade)
+  tagId   Int
+  Image   Image @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  Tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
-  @@id([imageId, tagSlug])
-  @@unique([imageId, tagSlug], map: "_ImageToTag_imageId-tagSlug_index")
+  @@id([imageId, tagId])
   @@index([imageId], map: "_ImageToTag_imageId_index")
-  @@index([tagSlug], map: "_ImageToTag_tagSlug_index")
+  @@index([tagId])
   @@map("_ImageToTag")
 }

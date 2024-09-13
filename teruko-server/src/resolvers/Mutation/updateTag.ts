@@ -7,26 +7,7 @@ export type TagUpdateArgs = {
 };
 
 async function updateTag(parent: void, args: TagUpdateArgs, context: Context) {
-  if (args.newSlug) {
-    await context.prisma.$queryRaw`
-INSERT INTO "_ImageToTag" as "t0" ("imageId", "tagSlug")
-SELECT t1."imageId", ${args.slug}
-FROM "_ImageToTag" as t1
-WHERE t1."tagSlug" = ${args.newSlug}
-AND t1."imageId" NOT IN (
-    SELECT t2."imageId"
-    FROM "_ImageToTag" as t2
-    WHERE t2."tagSlug" = ${args.slug}
-);
-        `;
-
-    await context.prisma.tag.deleteMany({
-      where: {
-        slug: args.newSlug,
-      },
-    });
-  }
-
+  const rename: boolean = !!args.newSlug && args.newSlug !== args.slug;
   const category = args.category === null ?
       { disconnect: true } :
       (args.category && args.category !== "" ?
@@ -42,17 +23,88 @@ AND t1."imageId" NOT IN (
           } :
         undefined);
 
-  const updatedTag = await context.prisma.tag.update({
-    where: {
-      slug: args.slug,
-    },
-    data: {
-      slug: args.newSlug,
-      category,
-    },
-  });
+  if (rename) {
+    return await context.prisma.$transaction(async (tx) => {
+    // check if exists
+      const tagExist = await tx.tag.findUnique({
+        where: {
+          slug: args.newSlug,
+        },
+      });
 
-  return updatedTag;
+      if (tagExist) {
+        await tx.$executeRaw`
+          INSERT INTO "_ImageToTag" as "t0" ("imageId", "tagId")
+          SELECT t1."imageId", ${tagExist.id}
+          FROM "_ImageToTag" as t1
+          LEFT JOIN "Tag" as t2 ON t1."tagId" = t2."id"
+          WHERE t2."slug" = ${args.slug}
+          ON CONFLICT DO NOTHING;
+        `;
+
+        await tx.imageToTag.deleteMany({
+          where: {
+            Tag: {
+              slug: args.slug,
+            },
+          },
+        });
+
+        await tx.tag.delete({
+          where: {
+            slug: args.slug,
+          },
+        });
+
+        return await tx.tag.update({
+          where: {
+            slug: args.newSlug,
+          },
+          data: {
+            category,
+          },
+          select: {
+            id: true,
+            slug: true,
+            category: true,
+          },
+        });
+      } else {
+        const tag = await tx.tag.update({
+          where: {
+            slug: args.slug,
+          },
+          data: {
+            slug: args.newSlug,
+            category,
+          },
+          select: {
+            id: true,
+            slug: true,
+            category: true,
+          },
+        });
+
+        return tag;
+      }
+    });
+  } else {
+    const tag = await context.prisma.tag.update({
+      where: {
+        slug: args.slug,
+      },
+      data: {
+        category,
+      },
+      select: {
+        id: true,
+        slug: true,
+        category: true,
+      },
+    });
+
+    return tag;
+  }
 }
 
 export default updateTag;

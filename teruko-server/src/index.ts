@@ -128,7 +128,9 @@ app.get("/zip/:slug", async (req, res) => {
     where: {
       ImageToTag: {
         some: {
-          tagSlug: slug,
+          Tag: {
+            slug,
+          },
         },
       },
     },

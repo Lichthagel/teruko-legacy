@@ -10,7 +10,9 @@ async function images(parent: TagModel, args: void, context: Context) {
     where: {
       ImageToTag: {
         some: {
-          tagSlug: parent.slug,
+          Tag: {
+            slug: parent.slug,
+          },
         },
       },
     },
@@ -18,7 +20,11 @@ async function images(parent: TagModel, args: void, context: Context) {
 }
 
 async function count(parent: TagModel, args: void, context: Context) {
-  const res: { count: bigint }[] = await context.prisma.$queryRaw`SELECT COUNT("tagSlug") FROM "_ImageToTag" WHERE "tagSlug" = ${parent.slug}`;
+  const res: { count: bigint }[] = await context.prisma.$queryRaw`
+    SELECT COUNT("imageId")
+    FROM "_ImageToTag" 
+    LEFT JOIN "Tag" ON "_ImageToTag"."tagId" = "Tag"."id"
+    WHERE "Tag"."slug" = ${parent.slug}`;
 
   if (res.length === 0) {
     throw new Error("Tag not found");

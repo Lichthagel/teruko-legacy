@@ -29,7 +29,9 @@ while (downloaded < DOWNLOAD_COUNT) {
         where: {
           ImageToTag: {
             none: {
-              tagSlug: "refetched",
+              Tag: {
+                slug: "refetched",
+              },
             },
           },
         },

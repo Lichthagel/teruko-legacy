@@ -2,39 +2,33 @@ import { Context } from "../../context.js";
 import { TagMutationArgs } from "./addTag.js";
 
 async function removeTag(parent: void, args: TagMutationArgs, context: Context) {
-  const updatedImage = await context.prisma.image.update({
+  // TODO check if possible to use delete instead of deleteMany
+  await context.prisma.imageToTag.deleteMany({
     where: {
-      id: args.imageId,
-    },
-    data: {
-      updatedAt: new Date(),
-      ImageToTag: {
-        disconnect: {
-          imageId_tagSlug: {
-            imageId: args.imageId,
-            tagSlug: args.tag,
-          },
-        },
+      imageId: args.imageId,
+      Tag: {
+        slug: args.tag,
       },
     },
   });
 
-  /* await context.prisma.tag.deleteMany({
-        where: {
-            images: {
-                none: {}
-            }
-        }
-    }); */
-  await context.prisma.$executeRaw`DELETE FROM "Tag"
+  await context.prisma.$executeRaw`
+    DELETE FROM "Tag"
     WHERE "Tag"."slug" NOT IN (
-        SELECT DISTINCT "_ImageToTag"."B"
+        SELECT DISTINCT "Tag"."slug"
         FROM "_ImageToTag"
-        WHERE "_ImageToTag"."B" = ${args.tag}
+        LEFT JOIN "Tag" ON "_ImageToTag"."tagId" = "Tag"."id"
+        WHERE "Tag"."slug" = ${args.tag}
     )
-    AND "Tag"."slug" = ${args.tag};`;
+    AND "Tag"."slug" = ${args.tag};
+  `;
 
-  return updatedImage;
+  // TODO check if return is needed
+  return context.prisma.image.findUnique({
+    where: {
+      id: args.imageId,
+    },
+  });
 }
 
 export default removeTag;

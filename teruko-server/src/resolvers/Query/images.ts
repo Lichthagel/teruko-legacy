@@ -65,7 +65,9 @@ async function images(parent: void, args: {
         AND: args.tags.map((tag) => ({
           ImageToTag: {
             some: {
-              tagSlug: tag,
+              Tag: {
+                slug: tag,
+              },
             },
           },
         })),

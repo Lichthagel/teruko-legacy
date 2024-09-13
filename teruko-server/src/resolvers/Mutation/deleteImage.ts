@@ -24,13 +24,16 @@ async function deleteImage(parent: void, args: ImageModel, context: Context) {
   try {
     if (deletedImageTags) {
       for await (const tag of deletedImageTags) {
-        await context.prisma.$executeRaw`DELETE FROM "Tag"
-        WHERE "Tag"."slug" NOT IN (
-            SELECT DISTINCT "_ImageToTag"."B"
-            FROM "_ImageToTag"
-            WHERE "_ImageToTag"."B" = ${tag.slug}
-        )
-        AND "Tag"."slug" = ${tag.slug};`;
+        await context.prisma.$executeRaw`
+          DELETE FROM "Tag"
+          WHERE "Tag"."slug" NOT IN (
+              SELECT DISTINCT "Tag"."slug"
+              FROM "_ImageToTag"
+              LEFT JOIN "Tag" ON "_ImageToTag"."tagId" = "Tag"."id"
+              WHERE "Tag"."slug" = ${tag.slug}
+          )
+          AND "Tag"."slug" = ${tag.slug};
+        `;
       }
     }
   } catch (error) {
