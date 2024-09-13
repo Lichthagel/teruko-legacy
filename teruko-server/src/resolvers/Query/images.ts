@@ -4,7 +4,7 @@ import { Context } from "../../context.js";
 import { ImageSort } from "../../models/Image.js";
 
 function getTagQuery(tag: string, index: number) {
-  return `"_ImageToTag"."B" = $${index + 2}`;
+  return `"Tag"."slug" = $${index + 2}`;
 }
 function parseSort(sort: ImageSort): Prisma.ImageOrderByWithRelationInput | undefined {
   switch (sort) {
@@ -40,19 +40,19 @@ async function images(parent: void, args: {
 
       // const parameters = args.tags;
       // parameters.push((args.take || 10).toString());
-      return await context.prisma.$queryRawUnsafe<Image[]>(`SELECT * 
+      return await context.prisma.$queryRawUnsafe<Image[]>(`
+            SELECT * 
             FROM "Image"
-            WHERE "id" IN (
-                SELECT "_ImageToTag"."A" AS "id"
+            WHERE "Image"."id" IN (
+                SELECT "_ImageToTag"."imageId" AS "id"
                 FROM "_ImageToTag"
-                WHERE (
-                    "_ImageToTag"."A" IS NOT NULL
-                    AND (${whereClause})
-                )
+                LEFT JOIN "Tag" ON "_ImageToTag"."tagId" = "Tag"."id"
+                WHERE (${whereClause})
                 ORDER BY RANDOM()
                 LIMIT $1
             )
-            ORDER BY RANDOM();`, args.take, ...args.tags);
+            ORDER BY RANDOM();
+            `, args.take, ...args.tags);
     }
   } else {
     const query: Prisma.ImageFindManyArgs = {
