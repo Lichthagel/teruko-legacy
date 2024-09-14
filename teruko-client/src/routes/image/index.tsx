@@ -19,7 +19,7 @@ const Image = () => {
   const params = useParams();
   const [searchParams] = useSearchParams();
 
-  const id = params.id;
+  const id = Number.parseInt(params.id);
   const tags = searchParams.getAll("tag");
   const sort = searchParams.get("sort") || "random";
 
