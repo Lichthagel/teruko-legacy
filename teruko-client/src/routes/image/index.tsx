@@ -19,7 +19,11 @@ const Image = () => {
   const params = useParams();
   const [searchParams] = useSearchParams();
 
-  const id = Number.parseInt(params.id);
+  const id = useMemo(() => {
+    if (params.id) {
+      return Number.parseInt(params.id, 10);
+    }
+  }, [params.id]);
   const tags = searchParams.getAll("tag");
   const sort = searchParams.get("sort") || "random";
 
@@ -29,6 +33,8 @@ const Image = () => {
     },
     skip: !id,
   });
+
+  const image = useMemo(() => data?.image, [data]);
 
   const { data: dataImages, fetchMore } = useQuery<{ images: ImageModel[] }>(GET_IMAGES, {
     variables: {
@@ -40,10 +46,10 @@ const Image = () => {
   });
 
   const previous: ImageModel | null = useMemo(() => {
-    if (data && data.image && dataImages) {
+    if (image && dataImages) {
       const images: ImageModel[] = dataImages.images;
       if (images.length > 0) {
-        const index = images.findIndex((el) => el.id === data.image.id);
+        const index = images.findIndex((el) => el.id === image.id);
         if (index === -1) {
           return null;
         } else {
@@ -54,10 +60,10 @@ const Image = () => {
   }, [data, dataImages]);
 
   const next: ImageModel | null = useMemo(() => {
-    if (data && data.image && dataImages) {
+    if (image && dataImages) {
       const images: ImageModel[] = dataImages.images;
       if (images.length > 0) {
-        const index = images.findIndex((el) => el.id === data.image.id);
+        const index = images.findIndex((el) => el.id === image.id);
         if (index === -1) {
           return images[0];
         } else {
@@ -166,9 +172,7 @@ const Image = () => {
     searchParams,
   ]);
 
-  const image: ImageModel | undefined = (data && data.image) || undefined;
-
-  const fileExt = image?.filename.slice(image.filename.lastIndexOf(".") + 1);
+  const fileExt = useMemo(() => image?.filename.slice(image.filename.lastIndexOf(".") + 1), [image]);
 
   return (
     <div className="flex flex-col items-center">
