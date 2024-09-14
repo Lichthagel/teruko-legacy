@@ -6,8 +6,8 @@
   "main": "build/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "start-dev": "tsx src/index.ts",
-    "start": "node build/index",
+    "start": "tsx src/index.ts",
+    "preview": "node build/index",
     "clean": "rm -r build",
     "build": "prisma generate && tsc",
     "lint": "eslint ."
