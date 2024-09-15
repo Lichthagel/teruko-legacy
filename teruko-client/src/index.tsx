@@ -2,8 +2,8 @@ import { ApolloProvider } from "@apollo/client";
 import { render } from "preact";
 import { BrowserRouter } from "react-router-dom";
 
-import App from "./App";
 import apolloClient from "./apolloClient";
+import App from "./App";
 import "./fonts";
 import "./styles.css";
 

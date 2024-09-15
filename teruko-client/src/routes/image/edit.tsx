@@ -3,7 +3,7 @@ import { ArrowDownTrayIcon, ArrowLeftIcon, TrashIcon } from "@heroicons/react/24
 import { JSX } from "preact";
 import { useCallback, useEffect, useState } from "preact/hooks";
 import {
-  Link, createSearchParams, useNavigate, useParams, useSearchParams,
+  createSearchParams, Link, useNavigate, useParams, useSearchParams,
 } from "react-router-dom";
 
 import type { Image } from "../../models";
