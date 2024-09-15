@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { Fragment } from "preact";
-import { Suspense, lazy } from "preact/compat";
+import { lazy, Suspense } from "preact/compat";
 import { useEffect, useState } from "preact/hooks";
 import { Route, Routes, useMatch } from "react-router-dom";
 

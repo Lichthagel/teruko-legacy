@@ -20,8 +20,8 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 import context from "./context.js";
-import random from "./resolvers/Query/random.js";
 import resolvers from "./resolvers/index.js";
+import random from "./resolvers/Query/random.js";
 
 process.setMaxListeners(0);
 
