@@ -10,7 +10,7 @@ import express from "express";
 import { fileTypeStream } from "file-type";
 import GraphQLUpload from "graphql-upload/GraphQLUpload.mjs";
 import graphqlUploadExpress from "graphql-upload/graphqlUploadExpress.mjs";
-import { createReadStream } from "node:fs";
+import { chmod, createReadStream } from "node:fs";
 import fs from "node:fs/promises";
 import http from "node:http";
 import https from "node:https";
@@ -210,6 +210,14 @@ const listenArgs: [ListenOptions | number | string] = (
 )(nonSocketArgs);
 
 server.listen(...listenArgs, () => {
+  if (!context.port && context.socketAddress) {
+    chmod(context.socketAddress, 0o666, (error) => {
+      if (error) {
+        console.error(error);
+      }
+    });
+  }
+
   // eslint-disable-next-line no-console
   console.log(`Teruko-Server listening on ${nonSocketArgs}`);
   // eslint-disable-next-line no-console
