@@ -215,3 +215,25 @@ server.listen(...listenArgs, () => {
   // eslint-disable-next-line no-console
   console.log("GraphQL on /graphql");
 });
+
+const shutdown = async () => {
+  // eslint-disable-next-line no-console
+  console.log("Shutting down");
+  await new Promise<void>((resolve, reject) => {
+    server.close((err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+  await apolloServer.stop();
+  await context.prisma.$disconnect();
+  // eslint-disable-next-line unicorn/no-process-exit
+  process.exit(0);
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
+process.on("SIGQUIT", shutdown);
