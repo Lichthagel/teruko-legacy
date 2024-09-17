@@ -25,8 +25,6 @@ import random from "./resolvers/Query/random.js";
 
 process.setMaxListeners(0);
 
-const port = 3030;
-
 const app = express();
 
 app.use(
@@ -199,15 +197,21 @@ const server =
     ) :
     http.createServer(app);
 
+const nonSocketArgs = context.port || context.socketAddress;
+
+if (!nonSocketArgs) {
+  throw new Error("PORT or SOCKET_ADDRESS must be set");
+}
+
 const listenArgs: [ListenOptions | number | string] = (
   getListenArgs as (
     ...nonSocketArgs: unknown[]
   ) => [ListenOptions | number | string]
-)(port);
+)(nonSocketArgs);
 
 server.listen(...listenArgs, () => {
   // eslint-disable-next-line no-console
-  console.log(`Teruko-Server listening on port ${port}`);
+  console.log(`Teruko-Server listening on ${nonSocketArgs}`);
   // eslint-disable-next-line no-console
   console.log("GraphQL on /graphql");
 });

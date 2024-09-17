@@ -6,6 +6,8 @@ config();
 export type Context = {
   prisma: PrismaClient;
   imgFolder: string;
+  socketAddress?: string;
+  port?: number;
 };
 
 const context: Context = {
@@ -23,6 +25,8 @@ const context: Context = {
     },
   }),
   imgFolder: process.env.IMG_FOLDER || "./data",
+  socketAddress: process.env.SOCKET_ADDRESS,
+  port: process.env.PORT ? Number.parseInt(process.env.PORT) : undefined,
 };
 
 export default context;
