@@ -10,7 +10,7 @@ import {
 
 import LoaderImage from "../../components/LoaderImage";
 import Tag from "../../components/Tag";
-import { IMG_BASE_URL } from "../../constants";
+import { BASE_URL, IMG_BASE_URL } from "../../constants";
 import { Image as ImageModel } from "../../models";
 import { GET_IMAGE, GET_IMAGES } from "../../queries/image";
 
@@ -211,17 +211,17 @@ const Image = () => {
                     {new Date(image.updatedAt).toLocaleString()}
                   </div>
                 </div>
-                <a className="flex-shrink-0 relative" href={`http://${window.location.hostname}:3030/original/${image.id}`}>
+                <a className="flex-shrink-0 relative" href={`${BASE_URL}/original/${image.id}`}>
                   <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                   <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">{fileExt}</span>
                 </a>
                 {fileExt && fileExt !== "avif" && (
-                  <a className="flex-shrink-0 relative" href={`http://${window.location.hostname}:3030/avif/${image.id}`}>
+                  <a className="flex-shrink-0 relative" href={`${BASE_URL}/avif/${image.id}`}>
                     <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                     <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">avif</span>
                   </a>
                 )}
-                <a className="flex-shrink-0 relative" href={`http://${window.location.hostname}:3030/webp/${image.id}`}>
+                <a className="flex-shrink-0 relative" href={`${BASE_URL}/webp/${image.id}`}>
                   <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
                   <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">webp</span>
                 </a>

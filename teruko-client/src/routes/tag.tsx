@@ -12,6 +12,7 @@ import Button from "../components/Button";
 import Gallery from "../components/Gallery";
 import LoadingIconButton from "../components/LoadingIconButton";
 import SortToggle from "../components/SortToggle";
+import { BASE_URL } from "../constants";
 import { GET_TAG_CATEGORIES } from "../queries/category";
 import { DELETE_TAG, GET_TAG, UPDATE_TAG } from "../queries/tag";
 
@@ -193,7 +194,7 @@ const Tag = () => {
             images
           </div>
         )}
-        <a className="flex-shrink-0 relative" href={`http://${window.location.hostname}:3030/zip/${encodeURIComponent(slug)}`}>
+        <a className="flex-shrink-0 relative" href={`${BASE_URL}/zip/${encodeURIComponent(slug)}`}>
           <ArrowDownTrayIcon className="w-10 h-10 mx-1" />
           <span className="absolute -bottom-1 right-0 text-[0.6rem] bg-indigo-600 rounded text-white font-bold uppercase px-1 shadow-sm shadow-indigo-600">zip</span>
         </a>
